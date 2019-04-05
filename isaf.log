@@ -1,0 +1,148 @@
+2019-04-05 05:00:44,104 ERROR Exceptions.ISAFExceptions       Unknown command: 'seara'
+Traceback (most recent call last):
+  File "/root/PycharmProjects/ISAF/Interpreters/BaseInterpreter.py", line 60, in get_command_handler
+    command_handler = getattr(self, "command_{}".format(command))
+AttributeError: 'ISAFInterpreter' object has no attribute 'command_seara'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/PycharmProjects/ISAF/Interpreters/BaseInterpreter.py", line 63, in get_command_handler
+    command_handler = getattr(self.current_module, "command_{}".format(command))
+AttributeError: 'NoneType' object has no attribute 'command_seara'
+2019-04-05 05:00:55,404 ERROR Exceptions.ISAFExceptions       Error during loading 'icssploit/modules/a'
+
+Error: No module named 'icssploit'
+
+It should be valid path to the module. Use <tab> key multiple times for completion.
+Traceback (most recent call last):
+  File "/root/PycharmProjects/ISAF/Utils/__init__.py", line 79, in import_exploit
+    module = importlib.import_module(path)
+  File "/usr/lib/python3.7/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1006, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 983, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 953, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1006, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 983, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 953, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1006, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 983, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 965, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'icssploit'
+2019-04-05 05:51:34,037 ERROR Exceptions.ISAFExceptions       Error during loading 'icssploit/modules/ModbusClient'
+
+Error: No module named 'icssploit'
+
+It should be valid path to the module. Use <tab> key multiple times for completion.
+Traceback (most recent call last):
+  File "/root/PycharmProjects/ISAF/Utils/__init__.py", line 79, in import_exploit
+    module = importlib.import_module(path)
+  File "/usr/lib/python3.7/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1006, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 983, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 953, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1006, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 983, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 953, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1006, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 983, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 965, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'icssploit'
+2019-04-05 05:53:02,653 ERROR Exceptions.ISAFExceptions       Error during loading 'Modules/ModbusClient'
+
+Error: No module named 'Modules.ModbusClient'
+
+It should be valid path to the module. Use <tab> key multiple times for completion.
+Traceback (most recent call last):
+  File "/root/PycharmProjects/ISAF/Utils/__init__.py", line 79, in import_exploit
+    module = importlib.import_module(path)
+  File "/usr/lib/python3.7/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1006, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 983, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 965, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'Modules.ModbusClient'
+2019-04-05 05:53:35,678 ERROR Exceptions.ISAFExceptions       Error during loading 'Modules/ModbusClient/ModbusClient'
+
+Error: No module named 'Modules.ModbusClient'
+
+It should be valid path to the module. Use <tab> key multiple times for completion.
+Traceback (most recent call last):
+  File "/root/PycharmProjects/ISAF/Utils/__init__.py", line 79, in import_exploit
+    module = importlib.import_module(path)
+  File "/usr/lib/python3.7/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1006, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 983, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 953, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1006, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 983, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 965, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'Modules.ModbusClient'
+2019-04-05 05:55:06,258 ERROR Exceptions.ISAFExceptions       Error during loading 'Modules//root/PycharmProjects/ISAF/Modules/Clients/Wdb2Client'
+
+Error: No module named 'Modules.'
+
+It should be valid path to the module. Use <tab> key multiple times for completion.
+Traceback (most recent call last):
+  File "/root/PycharmProjects/ISAF/Utils/__init__.py", line 79, in import_exploit
+    module = importlib.import_module(path)
+  File "/usr/lib/python3.7/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1006, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 983, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 953, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1006, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 983, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 953, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1006, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 983, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 953, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1006, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 983, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 953, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1006, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 983, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 953, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1006, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 983, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 953, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 219, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1006, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 983, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 965, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'Modules.'
+2019-04-05 05:56:56,135 INFO scapy.loading       Can't open /etc/ethertypes file
+2019-04-05 05:56:56,508 DEBUG matplotlib       $HOME=/root
+2019-04-05 05:56:56,508 DEBUG matplotlib       CONFIGDIR=/root/.config/matplotlib
+2019-04-05 05:56:56,511 DEBUG matplotlib       matplotlib data path: /usr/share/matplotlib/mpl-data
+2019-04-05 05:56:56,512 DEBUG matplotlib       loaded rc file /etc/matplotlibrc
+2019-04-05 05:56:56,513 DEBUG matplotlib       matplotlib version 3.0.2
+2019-04-05 05:56:56,513 DEBUG matplotlib       interactive is False
+2019-04-05 05:56:56,513 DEBUG matplotlib       platform is linux
+2019-04-05 05:56:56,513 DEBUG matplotlib       loaded modules: ['sys', 'builtins', '_frozen_importlib', '_imp', '_thread', '_warnings', '_weakref', 'zipimport', '_frozen_importlib_external', '_io', 'marshal', 'posix', 'encodings', 'codecs', '_codecs', 'encodings.aliases', 'encodings.utf_8', '_signal', '__main__', 'encodings.latin_1', 'io', 'abc', '_abc', 'site', 'os', 'stat', '_stat', 'posixpath', 'genericpath', 'os.path', '_collections_abc', '_sitebuiltins', '_bootlocale', '_locale', 'types', 'importlib', 'importlib._bootstrap', 'importlib._bootstrap_external', 'warnings', 'importlib.util', 'importlib.abc', 'importlib.machinery', 'contextlib', 'collections', 'operator', '_operator', 'keyword', 'heapq', '_heapq', 'itertools', 'reprlib', '_collections', 'functools', '_functools', 'zope', 'mpl_toolkits', 'ruamel', 'sitecustomize', 'argparse', 're', 'enum', 'sre_compile', '_sre', 'sre_parse', 'sre_constants', 'copyreg', 'gettext', 'locale', 'Configuration', 'configparser', 'collections.abc', 'logging', 'time', 'traceback', 'linecache', 'tokenize', 'token', 'weakref', '_weakrefset', 'string', '_string', 'threading', 'atexit', 'logging.handlers', 'socket', '_socket', 'selectors', 'math', 'select', 'errno', 'pickle', 'struct', '_struct', '_compat_pickle', '_pickle', 'queue', '_queue', 'Interpreters', 'Interpreters.ISAFInterpreter', 'Interpreters.BaseInterpreter', 'readline', 'Exceptions', 'Exceptions.ISAFExceptions', 'Utils', '__future__', 'random', 'hashlib', '_hashlib', '_blake2', '_sha3', 'bisect', '_bisect', '_random', 'nmap', 'nmap.nmap', 'csv', '_csv', 'shlex', 'subprocess', 'signal', '_posixsubprocess', 'xml', 'xml.etree', 'xml.etree.ElementTree', 'xml.etree.ElementPath', 'copy', 'pyexpat.errors', 'pyexpat.model', 'pyexpat', '_elementtree', 'multiprocessing', 'multiprocessing.context', 'multiprocessing.process', 'multiprocessing.reduction', 'array', '__mp_main__', 'distutils', 'distutils.util', 'distutils.errors', 'distutils.dep_util', 'distutils.spawn', 'distutils.debug', 'distutils.log', 'requests', 'urllib3', 'urllib3.connectionpool', 'urllib3.exceptions', 'six', 'six.moves', 'http', 'http.client', 'email', 'email.parser', 'email.feedparser', 'email.errors', 'email._policybase', 'email.header', 'binascii', 'email.quoprimime', 'email.base64mime', 'base64', 'email.charset', 'email.encoders', 'quopri', 'email.utils', 'datetime', '_datetime', 'urllib', 'urllib.parse', 'email._parseaddr', 'calendar', 'email.message', 'uu', 'email._encoded_words', 'email.iterators', 'ssl', '_ssl', 'six.moves.http_client', 'urllib3.packages', 'urllib3.packages.ssl_match_hostname', 'urllib3.connection', 'urllib3.util', 'urllib3.util.connection', 'urllib3.util.wait', 'urllib3.contrib', 'urllib3.contrib._appengine_environ', 'urllib3.util.request', 'urllib3.util.response', 'urllib3.util.ssl_', 'hmac', 'urllib3.util.timeout', 'urllib3.util.retry', 'urllib3.util.url', 'urllib3._collections', 'urllib3.request', 'urllib3.filepost', 'urllib3.fields', 'mimetypes', 'six.moves.urllib', 'six.moves.urllib.parse', 'urllib3.response', 'zlib', 'urllib3.util.queue', 'urllib3.poolmanager', 'chardet', 'chardet.compat', 'chardet.universaldetector', 'chardet.charsetgroupprober', 'chardet.enums', 'chardet.charsetprober', 'chardet.escprober', 'chardet.codingstatemachine', 'chardet.escsm', 'chardet.latin1prober', 'chardet.mbcsgroupprober', 'chardet.utf8prober', 'chardet.mbcssm', 'chardet.sjisprober', 'chardet.mbcharsetprober', 'chardet.chardistribution', 'chardet.euctwfreq', 'chardet.euckrfreq', 'chardet.gb2312freq', 'chardet.big5freq', 'chardet.jisfreq', 'chardet.jpcntx', 'chardet.eucjpprober', 'chardet.gb2312prober', 'chardet.euckrprober', 'chardet.cp949prober', 'chardet.big5prober', 'chardet.euctwprober', 'chardet.sbcsgroupprober', 'chardet.sbcharsetprober', 'chardet.langcyrillicmodel', 'chardet.langgreekmodel', 'chardet.langbulgarianmodel', 'chardet.langthaimodel', 'chardet.langhebrewmodel', 'chardet.hebrewprober', 'chardet.langturkishmodel', 'chardet.version', 'requests.exceptions', 'urllib3.contrib.pyopenssl', 'OpenSSL', 'OpenSSL.crypto', 'cryptography', 'cryptography.__about__', 'cryptography.x509', 'cryptography.x509.certificate_transparency', 'cryptography.x509.base', 'cryptography.utils', 'inspect', 'dis', 'opcode', '_opcode', 'cryptography.hazmat', 'cryptography.hazmat.primitives', 'cryptography.hazmat.primitives.asymmetric', 'cryptography.hazmat.primitives.asymmetric.dsa', 'cryptography.hazmat.primitives.asymmetric.ec', 'cryptography.hazmat._oid', 'cryptography.hazmat.primitives.asymmetric.rsa', 'cryptography.exceptions', 'cryptography.hazmat.backends', 'cryptography.hazmat.backends.interfaces', 'cryptography.x509.extensions', 'ipaddress', 'asn1crypto', 'asn1crypto.version', 'asn1crypto.keys', 'asn1crypto._elliptic_curve', 'asn1crypto._int', 'platform', 'asn1crypto.util', 'asn1crypto._errors', 'textwrap', 'asn1crypto._iri', 'encodings.idna', 'stringprep', 'unicodedata', 'asn1crypto._types', 'asn1crypto._ordereddict', 'asn1crypto._ffi', 'ctypes', '_ctypes', 'ctypes._endian', 'asn1crypto._perf', 'asn1crypto._perf._big_num_ctypes', 'ctypes.util', 'shutil', 'fnmatch', 'bz2', '_compression', '_bz2', 'lzma', '_lzma', 'pwd', 'grp', 'tempfile', 'asn1crypto.algos', 'asn1crypto.core', 'asn1crypto._teletex_codec', 'asn1crypto.parser', 'cryptography.hazmat.primitives.constant_time', 'cryptography.hazmat.bindings', '_cffi_backend', '_constant_time.lib', '_constant_time', 'cryptography.hazmat.bindings._constant_time', 'cryptography.hazmat.primitives.serialization', 'cryptography.hazmat.primitives.serialization.base', 'cryptography.hazmat.primitives.serialization.ssh', 'cryptography.hazmat.primitives.asymmetric.ed25519', 'cryptography.x509.general_name', 'cryptography.x509.name', 'cryptography.x509.oid', 'cryptography.hazmat.primitives.hashes', 'OpenSSL._util', 'cryptography.hazmat.bindings.openssl', 'cryptography.hazmat.bindings.openssl.binding', '_openssl.lib', '_openssl', 'cryptography.hazmat.bindings._openssl', 'cryptography.hazmat.bindings.openssl._conditional', 'OpenSSL.SSL', 'OpenSSL.version', 'cryptography.hazmat.backends.openssl', 'cryptography.hazmat.backends.openssl.backend', 'cryptography.hazmat.backends.openssl.aead', 'cryptography.hazmat.backends.openssl.ciphers', 'cryptography.hazmat.primitives.ciphers', 'cryptography.hazmat.primitives.ciphers.base', 'cryptography.hazmat.primitives.ciphers.modes', 'cryptography.hazmat.backends.openssl.cmac', 'cryptography.hazmat.primitives.mac', 'cryptography.hazmat.backends.openssl.decode_asn1', 'cryptography.hazmat.backends.openssl.dh', 'cryptography.hazmat.primitives.asymmetric.dh', 'cryptography.hazmat.backends.openssl.dsa', 'cryptography.hazmat.backends.openssl.utils', 'cryptography.hazmat.primitives.asymmetric.utils', 'cryptography.hazmat.backends.openssl.ec', 'cryptography.hazmat.backends.openssl.ed25519', 'cryptography.hazmat.backends.openssl.ed448', 'cryptography.hazmat.primitives.asymmetric.ed448', 'cryptography.hazmat.backends.openssl.encode_asn1', 'cryptography.hazmat.backends.openssl.hashes', 'cryptography.hazmat.backends.openssl.hmac', 'cryptography.hazmat.backends.openssl.ocsp', 'cryptography.hazmat.backends.openssl.x509', 'cryptography.x509.ocsp', 'cryptography.hazmat.backends.openssl.rsa', 'cryptography.hazmat.primitives.asymmetric.padding', 'cryptography.hazmat.backends.openssl.x25519', 'cryptography.hazmat.primitives.asymmetric.x25519', 'cryptography.hazmat.backends.openssl.x448', 'cryptography.hazmat.primitives.asymmetric.x448', 'cryptography.hazmat.primitives.ciphers.algorithms', 'cryptography.hazmat.primitives.kdf', 'cryptography.hazmat.primitives.kdf.scrypt', 'urllib3.packages.backports', 'urllib3.packages.backports.makefile', 'requests.__version__', 'requests.utils', 'zipfile', 'requests.certs', 'certifi', 'certifi.core', 'requests._internal_utils', 'requests.compat', 'json', 'json.decoder', 'json.scanner', '_json', 'json.encoder', 'urllib.request', 'urllib.error', 'urllib.response', 'http.cookiejar', 'http.cookies', 'requests.cookies', 'requests.structures', 'requests.packages', 'requests.packages.urllib3', 'requests.packages.urllib3.connectionpool', 'requests.packages.urllib3.exceptions', 'requests.packages.urllib3.packages', 'requests.packages.urllib3.packages.ssl_match_hostname', 'requests.packages.urllib3.connection', 'requests.packages.urllib3.util', 'requests.packages.urllib3.util.connection', 'requests.packages.urllib3.util.wait', 'requests.packages.urllib3.contrib', 'requests.packages.urllib3.contrib._appengine_environ', 'requests.packages.urllib3.util.request', 'requests.packages.urllib3.util.response', 'requests.packages.urllib3.util.ssl_', 'requests.packages.urllib3.util.timeout', 'requests.packages.urllib3.util.retry', 'requests.packages.urllib3.util.url', 'requests.packages.urllib3._collections', 'requests.packages.urllib3.request', 'requests.packages.urllib3.filepost', 'requests.packages.urllib3.fields', 'requests.packages.urllib3.response', 'requests.packages.urllib3.util.queue', 'requests.packages.urllib3.poolmanager', 'requests.packages.urllib3.contrib.pyopenssl', 'requests.packages.urllib3.packages.backports', 'requests.packages.urllib3.packages.backports.makefile', 'idna', 'idna.package_data', 'idna.core', 'idna.idnadata', 'idna.intranges', 'requests.packages.idna', 'requests.packages.idna.package_data', 'requests.packages.idna.core', 'requests.packages.idna.idnadata', 'requests.packages.idna.intranges', 'requests.packages.chardet', 'requests.packages.chardet.compat', 'requests.packages.chardet.universaldetector', 'requests.packages.chardet.charsetgroupprober', 'requests.packages.chardet.enums', 'requests.packages.chardet.charsetprober', 'requests.packages.chardet.escprober', 'requests.packages.chardet.codingstatemachine', 'requests.packages.chardet.escsm', 'requests.packages.chardet.latin1prober', 'requests.packages.chardet.mbcsgroupprober', 'requests.packages.chardet.utf8prober', 'requests.packages.chardet.mbcssm', 'requests.packages.chardet.sjisprober', 'requests.packages.chardet.mbcharsetprober', 'requests.packages.chardet.chardistribution', 'requests.packages.chardet.euctwfreq', 'requests.packages.chardet.euckrfreq', 'requests.packages.chardet.gb2312freq', 'requests.packages.chardet.big5freq', 'requests.packages.chardet.jisfreq', 'requests.packages.chardet.jpcntx', 'requests.packages.chardet.eucjpprober', 'requests.packages.chardet.gb2312prober', 'requests.packages.chardet.euckrprober', 'requests.packages.chardet.cp949prober', 'requests.packages.chardet.big5prober', 'requests.packages.chardet.euctwprober', 'requests.packages.chardet.sbcsgroupprober', 'requests.packages.chardet.sbcharsetprober', 'requests.packages.chardet.langcyrillicmodel', 'requests.packages.chardet.langgreekmodel', 'requests.packages.chardet.langbulgarianmodel', 'requests.packages.chardet.langthaimodel', 'requests.packages.chardet.langhebrewmodel', 'requests.packages.chardet.hebrewprober', 'requests.packages.chardet.langturkishmodel', 'requests.packages.chardet.version', 'requests.models', 'requests.hooks', 'requests.auth', 'requests.status_codes', 'requests.api', 'requests.sessions', 'requests.adapters', 'urllib3.contrib.socks', 'socks', 'Modules', 'Utils.Printer', 'Base', 'Base.Exploits', 'Modules.Clients', 'Modules.Clients.ModbusClient', 'Modules.Clients.BaseClient', 'Protocols', 'Protocols.Modbus', 'scapy', 'scapy.packet', 'scapy.fields', 'scapy.config', 'scapy.base_classes', 'scapy.consts', 'scapy.modules', 'scapy.modules.six', 'scapy.modules.six.moves', 'scapy.data', 'scapy.dadict', 'scapy.error', 'scapy.compat', 'scapy.themes', 'scapy.volatile', 'scapy.utils', 'gzip', 'scapy.pton_ntop', 'scapy.utils6', 'scapy.extlib', 'matplotlib', 'distutils.version', 'pathlib', 'ntpath', 'pprint', 'matplotlib.cbook', 'glob', 'numbers', 'numpy', 'numpy._globals', 'numpy.__config__', 'numpy.version', 'numpy._distributor_init', 'numpy.core', 'numpy.core.info', 'numpy.core.multiarray', 'numpy.core.overrides', 'numpy.core._multiarray_umath', 'numpy.compat', 'numpy.compat._inspect', 'numpy.compat.py3k', 'numpy.core.umath', 'numpy.core.numerictypes', 'numpy.core._string_helpers', 'numpy.core._type_aliases', 'numpy.core._dtype', 'numpy.core.numeric', 'numpy.core._internal', 'numpy.core.fromnumeric', 'numpy.core._methods', 'numpy.core.arrayprint', 'numpy.core.defchararray', 'numpy.core.records', 'numpy.core.memmap', 'numpy.core.function_base', 'numpy.core.machar', 'numpy.core.getlimits', 'numpy.core.shape_base', 'numpy.core.einsumfunc', 'numpy.core._add_newdocs', 'numpy.core._multiarray_tests', 'numpy.core._dtype_ctypes', 'numpy._pytesttester', 'numpy.lib', 'numpy.lib.info', 'numpy.lib.type_check', 'numpy.lib.ufunclike', 'numpy.lib.index_tricks', 'numpy.matrixlib', 'numpy.matrixlib.defmatrix', 'ast', '_ast', 'numpy.linalg', 'numpy.linalg.info', 'numpy.linalg.linalg', 'numpy.lib.twodim_base', 'numpy.linalg.lapack_lite', 'numpy.linalg._umath_linalg', 'numpy.lib.function_base', 'numpy.lib.utils', 'numpy.lib.histograms', 'numpy.lib.stride_tricks', 'numpy.lib.mixins', 'numpy.lib.nanfunctions', 'numpy.lib.shape_base', 'numpy.lib.scimath', 'numpy.lib.polynomial', 'numpy.lib.arraysetops', 'numpy.lib.npyio', 'numpy.lib.format', 'numpy.lib._datasource', 'numpy.lib._iotools', 'numpy.lib.financial', 'decimal', '_decimal', 'numpy.lib.arrayterator', 'numpy.lib.arraypad', 'numpy.lib._version', 'numpy.fft', 'numpy.fft.info', 'numpy.fft.fftpack', 'numpy.fft.fftpack_lite', 'numpy.fft.helper', 'numpy.polynomial', 'numpy.polynomial.polynomial', 'numpy.polynomial.polyutils', 'numpy.polynomial._polybase', 'numpy.polynomial.chebyshev', 'numpy.polynomial.legendre', 'numpy.polynomial.hermite', 'numpy.polynomial.hermite_e', 'numpy.polynomial.laguerre', 'numpy.random', 'numpy.random.mtrand', 'cython_runtime', 'mtrand', 'numpy.ctypeslib', 'numpy.ma', 'numpy.ma.core', 'numpy.ma.extras', 'numpy.testing', 'unittest', 'unittest.result', 'unittest.util', 'unittest.case', 'difflib', 'unittest.suite', 'unittest.loader', 'unittest.main', 'unittest.runner', 'unittest.signals', 'numpy.testing._private', 'numpy.testing._private.utils', 'gc', 'numpy.testing._private.decorators', 'numpy.testing._private.nosetester', 'matplotlib.cbook.deprecation', 'matplotlib.rcsetup', 'matplotlib.fontconfig_pattern', 'pyparsing', 'matplotlib.colors', 'matplotlib._color_data', 'cycler', 'matplotlib._version', 'dateutil', 'dateutil._version']
+2019-04-05 05:56:56,567 DEBUG matplotlib       CACHEDIR=/root/.cache/matplotlib
+2019-04-05 05:56:56,571 DEBUG matplotlib.font_manager       Using fontManager instance from /root/.cache/matplotlib/fontlist-v300.json
+2019-04-05 05:56:56,768 DEBUG matplotlib.pyplot       Loaded backend TkAgg version unknown.
+2019-04-05 05:56:56,941 WARNING scapy.runtime       No route found for IPv6 destination :: (no default route?)
+2019-04-05 05:56:56,954 ERROR Exceptions.ISAFExceptions       Error during loading 'Modules/Clients/ModbusClient'
+
+Error: module 'Modules.Clients.ModbusClient' has no attribute 'Exploit'
+
+It should be valid path to the module. Use <tab> key multiple times for completion.
+Traceback (most recent call last):
+  File "/root/PycharmProjects/ISAF/Utils/__init__.py", line 81, in import_exploit
+    return getattr(module, 'Exploit')
+AttributeError: module 'Modules.Clients.ModbusClient' has no attribute 'Exploit'

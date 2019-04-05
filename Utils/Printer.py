@@ -16,6 +16,6 @@ class PrinterThread(threading.Thread):
 
     def run(self):
         while True:
-            content, sep, end, file_, thread = printer_queue.get()
-            print(*content, sep=sep, end=end, file=file_)
+            content, sep, end, _file, thread = printer_queue.get()
+            print(*content, sep=sep, end=end, file=_file)
             printer_queue.task_done()
