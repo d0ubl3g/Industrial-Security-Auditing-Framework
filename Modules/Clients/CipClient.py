@@ -6,13 +6,13 @@ from Protocols.Cip import *
 
 class CIPClient(Base):
     def __init__(self, name, ip, port=44818, timeout=2):
-        '''
+        """
 
         :param name: Name of this targets
         :param ip: Target ip
         :param port: CIP port (default: 44818)
         :param timeout: timeout of socket (default: 2)
-        '''
+        """
         super(CIPClient, self).__init__(name=name)
         self._ip = ip
         self._port = port

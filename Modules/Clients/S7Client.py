@@ -17,7 +17,7 @@ VAR_NAME_TYPES = {
 
 class S7Client(Base):
     def __init__(self, name, ip, port=102, src_tsap='\x01\x00', rack=0, slot=2, timeout=2):
-        '''
+        """
 
         :param name: Name of this targets
         :param ip: S7 PLC ip
@@ -26,7 +26,7 @@ class S7Client(Base):
         :param rack: cpu rack (default: 0)
         :param slot: cpu slot (default: 2)
         :param timeout: timeout of socket (default: 2)
-        '''
+        """
         super(S7Client, self).__init__(name=name)
         self._ip = ip
         self._port = port
@@ -323,7 +323,7 @@ class S7Client(Base):
         if block_type in S7_BLOCK_TYPE_IN_FILE_NAME.keys():
             file_block_type = block_type
         else:
-            for key, name in S7_BLOCK_TYPE_IN_FILE_NAME.iteritems():
+            for key, name in S7_BLOCK_TYPE_IN_FILE_NAME.items():
                 if name == block_type:
                     file_block_type = key
                     break
@@ -396,7 +396,7 @@ class S7Client(Base):
         mem_length, mc7_length, block_type, block_num = self.get_info_from_block(block_data)
         self.logger.info("Start download %s%s to targets" % (block_type, block_num))
         file_block_type = None
-        for key, name in S7_BLOCK_TYPE_IN_FILE_NAME.iteritems():
+        for key, name in S7_BLOCK_TYPE_IN_FILE_NAME.items():
             if name == block_type:
                 file_block_type = key
                 break
@@ -479,7 +479,7 @@ class S7Client(Base):
         mem_length, mc7_length, block_type, block_num = self.get_info_from_block(block_data)
         self.logger.info("Start download %s%s to targets" % (block_type, block_num))
         file_block_type = None
-        for key, name in S7_BLOCK_TYPE_IN_FILE_NAME.iteritems():
+        for key, name in S7_BLOCK_TYPE_IN_FILE_NAME.items():
             if name == block_type:
                 file_block_type = key
                 break
@@ -563,10 +563,10 @@ class S7Client(Base):
         self.get_target_status()
 
     def start_target(self, cold=False):
-        ''' Start target PLC
+        """ Start target PLC
 
         :param cold: Doing cold restart, True or False.
-        '''
+        """
         self.get_target_status()
         if self.is_running:
             self.logger.info("Target is already running")
@@ -589,7 +589,7 @@ class S7Client(Base):
 
     @staticmethod
     def get_transport_size_from_data_type(data_type):
-        for key, name in S7_TRANSPORT_SIZE_IN_PARM_ITEMS.iteritems():
+        for key, name in S7_TRANSPORT_SIZE_IN_PARM_ITEMS.items():
             if isinstance(data_type, str):
                 if name.startswith(data_type.upper()):
                     return key
@@ -769,11 +769,11 @@ class S7Client(Base):
                 return 0x09
 
     def read_var(self, items):
-        '''
+        """
 
         :param items:
         :return: Return data list of read_var items.
-        '''
+        """
         read_items = []
         items_data = []
 

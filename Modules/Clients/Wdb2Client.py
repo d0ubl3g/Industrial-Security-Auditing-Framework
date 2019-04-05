@@ -6,14 +6,14 @@ import xdrlib
 
 class Wdb2Client(Base):
     def __init__(self, name, ip, port=17185, timeout=2, mem_buff_size=300):
-        '''
+        """
 
         :param name: Name of this targets
         :param ip: VxWorks ip
         :param port: WDB port (default: 17185)
         :param timeout: timeout of socket (default: 2)
         :param mem_buff_size: Mem buff size for memory read or write (default: 300)
-        '''
+        """
         super(Wdb2Client, self).__init__(name=name)
         self._ip = ip
         self._port = port
@@ -173,12 +173,12 @@ class Wdb2Client(Base):
         return target_info
 
     def _write_memory(self, address, data):
-        '''
+        """
 
         :param address: offset of target memory
         :param data: data need to write to target
         :return: target response packet
-        '''
+        """
 
         address = int(address)
         pkt = RPCReq() / WdbMemWriteReq(Offset=address, Buff=data)
@@ -187,11 +187,11 @@ class Wdb2Client(Base):
         return self.send_receive_wdb_packet(pkt)
 
     def write_target_memory(self, address, data):
-        '''
+        """
         :param address: offset of memory
         :param data: data need to write
         :return: None
-        '''
+        """
         address = int(address)
         if len(data) < 4:
             print("data length can't less than 4 byte")
@@ -208,12 +208,12 @@ class Wdb2Client(Base):
             address += 4
 
     def _read_memory(self, address, length):
-        '''
+        """
 
         :param address: offset of target memory
         :param length: length of memory to be read
         :return: Memory Data
-        '''
+        """
         address = int(address)
         pkt = RPCReq() / WdbMemReadReq(Offset=address, Length=length)
         pkt[RPCReq].Procedure = 0xa

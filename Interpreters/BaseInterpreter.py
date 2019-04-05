@@ -36,7 +36,8 @@ class BaseInterpreter(object):
         readline.set_completer_delims(' \t\n;')
         readline.parse_and_bind("tab: complete")
 
-    def parse_line(self, line):
+    @staticmethod
+    def parse_line(line):
         """ Split line into command and argument.
 
         :param line: line to parse
@@ -113,7 +114,7 @@ class BaseInterpreter(object):
             else:
                 complete_function = self.raw_command_completer
 
-            self.completion_matches = complete_function(text, line, start_index, end_index)
+        self.completion_matches = complete_function(text, line, start_index, end_index)
 
         try:
             return self.completion_matches[state]

@@ -13,6 +13,7 @@ import string
 import sys
 import threading
 import nmap
+import urllib3
 import time
 from abc import ABCMeta, abstractmethod
 from distutils.util import strtobool
@@ -40,7 +41,7 @@ colors = {
 }
 
 # Disable certificate verification warnings
-requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 Resource = collections.namedtuple("Resource", ["name", "template_path", "context"])
 PrintResource = collections.namedtuple("PrintResource", ['content', 'sep', 'end', 'file', 'thread'])
@@ -417,7 +418,7 @@ def pprint_dict_in_order(dictionary, order=None):
         else:
             print_info(body)
 
-    keys = dictionary.keys()
+    keys = list(dictionary.keys())
     for element in order:
         try:
             key = keys.pop(keys.index(element))
@@ -572,7 +573,7 @@ def tokenize(token_specification, text):
 
 def create_exploit(path):  # TODO: cover with tests
     print(path)
-    from Templates import exploit
+    from Templates import Exploit
 
     parts = path.split(os.sep)
     module_type, name = parts[0], parts[-1]
@@ -601,7 +602,7 @@ def create_exploit(path):  # TODO: cover with tests
         content=(
             Resource(
                 name="{}.py".format(name),
-                template_path=os.path.abspath(exploit.__file__.rstrip("c")),
+                template_path=os.path.abspath(Exploit.__file__.rstrip("c")),
                 context={}),
         ),
         python_package=True

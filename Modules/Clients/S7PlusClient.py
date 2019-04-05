@@ -17,7 +17,7 @@ OBJECT_QUALIFIER_ITEMS = [S7PlusItemValue(IDNumber=0x4e9, DataType=0x12,
 
 class S7PlusClient(Base):
     def __init__(self, name, ip, port=102, src_tsap='\x01\x00', timeout=2):
-        '''
+        """
 
         :param name: Name of this targets
         :param ip: S7 PLC ip
@@ -26,7 +26,7 @@ class S7PlusClient(Base):
         :param rack: cpu rack (default: 0)
         :param slot: cpu slot (default: 2)
         :param timeout: timeout of socket (default: 2)
-        '''
+        """
         super(S7PlusClient, self).__init__(name=name)
         self._ip = ip
         self._port = port

@@ -40,9 +40,9 @@ class ISAFInterpreter(BaseInterpreter):
         self.raw_prompt_template = None
         self.module_prompt_template = None
         self.prompt_hostname = 'ISAF'
-        self.show_sub_commands = ('info', 'options', 'devices', 'all', 'creds', 'exploits', 'scanners')
+        self.show_sub_commands = ('info', 'options', 'devices', 'all', 'Credentials', 'Exploits', 'Scanners')
         self.global_commands = sorted(['use ', 'exec ', 'help', 'exit', 'show ', 'search '])
-        self.module_commands = ['run', 'back', 'set ', 'gset ', 'gunset ', 'check']
+        self.module_commands = ['run', 'back', 'set ', 'unset ', 'gset ', 'gunset ', 'check']
         self.module_commands.extend(self.global_commands)
         self.module_commands.sort()
         self.extra_modules_dir = None
@@ -69,19 +69,19 @@ class ISAFInterpreter(BaseInterpreter):
                                             
                             Industrial Security Auditing Framework
 
-    Note     : ISAF is a rewrite from isf at 
-               https://github.com/dark-lbp/isf
     Dev Team : D0ubl3G <d0ubl3g[at]protonmail.com>
     Version  : 0.0.1
 
-    Exploits: {exploits_count} Scanners: {scanners_count} Creds: {creds_count}
+    Clients: {clients_count}        Exploits: {exploits_count} 
+    Scanners: {scanners_count}      Credentials: {creds_count}
 
     ICS Exploits:
         PLC: {plc_exploit_count}          ICS Switch: {ics_switch_exploits_count}
         Software: {ics_software_exploits_count}
-    """.format(exploits_count=self.modules_count['exploits'] + self.modules_count['extra_exploits'],
-               scanners_count=self.modules_count['scanners'] + self.modules_count['extra_scanners'],
-               creds_count=self.modules_count['creds'] + self.modules_count['extra_creds'],
+    """.format(clients_count=self.modules_count['Clients'],
+               exploits_count=self.modules_count['Exploits'] + self.modules_count['extra_exploits'],
+               scanners_count=self.modules_count['Scanners'] + self.modules_count['extra_scanners'],
+               creds_count=self.modules_count['Credentials'] + self.modules_count['extra_creds'],
                plc_exploit_count=self.modules_count['plcs'],
                ics_switch_exploits_count=self.modules_count['ics_switchs'],
                ics_software_exploits_count=self.modules_count['ics_software']
@@ -89,11 +89,10 @@ class ISAFInterpreter(BaseInterpreter):
 
     def __parse_prompt(self):
         raw_prompt_default_template = "\001\033[4m\002{host}\001\033[0m\002 > "
-        raw_prompt_template = os.getenv("ISF_RAW_PROMPT", raw_prompt_default_template).replace('\\033', '\033')
+        raw_prompt_template = os.getenv("ISAF_RAW_PROMPT", raw_prompt_default_template).replace('\\033', '\033')
         self.raw_prompt_template = raw_prompt_template if '{host}' in raw_prompt_template else raw_prompt_default_template
-
         module_prompt_default_template = "\001\033[4m\002{host}\001\033[0m\002 (\001\033[91m\002{module}\001\033[0m\002) > "
-        module_prompt_template = os.getenv("ISF_MODULE_PROMPT", module_prompt_default_template).replace('\\033', '\033')
+        module_prompt_template = os.getenv("ISAF_MODULE_PROMPT", module_prompt_default_template).replace('\\033', '\033')
         self.module_prompt_template = module_prompt_template if all(
             map(lambda x: x in module_prompt_template, ['{host}', "{module}"])) else module_prompt_default_template
 
@@ -113,8 +112,9 @@ class ISAFInterpreter(BaseInterpreter):
             try:
                 return self.module_prompt_template.format(host=self.prompt_hostname,
                                                           module=self.module_metadata['name'])
-            except (AttributeError, KeyError):
-                return self.module_prompt_template.format(host=self.prompt_hostname, module="UnnamedModule")
+            except (AttributeError, KeyError) as e:
+                Utils.print_error(e)
+                return self.module_prompt_template.format(host=self.prompt_hostname, module="Unknown")
         else:
             return self.raw_prompt_template.format(host=self.prompt_hostname)
 
@@ -158,7 +158,7 @@ class ISAFInterpreter(BaseInterpreter):
         :return: list of most accurate command suggestions
         """
         if self.current_module and Exploits.GLOBAL_OPTS:
-            return sorted(itertools.chain(self.module_commands, ('unsetg ',)))
+            return sorted(itertools.chain(self.module_commands, ('gunset ',)))
         elif self.current_module:
             custom_commands = [command.rsplit("_").pop() for command in dir(self.current_module)
                                if command.startswith("command_")]
@@ -179,7 +179,7 @@ class ISAFInterpreter(BaseInterpreter):
         try:
             self.current_module = Utils.import_exploit(module_path)()
         except ISAFException as err:
-            Utils.print_error(err.message)
+            Utils.print_error(err)
 
     @Utils.stop_after(2)
     def complete_use(self, text, *args, **kwargs):
@@ -271,7 +271,7 @@ class ISAFInterpreter(BaseInterpreter):
     def _show_info(self, *args, **kwargs):
         Utils.pprint_dict_in_order(
             self.module_metadata,
-            ("name", "description", "devices", "authors", "references"),
+            ("display_name", "description", "devices", "authors", "references"),
         )
         Utils.print_info()
 
@@ -315,19 +315,20 @@ class ISAFInterpreter(BaseInterpreter):
         self.__show_modules()
 
     def _show_scanners(self, *args, **kwargs):
-        self.__show_modules('scanners')
+        self.__show_modules('Scanners')
 
     def _show_exploits(self, *args, **kwargs):
-        self.__show_modules('exploits')
+        self.__show_modules('Exploits')
 
     def _show_creds(self, *args, **kwargs):
-        self.__show_modules('creds')
+        self.__show_modules('Credentials')
 
     def command_show(self, *args, **kwargs):
         sub_command = args[0]
         try:
             getattr(self, "_show_{}".format(sub_command))(*args, **kwargs)
-        except AttributeError:
+        except AttributeError as e:
+            Utils.print_error(e)
             Utils.print_error("Unknown 'show' sub-command '{}'. "
                               "What do you want to show?\n"
                               "Possible choices are: {}".format(sub_command, self.show_sub_commands))
@@ -358,7 +359,8 @@ class ISAFInterpreter(BaseInterpreter):
         if self.current_module:
             Utils.print_info("\n", self.module_help)
 
-    def command_exec(self, *args, **kwargs):
+    @staticmethod
+    def command_exec(*args, **kwargs):
         os.system(args[0])
 
     def command_search(self, *args, **kwargs):

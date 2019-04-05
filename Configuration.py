@@ -1,3 +1,4 @@
+# noinspection PyCompatibility
 import configparser
 
 config = configparser.ConfigParser()
