@@ -12,3 +12,27 @@ Traceback (most recent call last):
   File "<frozen importlib._bootstrap>", line 983, in _find_and_load
   File "<frozen importlib._bootstrap>", line 965, in _find_and_load_unlocked
 ModuleNotFoundError: No module named 'Modules.Credentials.FTPbruteforce'
+2019-04-05 12:48:10,265 ERROR Exceptions.ISAFExceptions       Unknown command: 'unset'
+Traceback (most recent call last):
+  File "/root/PycharmProjects/ISAF/Interpreters/BaseInterpreter.py", line 61, in get_command_handler
+    command_handler = getattr(self, "command_{}".format(command))
+AttributeError: 'ISAFInterpreter' object has no attribute 'command_unset'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/PycharmProjects/ISAF/Interpreters/BaseInterpreter.py", line 64, in get_command_handler
+    command_handler = getattr(self.current_module, "command_{}".format(command))
+AttributeError: 'Exploit' object has no attribute 'command_unset'
+2019-04-05 14:12:37,163 ERROR Exceptions.ISAFExceptions       Unknown command: 'exot'
+Traceback (most recent call last):
+  File "/root/PycharmProjects/ISAF/Interpreters/BaseInterpreter.py", line 61, in get_command_handler
+    command_handler = getattr(self, "command_{}".format(command))
+AttributeError: 'ISAFInterpreter' object has no attribute 'command_exot'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/PycharmProjects/ISAF/Interpreters/BaseInterpreter.py", line 64, in get_command_handler
+    command_handler = getattr(self.current_module, "command_{}".format(command))
+AttributeError: 'NoneType' object has no attribute 'command_exot'

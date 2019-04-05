@@ -58,27 +58,27 @@ class ISAFInterpreter(BaseInterpreter):
         self.__parse_prompt()
 
         self.banner = """ 
-         ▄█     ▄████████    ▄████████    ▄████████ 
-        ███    ███    ███   ███    ███   ███    ███ 
-        ███▌   ███    █▀    ███    ███   ███    █▀  
-        ███▌   ███          ███    ███  ▄███▄▄▄     
-        ███▌ ▀███████████ ▀███████████ ▀▀███▀▀▀     
-        ███           ███   ███    ███   ███        
-        ███     ▄█    ███   ███    ███   ███        
-        █▀    ▄████████▀    ███    █▀    ███        
-                                            
-                            Industrial Security Auditing Framework
+        \001\033[94m\002
+             ▄█     ▄████████    ▄████████    ▄████████ 
+            ███    ███    ███   ███    ███   ███    ███ 
+            ███▌   ███    █▀    ███    ███   ███    █▀  
+            ███▌   ███          ███    ███  ▄███▄▄▄     
+            ███▌ ▀███████████ ▀███████████ ▀▀███▀▀▀     
+            ███           ███   ███    ███   ███        
+            ███     ▄█    ███   ███    ███   ███        
+            █▀    ▄████████▀    ███    █▀    ███\001\033[92m\002 v{version}      
+              \001\033[93m\002Industrial Security Auditing Framework
+                D0ubl3G <d0ubl3g[at]protonmail.com>
+\001\033[0m\002
+    \001\033[1m\002Modules\001\033[0m\002
+        Clients: \001\033[92m\002{clients_count}\001\033[0m\002         Exploits: \001\033[92m\002{exploits_count}\001\033[0m\002 
+        Scanners: \001\033[92m\002{scanners_count}\001\033[0m\002        Credentials: \001\033[92m\002{creds_count}\001\033[0m\002
 
-    Dev Team : D0ubl3G <d0ubl3g[at]protonmail.com>
-    Version  : 0.0.1
-
-    Clients: {clients_count}        Exploits: {exploits_count} 
-    Scanners: {scanners_count}      Credentials: {creds_count}
-
-    ICS Exploits:
+    \001\033[1m\002Exploits\001\033[0m\002
         PLC: {plc_exploit_count}          ICS Switch: {ics_switch_exploits_count}
         Software: {ics_software_exploits_count}
-    """.format(clients_count=self.modules_count['Clients'],
+    """.format(version="0.0.1a",
+               clients_count=self.modules_count['Clients'],
                exploits_count=self.modules_count['Exploits'] + self.modules_count['extra_exploits'],
                scanners_count=self.modules_count['Scanners'] + self.modules_count['extra_scanners'],
                creds_count=self.modules_count['Credentials'] + self.modules_count['extra_creds'],
@@ -91,7 +91,7 @@ class ISAFInterpreter(BaseInterpreter):
         raw_prompt_default_template = "\001\033[4m\002{host}\001\033[0m\002 > "
         raw_prompt_template = os.getenv("ISAF_RAW_PROMPT", raw_prompt_default_template).replace('\\033', '\033')
         self.raw_prompt_template = raw_prompt_template if '{host}' in raw_prompt_template else raw_prompt_default_template
-        module_prompt_default_template = "\001\033[4m\002{host}\001\033[0m\002 (\001\033[91m\002{module}\001\033[0m\002) > "
+        module_prompt_default_template = "\001\033[4m\002{host}\001\033[0m\002 (\001\033[94m\002{module}\001\033[0m\002) > "
         module_prompt_template = os.getenv("ISAF_MODULE_PROMPT", module_prompt_default_template).replace('\\033', '\033')
         self.module_prompt_template = module_prompt_template if all(
             map(lambda x: x in module_prompt_template, ['{host}', "{module}"])) else module_prompt_default_template
@@ -328,7 +328,6 @@ class ISAFInterpreter(BaseInterpreter):
         try:
             getattr(self, "_show_{}".format(sub_command))(*args, **kwargs)
         except AttributeError as e:
-            Utils.print_error(e)
             Utils.print_error("Unknown 'show' sub-command '{}'. "
                               "What do you want to show?\n"
                               "Possible choices are: {}".format(sub_command, self.show_sub_commands))

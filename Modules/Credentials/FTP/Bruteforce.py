@@ -15,15 +15,16 @@ class Exploit(Exploit):
     """
 
     __info__ = {
-        'name': 'credentials/ftp_bruteforce',
-        'display_name': 'FTP Bruteforce',
+        'name': 'credentials/ftp/bruteforce',
+        'display_name': 'FTP Credential Bruteforce',
         'description': 'Module performs bruteforce attack against FTP service.'
                        'If valid credentials are found, they are displayed to the user.',
         'authors': [
             'Marcin Bury <marcin.bury[at]reverse-shell.com>',
+            'D0ubl3G <d0ubl3g[at]protonmail.com>',
         ],
         'references': [
-            '',
+            'https://github.com/dark-lbp/isf',
         ],
         'devices': [
             'Multi',
