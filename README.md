@@ -10,22 +10,22 @@
             ███     ▄█    ███   ███    ███   ███        
             █▀    ▄████████▀    ███    █▀    ███
 
-Collection of Industrial Control System network tools.
+ISAF aims to be a framework that provides the necessary tools for the correct security audit of industrial environments.
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running for development and testing purposes. 
 
 ### Prerequisites
 
-The first thing is to install all the needed requirements.
+Executing the following command would met all the requirements:
 ```
 pip install -r requirements.txt
 ```
 
 ### Usage
 
-A step by step series of examples that tell you how to get a development env running.
+For running ISAF in standard mode execute the following command:
 
 ```
 python3 ISAF.py
@@ -50,7 +50,3 @@ See also the list of [contributors]() who participated in this project.
 ## License
 
 This project is licensed under the GPLv3 License - see the [LICENSE](LICENSE) file for details
-
-## Acknowledgments
-
-

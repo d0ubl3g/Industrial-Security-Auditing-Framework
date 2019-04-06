@@ -1,0 +1,6 @@
+requests
+beautifulsoup4
+pysnmp
+gnureadline
+python-nmap
+scapy
