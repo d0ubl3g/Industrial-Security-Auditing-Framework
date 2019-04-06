@@ -1,5 +1,8 @@
-#LOG Files
+# LOG Files
 *.log
+
+# Python Cache
+__pychache__/
 
 # User-specific stuff
 .idea/**/workspace.xml
