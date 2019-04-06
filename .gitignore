@@ -3,6 +3,8 @@
 
 # Python Cache
 __pychache__/
+/**/__pychache__/
+*.pyc
 
 # User-specific stuff
 .idea/**/workspace.xml
