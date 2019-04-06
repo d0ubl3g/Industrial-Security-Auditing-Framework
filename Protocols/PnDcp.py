@@ -1,7 +1,6 @@
-from scapy.packet import *
 from scapy.fields import *
 from scapy.layers.inet import Ether
-
+from scapy.packet import *
 
 PNIO_FRAME_IDS = {
     0x0020: "PTCP-RTSyncPDU-followup",
@@ -141,11 +140,9 @@ DCP_SUBOPTION_IP_BLOCK_INFO = {
     0x82: "IP set by DHCP (address conflict detected) (0x82)"
 }
 
-
 DCP_SUBOPTION_IP_BLOCK_SET_TYPE = {
     0x01: "Save the value permanent (0x01)"
 }
-
 
 DCP_BLOCK_ERROR_CODE = {
     0x00: "OK (0x00)",
@@ -173,14 +170,12 @@ class PNDCPBlockListField(PacketListField):
         return self.cls(pkt, payload)
 
 
-#################
-## Get Request ##
-#################
 class PNDCPGetRequest(Packet):
     fields_desc = [
         ByteEnumField("Option", 0x01, DCP_OPTIONS),
         MultiEnumField("SubOption", 0x01, DCP_SUBOPTIONS, fmt='B', depends_on=lambda p: p.Option),
     ]
+
 
 bind_layers(PNDCPGetRequest, Padding)
 
@@ -229,9 +224,6 @@ def guess_dcp_get_response_block_class(pkt, payload):
             return None
 
 
-#####################
-## GET IP Response ##
-#####################
 class PNDCPGETMACAddressResponseBlock(Packet):
     fields_desc = [
         XShortField("Unknown", 0x00),
@@ -248,9 +240,6 @@ class PNDCPGETIPParameterResponseBlock(Packet):
     ]
 
 
-#########################
-## GET Device Response ##
-#########################
 class PNDCPGETDeviceManufacturerSpecificResponseBlock(Packet):
     fields_desc = [
         ShortEnumField("BlockInfo", 0x00, DCP_SUBOPTION_DEFAULT_INFO),
@@ -296,9 +285,6 @@ class PNDCPGETDeviceOptionsResponseBlock(Packet):
     ]
 
 
-##########################
-## GET Response Header  ##
-##########################
 class PNDCPGetResponse(Packet):
     fields_desc = [
         ByteEnumField("Option", 0x01, DCP_OPTIONS),
@@ -333,9 +319,6 @@ def guess_dcp_block_get_class(service_type, payload):
         return payload
 
 
-######################
-## IDENT IP Request ##
-######################
 class PNDCPIdentRequest(Packet):
     fields_desc = [
         ByteEnumField("Option", 0xff, DCP_OPTIONS),
@@ -343,9 +326,7 @@ class PNDCPIdentRequest(Packet):
         ShortField("DCPBlockLength", 0x00)
     ]
 
-#######################
-## IDENT IP Response ##
-#######################
+
 class PNDCPIdentMACAddressResponseBlock(Packet):
     fields_desc = [
         XShortField("Unknown", 0x00),
@@ -362,9 +343,6 @@ class PNDCPIdentIPParameterResponseBlock(Packet):
     ]
 
 
-###########################
-## IDENT Device Response ##
-###########################
 class PNDCPIdentDeviceManufacturerSpecificResponseBlock(Packet):
     fields_desc = [
         ShortEnumField("BlockInfo", 0x00, DCP_SUBOPTION_DEFAULT_INFO),
@@ -454,15 +432,13 @@ def guess_dcp_ident_response_block_class(pkt, payload):
             return None
 
 
-############################
-## IDENT Response Header  ##
-############################
 class PNDCPIdentResponse(Packet):
     fields_desc = [
         ByteEnumField("Option", 0x01, DCP_OPTIONS),
         MultiEnumField("SubOption", 0x01, DCP_SUBOPTIONS, fmt='B', depends_on=lambda p: p.Option),
         FieldLenField("DCPBlockLength", None, length_of="DCPBlock", fmt="!H", adjust=lambda pkt, x: x),
-        PNDCPBlockListField("DCPBlock", [], guess_dcp_ident_response_block_class, length_from=lambda x: x.DCPBlockLength),
+        PNDCPBlockListField("DCPBlock", [], guess_dcp_ident_response_block_class,
+                            length_from=lambda x: x.DCPBlockLength),
         PadField(StrLenField("Padding", "\x00", length_from=lambda p: p.DCPBlockLength % 2), 1, padwith="\x00")
     ]
 
@@ -490,9 +466,6 @@ def guess_dcp_block_identify_class(service_type, payload):
         return payload
 
 
-#################
-## Set Request ##
-#################
 def guess_dcp_set_block_class(pkt, payload):
     if isinstance(pkt, PNDCPSetRequest):
         # IP Request (0x01)

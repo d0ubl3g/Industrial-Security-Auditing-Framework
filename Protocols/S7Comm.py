@@ -1,5 +1,5 @@
-from scapy.packet import *
 from scapy.fields import *
+from scapy.packet import *
 
 S7_BLOCK_LANG_TYPE = {
     0x00: "Not defined",
@@ -16,7 +16,6 @@ S7_BLOCK_LANG_TYPE = {
     0x29: "ENCRYPT"
 }
 
-
 S7_BLOCK_TYPE = {
     0x38: "OB",
     0x41: "DB",
@@ -27,29 +26,26 @@ S7_BLOCK_TYPE = {
     0x46: "SFB"
 }
 
-
 S7_AREA_TYPE = {
-    0x03: "SYSInfo",        # System info of 200 family
-    0x05: "SYSFlags",       # System flags of 200 family
-    0x06: "ANAIn",          # Analog inputs of 200 family
-    0x07: "ANAOut",         # Analog outputs of 200 family
-    0x80: "P",              # Direct peripheral access
+    0x03: "SYSInfo",  # System info of 200 family
+    0x05: "SYSFlags",  # System flags of 200 family
+    0x06: "ANAIn",  # Analog inputs of 200 family
+    0x07: "ANAOut",  # Analog outputs of 200 family
+    0x80: "P",  # Direct peripheral access
     0x81: "Input",
     0x82: "Output",
     0x83: "Flags",
-    0x84: "DB",             # Data blocks
-    0x85: "DI",             # Instance data blocks
-    0x86: "Local",          # Local data (should not be accessible over network) */
-    0x87: "V",              # Previous (Vorgaenger) local data (should not be accessible over network)
-    0x1c: "Counter",        # S7 counters
-    0x1d: "Timer",          # S7 timers
-    0x1e: "Counter200",     # IEC counters (200 family)
-    0x1f: "Timer200"        # IEC timers (200 family)
+    0x84: "DB",  # Data blocks
+    0x85: "DI",  # Instance data blocks
+    0x86: "Local",  # Local data (should not be accessible over network) */
+    0x87: "V",  # Previous (Vorgaenger) local data (should not be accessible over network)
+    0x1c: "Counter",  # S7 counters
+    0x1d: "Timer",  # S7 timers
+    0x1e: "Counter200",  # IEC counters (200 family)
+    0x1f: "Timer200"  # IEC timers (200 family)
 }
 
-
 S7_PDU_TYPE = {0x01: "Job", 0x02: "Ack", 0x03: "AckData", 0x07: "UserData"}
-
 
 S7_ERROR_CLASS = {
     0x00: "No Error (0x00)",
@@ -57,13 +53,11 @@ S7_ERROR_CLASS = {
     0xd604: "The connection has already been enabled (0xd604)"
 }
 
-
 S7_RETURN_CODE = {
     0x00: "Reserved (0x00)",
     0x0a: "Object does not exist (0x0a)",
     0xff: "success (0xff)"
 }
-
 
 S7_TRANSPORT_SIZE_IN_PARM_ITEMS = {
     0x00: "Null (0x00)",
@@ -92,29 +86,26 @@ S7_TRANSPORT_SIZE_IN_PARM_ITEMS = {
     0x20: "HS COUNTER (0x0f)",
 }
 
-
 S7_TRANSPORT_SIZE_IN_DATA_ITEMS = {
-    0x00: "Null (0x00)",                #
-    0x03: "BIT (0x03)",                 # Bit access, len is in bits
-    0x04: "BYTE/WORD/DWORD (0x04)",     # BYTE/WORD/DWORD access, len is in bits
-    0x05: "INTEGER (0x05)",             # Integer access, len is in bits
-    0x06: "DINTEGER (0x06)",            # Integer access, len is in bytes
-    0x07: "Real (0x07)",                # Real access, len is in bytes
-    0x09: "Str (0x09)"                  # Octet string, len is in bytes
+    0x00: "Null (0x00)",  #
+    0x03: "BIT (0x03)",  # Bit access, len is in bits
+    0x04: "BYTE/WORD/DWORD (0x04)",  # BYTE/WORD/DWORD access, len is in bits
+    0x05: "INTEGER (0x05)",  # Integer access, len is in bits
+    0x06: "DINTEGER (0x06)",  # Integer access, len is in bytes
+    0x07: "Real (0x07)",  # Real access, len is in bytes
+    0x09: "Str (0x09)"  # Octet string, len is in bytes
 }
-
 
 S7_TRANSPORT_SIZE_LENGTH_IN_DATA_ITEMS = {
     0x00: 0,
     # TODO: Check bit Length calculation, only support 1 bit for now.
-    0x03: 1,                            # BIT
+    0x03: 1,  # BIT
     0x04: 8,
     0x05: 8,
     0x06: 1,
     0x07: 1,
     0x09: 1
 }
-
 
 S7_UD_FUNCTION_GROUP = {
     0x0: "Mode-transition",
@@ -128,41 +119,36 @@ S7_UD_FUNCTION_GROUP = {
     0xf: "NC programming"
 }
 
-
 S7_UD_PARAMETER_TYPE = {
     0x0: "Push",
     0x4: "Request",
     0x8: "Response",
-    0x3: "NC Push",                     # used only by Sinumerik NC
-    0x7: "NC Request",                  # used only by Sinumerik NC
-    0xb: "NC Response",                 # used only by Sinumerik NC
+    0x3: "NC Push",  # used only by Sinumerik NC
+    0x7: "NC Request",  # used only by Sinumerik NC
+    0xb: "NC Response",  # used only by Sinumerik NC
 }
-
 
 S7_UD_SUB_FUNCTION_PROG = {
     0x01: "Request diag data (Type 1) (0x01)",  # Start online block view
-    0x02: "VarTab (0x02)",                      # Variable table
+    0x02: "VarTab (0x02)",  # Variable table
     0x0c: "Erase (0x0c)",
-    0x0e: "Read diag data (0x0e)",              # Online block view
-    0x0f: "Remove diag data (0x0f)",            # Stop online block view
+    0x0e: "Read diag data (0x0e)",  # Online block view
+    0x0f: "Remove diag data (0x0f)",  # Stop online block view
     0x10: "Forces (0x10)",
-    0x13: "Request diag data (Type 2) (0x13)"   # Start online block view
+    0x13: "Request diag data (Type 2) (0x13)"  # Start online block view
 
 }
-
 
 S7_UD_SUB_FUNCTION_CYCLIC = {
-    0x01: "Memory (0x01)",                      # read data from memory (DB/M/etc.)
-    0x04: "Unsubscribe (0x04)"                  # Unsubscribe (disable) cyclic data
+    0x01: "Memory (0x01)",  # read data from memory (DB/M/etc.)
+    0x04: "Unsubscribe (0x04)"  # Unsubscribe (disable) cyclic data
 }
-
 
 S7_UD_SUB_FUNCTION_BLOCK = {
     0x01: "List blocks (0x01)",
     0x02: "List blocks of type (0x02)",
     0x03: "Get block info (0x03)"
 }
-
 
 S7_UD_SUB_FUNCTION_CPU = {
     0x01: "Read SZL (0x01)",
@@ -182,12 +168,10 @@ S7_UD_SUB_FUNCTION_CPU = {
     0x16: "NOTIFY_8 indication (0x16)"
 }
 
-
 S7_UD_SUB_FUNCTION_SEC = {
     0x01: "PLC password (0x01)",
     0x02: "Clean session (0x02)"
 }
-
 
 S7_UD_SUB_FUNCTION_TIME = {
     0x01: "Read clock (0x01)",
@@ -196,7 +180,6 @@ S7_UD_SUB_FUNCTION_TIME = {
     0x04: "Set clock (0x04)"
 
 }
-
 
 S7_SUB_FUNCTIONS = {
     # Mode-transition (0x0)
@@ -219,7 +202,6 @@ S7_SUB_FUNCTIONS = {
     0x0f: {}
 }
 
-
 S7_JB_FUNCTION = {
     0x00: "CPU services (0x00)",
     0x04: "Read Var (0x04)",
@@ -234,7 +216,6 @@ S7_JB_FUNCTION = {
     0x29: "PLC Stop (0x29)",
     0xf0: "Setup communication (0xf0)"
 }
-
 
 S7_FUNCTION_STATUS = ['MoreData', 'Error']
 
@@ -738,6 +719,7 @@ class S7ListBlockDataBlocksRsp(Packet):
         XShortField("BlockCount", 1)
     ]
 
+
 bind_layers(S7ListBlockDataBlocksRsp, Padding)
 
 
@@ -793,6 +775,7 @@ class S7ListBlockOfTypeDataBlocksRsp(Packet):
         ByteEnumField("BlockLang", 0x07, S7_BLOCK_LANG_TYPE)
     ]
 
+
 bind_layers(S7ListBlockOfTypeDataBlocksRsp, Padding)
 
 
@@ -801,7 +784,7 @@ class S7ListBlockOfTypeDataRsp(Packet):
         ByteEnumField("ReturnCode", 0xff, S7_RETURN_CODE),
         ByteEnumField("TransportSize", 0x09, S7_TRANSPORT_SIZE_IN_DATA_ITEMS),
         FieldLenField("DataLength", None, fmt="H", length_of="Blocks"),
-        PacketListField("Blocks", [], S7ListBlockOfTypeDataBlocksRsp, length_from=lambda p:p.DataLength)
+        PacketListField("Blocks", [], S7ListBlockOfTypeDataBlocksRsp, length_from=lambda p: p.DataLength)
     ]
 
 
@@ -924,6 +907,7 @@ class S7ReadVarDataItemsRsp(Packet):
 
     ]
 
+
 bind_layers(S7ReadVarDataItemsRsp, Padding)
 
 
@@ -950,6 +934,7 @@ class S7WriteVarItemsReq(Packet):
         X3BytesField("BitAddress", 0x000000)
     ]
 
+
 bind_layers(S7WriteVarItemsReq, Padding)
 
 
@@ -957,7 +942,7 @@ class S7WriteVarParameterReq(Packet):
     fields_desc = [
         ByteEnumField("Function", 0x05, S7_JB_FUNCTION),
         FieldLenField("ItemCount", None, fmt="B", count_of="Items"),
-        PacketListField("Items", None, S7WriteVarItemsReq, count_from=lambda p:p.ItemCount)
+        PacketListField("Items", None, S7WriteVarItemsReq, count_from=lambda p: p.ItemCount)
     ]
 
 
@@ -969,11 +954,13 @@ class S7WriteVarDataItemsReq(Packet):
                       length_of="Data",
                       adjust=lambda pkt, x: x * S7_TRANSPORT_SIZE_LENGTH_IN_DATA_ITEMS[pkt.TransportSize]),
         PadField(StrLenField("Data", "\x00", length_from=lambda p: p[S7WriteVarDataItemsReq].DataLength /
-                                                                S7_TRANSPORT_SIZE_LENGTH_IN_DATA_ITEMS[p.TransportSize]
+                                                                   S7_TRANSPORT_SIZE_LENGTH_IN_DATA_ITEMS[
+                                                                       p.TransportSize]
                              ),
                  align=2, padwith="\x00"
                  )
     ]
+
 
 bind_layers(S7WriteVarDataItemsReq, Padding)
 
@@ -1001,6 +988,7 @@ class S7WriteVarParameterRsp(Packet):
 
 class S7WriteVarDataItemsRsp(Packet):
     fields_desc = [ByteEnumField("ReturnCode", 0x00, S7_RETURN_CODE)]
+
 
 bind_layers(S7WriteVarDataItemsRsp, Padding)
 
@@ -1047,7 +1035,7 @@ class S7RequestDownloadParameterRsp(Packet):
 
 class S7DownloadDataRsp(Packet):
     fields_desc = [
-        FieldLenField("DataLength", None, length_of="Data", adjust=lambda pkt, x:x),
+        FieldLenField("DataLength", None, length_of="Data", adjust=lambda pkt, x: x),
         XShortField("UnKnown1", 0x00fb),
         StrLenField("Data", "\x00", length_from=lambda x: x.DataLength)
     ]
@@ -1181,7 +1169,7 @@ class S7RequestUploadBlockParameterRsp(Packet):
 
 class S7UploadBlockDataRsp(Packet):
     fields_desc = [
-        FieldLenField("DataLength", None, length_of="Data", adjust=lambda pkt, x:x),
+        FieldLenField("DataLength", None, length_of="Data", adjust=lambda pkt, x: x),
         XShortField("Unknow1", 0x00fb),
         StrLenField("Data", "\x00", length_from=lambda x: x.DataLength)
     ]
@@ -1308,7 +1296,8 @@ class S7StopCpuParameterRsp(Packet):
 class S7PIServiceParameterBlock(Packet):
     fields_desc = [
         FieldLenField("NumberOfBlocks", None, fmt="B", count_of="FileNames", adjust=lambda pkt, x: x),
-        FieldListField("FileNames", [], StrFixedLenField("FileName", "", length=9), count_from=lambda p: p.NumberOfBlocks)
+        FieldListField("FileNames", [], StrFixedLenField("FileName", "", length=9),
+                       count_from=lambda p: p.NumberOfBlocks)
         # PacketListField("FileNames", [], S7FileNameBlock, count_from=lambda p: p.NumberOfBlocks)
     ]
 
@@ -1340,4 +1329,3 @@ class S7PIServiceParameterRsp(Packet):
         BitField("Unused", 0, 6),
         FlagsField("FunctionStatus", 0, 2, S7_FUNCTION_STATUS)
     ]
-

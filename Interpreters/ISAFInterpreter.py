@@ -1,13 +1,14 @@
+import itertools
 import os
 import sys
-import itertools
 import traceback
 from collections import Counter
-from Interpreters.BaseInterpreter import BaseInterpreter
-from Exceptions.ISAFExceptions import ISAFException
-from Base import Exploits
-from Utils.Printer import PrinterThread
+
 import Utils
+from Base import Exploits
+from Exceptions.ISAFExceptions import ISAFException
+from Interpreters.BaseInterpreter import BaseInterpreter
+from Utils.Printer import PrinterThread
 
 
 class ISAFInterpreter(BaseInterpreter):
@@ -92,7 +93,8 @@ class ISAFInterpreter(BaseInterpreter):
         raw_prompt_template = os.getenv("ISAF_RAW_PROMPT", raw_prompt_default_template).replace('\\033', '\033')
         self.raw_prompt_template = raw_prompt_template if '{host}' in raw_prompt_template else raw_prompt_default_template
         module_prompt_default_template = "\001\033[4m\002{host}\001\033[0m\002 (\001\033[94m\002{module}\001\033[0m\002) > "
-        module_prompt_template = os.getenv("ISAF_MODULE_PROMPT", module_prompt_default_template).replace('\\033', '\033')
+        module_prompt_template = os.getenv("ISAF_MODULE_PROMPT", module_prompt_default_template).replace('\\033',
+                                                                                                         '\033')
         self.module_prompt_template = module_prompt_template if all(
             map(lambda x: x in module_prompt_template, ['{host}', "{module}"])) else module_prompt_default_template
 

@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 
-import os
 import argparse
-import Configuration
 import logging.handlers
+import os
+
+import Configuration
 from Interpreters.ISAFInterpreter import ISAFInterpreter
 
 # LOGGER CONFIGURATION #
-log_handler = logging.handlers.RotatingFileHandler(Configuration.LOG_FILE_NAME, maxBytes=int(Configuration.LOG_MAX_FILE_SIZE))
+log_handler = logging.handlers.RotatingFileHandler(Configuration.LOG_FILE_NAME,
+                                                   maxBytes=int(Configuration.LOG_MAX_FILE_SIZE))
 log_format = logging.Formatter('%(asctime)s %(levelname)s %(name)s       %(message)s')
 log_handler.setFormatter(log_format)
 LOGGER = logging.getLogger()
@@ -31,6 +33,6 @@ def ISAF(extra_package_path=Configuration.EXTRA_PACKAGE_PATH):
 if __name__ == "__main__":
     args = parser.parse_args()
     if args.extra_package_path:
-            ISAF(extra_package_path=args.extra_package_path)
+        ISAF(extra_package_path=args.extra_package_path)
     else:
         ISAF()

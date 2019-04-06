@@ -1,7 +1,8 @@
-from Modules.Clients.BaseClient import Base
 from scapy.supersocket import StreamSocket
-from Protocols.Enip import *
+
+from Modules.Clients.BaseClient import Base
 from Protocols.Cip import *
+from Protocols.Enip import *
 
 
 class CIPClient(Base):
@@ -27,7 +28,7 @@ class CIPClient(Base):
         sock.settimeout(self._timeout)
         sock.connect((self._ip, self._port))
         self._connection = StreamSocket(sock, Raw)
-        packet_1 = ENIPHeader(Command=0x65)/RegisterSession()
+        packet_1 = ENIPHeader(Command=0x65) / RegisterSession()
         rsp_1 = self.send_receive_cip_packet(packet_1)
         try:
             if rsp_1.haslayer(ENIPHeader):
@@ -134,8 +135,8 @@ class CIPClient(Base):
         vendor = ''
         revision = ''
         serial_number = ''
-        info_packet = ENIPHeader(Command=0x6f)/CIPCommandSpecificData()/\
-                      CIPHeader(Type="Request", Service=0x52,)/\
+        info_packet = ENIPHeader(Command=0x6f) / CIPCommandSpecificData() / \
+                      CIPHeader(Type="Request", Service=0x52, ) / \
                       CIPConnectionManager()
         info_packet[CIPCommandSpecificData].Items = [NullAddressItem(), UnconnectedDataItem()]
         info_packet[CIPHeader].RequestPath = [CIPRequestPath(PathSegmentType=1, InstanceSegment=0x06),
@@ -168,7 +169,7 @@ class CIPClient(Base):
                             vendor = VENDOR_IDS[vendor]
                         else:
                             vendor = "%s (%s)" % (product_name, hex(vendor))
-                        revision = str(rsp[GetAttributesAll].MajorRevision) + '.'\
+                        revision = str(rsp[GetAttributesAll].MajorRevision) + '.' \
                                    + str(rsp[GetAttributesAll].MinorRevision)
                         serial_number = hex(rsp[GetAttributesAll].SerialNumber)
                 except Exception as err:

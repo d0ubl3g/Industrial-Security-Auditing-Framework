@@ -1,11 +1,11 @@
-import threading
 import itertools
+import threading
 
-from Base.Exploits import Exploit, Option
-import Base.Validators as Validators
 import Base.Threads as Threads
-from Utils import multi, print_error, print_success, print_status, print_table, http_request
+import Base.Validators as Validators
 import Wordlists
+from Base.Exploits import Exploit, Option
+from Utils import multi, print_error, print_success, print_status, print_table, http_request
 
 
 class Exploit(Exploit):
@@ -92,9 +92,11 @@ class Exploit(Exploit):
         response = http_request(method="GET", url=url, auth=(user, password))
 
         if response is not None and response.status_code != 401:
-            print_success("Target: {}:{} {}: Authentication Succeed - Username: '{}' Password: '{}'".format(self.target, self.port, name, user, password), verbose=self.verbosity)
+            print_success("Target: {}:{} {}: Authentication Succeed - Username: '{}' Password: '{}'"
+                          .format(self.target, self.port, name, user, password), verbose=self.verbosity)
             self.credentials.append((self.target, self.port, user, password))
             if self.stop_on_success:
                 raise Threads.StopThreadPoolExecutor
         else:
-            print_error("Target: {}:{} {}: Authentication Failed - Username: '{}' Password: '{}'".format(self.target, self.port, name, user, password), verbose=self.verbosity)
+            print_error("Target: {}:{} {}: Authentication Failed - Username: '{}' Password: '{}'"
+                        .format(self.target, self.port, name, user, password), verbose=self.verbosity)

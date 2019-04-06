@@ -12,14 +12,14 @@ import socket
 import string
 import sys
 import threading
-import nmap
-import urllib3
 import time
 from abc import ABCMeta, abstractmethod
 from distutils.util import strtobool
 from functools import wraps
 
+import nmap
 import requests
+import urllib3
 
 import Modules as ISAFModules
 from Exceptions.ISAFExceptions import ISAFException
@@ -127,12 +127,14 @@ def module_required(fn):
     Decorator that checks if any module is activated
     before executing command specific to modules (ex. 'run').
     """
+
     @wraps(fn)
     def wrapper(self, *args, **kwargs):
         if not self.current_module:
             print_error("You have to activate any module with 'use' command.")
             return
         return fn(self, *args, **kwargs)
+
     try:
         name = 'module_required'
         wrapper.__decorators__.append(name)
@@ -156,6 +158,7 @@ def stop_after(space_number):
     :param space_number: number of spaces (' ') after which tab-completion should stop
     :return:
     """
+
     def _outer_wrapper(wrapped_function):
         @wraps(wrapped_function)
         def _wrapper(self, *args, **kwargs):
@@ -165,18 +168,22 @@ def stop_after(space_number):
             except Exception as err:
                 print_info(err)
             return wrapped_function(self, *args, **kwargs)
+
         return _wrapper
+
     return _outer_wrapper
 
 
 class DummyFile(object):
     """  Mocking file object. Optimalization for the "mute" decorator. """
+
     def write(self, x):
         pass
 
 
 def mute(fn):
     """ Suppress function from printing to sys.stdout """
+
     @wraps(fn)
     def wrapper(self, *args, **kwargs):
         thread_output_stream.setdefault(threading.current_thread(), []).append(DummyFile())
@@ -184,6 +191,7 @@ def mute(fn):
             return fn(self, *args, **kwargs)
         finally:
             thread_output_stream[threading.current_thread()].pop()
+
     return wrapper
 
 
@@ -200,6 +208,7 @@ def multi(fn):
     perform attack is not suppose to return anything this is not a problem.
 
     """
+
     @wraps(fn)
     def wrapper(self, *args, **kwargs):
         if self.target.startswith('file://'):
@@ -230,6 +239,7 @@ def multi(fn):
 
         else:
             return fn(self, *args, **kwargs)
+
     return wrapper
 
 
@@ -252,8 +262,10 @@ def __cprint(*args, **kwargs):
         file_ = kwargs.get('file', sys.stdout)
 
     if color:
-        printer_queue.put(PrintResource(content='\033[{}m'.format(colors[color]), end='', file=file_, sep=sep, thread=thread))
-        printer_queue.put(PrintResource(content=args, end='', file=file_, sep=sep, thread=thread))  # TODO printing text that starts from newline
+        printer_queue.put(PrintResource(content='\033[{}m'.format(colors[color]), end='', file=file_,
+                                        sep=sep, thread=thread))
+        printer_queue.put(PrintResource(content=args, end='', file=file_, sep=sep, thread=thread))
+        # TODO printing text that starts from newline
         printer_queue.put(PrintResource(content='\033[0m', sep=sep, end=end, file=file_, thread=thread))
     else:
         printer_queue.put(PrintResource(content=args, sep=sep, end=end, file=file_, thread=thread))
@@ -292,7 +304,6 @@ class LockedIterator(object):
 
 
 class NonStringIterable:
-
     __metaclass__ = ABCMeta
 
     @abstractmethod
@@ -551,8 +562,8 @@ def tokenize(token_specification, text):
     Token = collections.namedtuple('Token', ['typ', 'value', 'line', 'column', 'mo'])
 
     token_specification.extend((
-        ('NEWLINE', r'\n'),          # Line endings
-        ('SKIP', r'.'),              # Any other character
+        ('NEWLINE', r'\n'),  # Line endings
+        ('SKIP', r'.'),  # Any other character
     ))
 
     tok_regex = '|'.join('(?P<%s>%s)' % pair for pair in token_specification)

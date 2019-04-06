@@ -1,8 +1,8 @@
-from scapy.packet import *
 from scapy.fields import *
 from scapy.layers.inet import TCP, UDP
-from Protocols.Cip import CIPHeader
+from scapy.packet import *
 
+from Protocols.Cip import CIPHeader
 
 ENIP_COMMANDS = {
     0x0000: "NOP",
@@ -17,7 +17,6 @@ ENIP_COMMANDS = {
     0x0073: "Cancel"
 }
 
-
 ENIP_TYPE_IDS = {
     0x0000: "Null Address Item",
     0x000c: "List Identity Response",
@@ -31,7 +30,6 @@ ENIP_TYPE_IDS = {
     0x8002: "Sequenced Address Item",
     0x8003: "Unconnected Message over UDP"
 }
-
 
 VENDOR_IDS = {
     0x0000: "Reserved(0x0000)",
@@ -1257,7 +1255,6 @@ VENDOR_IDS = {
     0x04D8: "Penko Engineering B.V.(0x04D8)",
 }
 
-
 DEVICE_TYPES = {
     0x0000: "Generic Device (deprecated)(0x0000)",
     0x0002: "AC Drive(0x0002)",
@@ -1297,7 +1294,6 @@ DEVICE_TYPES = {
     0x003B: "ControlNet Physical Layer Component(0x003B)",
 }
 
-
 STATUS_CODES = {
     0x0000: "Success",
     0x0001: "Invalid Command",
@@ -1309,7 +1305,6 @@ STATUS_CODES = {
     0x006a: "Encapsulated CIP service not allowed on this port"
 
 }
-
 
 CAPABILITY_FLAGS = [
     "UDP",  # Supports CIP Class 0 or 1 via
@@ -1328,7 +1323,6 @@ CAPABILITY_FLAGS = [
     "TCP",  # Supports CIP Encapsulation via TCP
     "",
     ""]
-
 
 ENIP_INTERFACE_HANDLE = {
     0x00: "CIP (0x00000000)"
@@ -1362,7 +1356,7 @@ class SocketAddress(Packet):
         LEShortField("SinPort", 0x0),
         IPField("SinAddress", "0.0.0.0"),
         XLongField("SinZero", 0)
-        ]
+    ]
 
 
 bind_layers(SocketAddress, Padding)
@@ -1402,7 +1396,7 @@ class ListIdentityResponse(Packet):
         FieldLenField("ProductNameLength", None, fmt="B", length_of="ProductName"),
         StrLenField("ProductName", "", length_from=lambda p: p.ProductNameLength),
         ByteField("State", 0x0)
-        ]
+    ]
 
 
 class NullAddressItem(Packet):
@@ -1453,7 +1447,7 @@ class ENIPHeader(Packet):
 
 class CommandSpecificData(Packet):
     fields_desc = [FieldLenField("ItemCount", None, fmt="<H", count_of="Items"),
-                   CommandSpecificDataItemsField("Items", [], guess_cmd_type_class, count_from=lambda p:p.ItemCount)
+                   CommandSpecificDataItemsField("Items", [], guess_cmd_type_class, count_from=lambda p: p.ItemCount)
                    ]
 
 
@@ -1462,14 +1456,14 @@ class CIPCommandSpecificData(Packet):
         IntEnumField("InterfaceHandle", 0x00, ENIP_INTERFACE_HANDLE),
         LEShortField("Timeout", 0x0a),
         FieldLenField("ItemCount", None, fmt="<H", count_of="Items"),
-        CommandSpecificDataItemsField("Items", [], guess_cmd_type_class, count_from=lambda p:p.ItemCount)
+        CommandSpecificDataItemsField("Items", [], guess_cmd_type_class, count_from=lambda p: p.ItemCount)
     ]
 
     def post_build(self, pkt, pay):
         if isinstance(self.Items[-1], UnconnectedDataItem):
             if self.Items[-1].Length is None and pay:
                 length = len(pay)
-                pkt = pkt[:-2] + struct.pack("<H", length)
+                pkt = pkt[:-2] + str(struct.pack("<H", length))
         return pkt + pay
 
     def guess_payload_class(self, payload):

@@ -1,10 +1,11 @@
+import socket
+
+from scapy.supersocket import StreamSocket
+from scapy.volatile import RandString
+
 from Modules.Clients.BaseClient import Base
 from Protocols.Cotp import *
 from Protocols.S7CommPlus import *
-from scapy.supersocket import StreamSocket
-from scapy.volatile import RandString
-import socket
-
 
 OBJECT_QUALIFIER_ITEMS = [S7PlusItemValue(IDNumber=0x4e9, DataType=0x12,
                                           DataValue=S7PlusRIDValue(Value=0x0)),
@@ -63,46 +64,46 @@ class S7PlusClient(Base):
                                                                )
         packet2[S7PlusData].DataSet.Elements = [S7PlusObjectField(RelationID=0xd3, ClassID=0x821f)]
         packet2[S7PlusData].DataSet.Elements[0].Elements = [S7PlusAttributeField(IDNumber=0x00e9,
-                                                                                DataType=0x15,
-                                                                                DataValue=S7PlusWStringValue(
-                                                                                    Value=RandString(8))),
-                                                           S7PlusAttributeField(IDNumber=0x0121,
-                                                                                DataType=0x15,
-                                                                                DataValue=S7PlusWStringValue(
-                                                                                    Value=RandString(8))),
-                                                           S7PlusAttributeField(IDNumber=0x0128,
-                                                                                DataType=0x15,
-                                                                                DataValue=S7PlusWStringValue(
-                                                                                    Value="")),
-                                                           S7PlusAttributeField(IDNumber=0x0129,
-                                                                                DataType=0x15,
-                                                                                DataValue=S7PlusWStringValue(
-                                                                                    Value="")),
-                                                           S7PlusAttributeField(IDNumber=0x012a,
-                                                                                DataType=0x15,
-                                                                                DataValue=S7PlusWStringValue(
-                                                                                    Value=RandString(8))),
-                                                           S7PlusAttributeField(IDNumber=0x012b,
-                                                                                DataType=0x04,
-                                                                                DataValue=S7PlusUDIntValue(Value=0)),
-                                                           S7PlusAttributeField(IDNumber=0x012c,
-                                                                                DataType=0x12,
-                                                                                DataValue=S7PlusRIDValue(
-                                                                                    Value=RandInt())),
-                                                           S7PlusAttributeField(IDNumber=0x012d,
-                                                                                DataType=0x15,
-                                                                                DataValue=S7PlusWStringValue(
-                                                                                    Value="")),
-                                                           S7PlusSubObjectField(RelationID=0xd3,
-                                                                                ClassID=0x817f,
-                                                                                Elements=[S7PlusAttributeField(
-                                                                                    IDNumber=0x00e9,
-                                                                                    DataType=0x15,
-                                                                                    DataValue=S7PlusWStringValue(
-                                                                                        Value="SubscriptionContainer"))
-                                                                                ],
-                                                                                )
-                                                           ]
+                                                                                 DataType=0x15,
+                                                                                 DataValue=S7PlusWStringValue(
+                                                                                     Value=RandString(8))),
+                                                            S7PlusAttributeField(IDNumber=0x0121,
+                                                                                 DataType=0x15,
+                                                                                 DataValue=S7PlusWStringValue(
+                                                                                     Value=RandString(8))),
+                                                            S7PlusAttributeField(IDNumber=0x0128,
+                                                                                 DataType=0x15,
+                                                                                 DataValue=S7PlusWStringValue(
+                                                                                     Value="")),
+                                                            S7PlusAttributeField(IDNumber=0x0129,
+                                                                                 DataType=0x15,
+                                                                                 DataValue=S7PlusWStringValue(
+                                                                                     Value="")),
+                                                            S7PlusAttributeField(IDNumber=0x012a,
+                                                                                 DataType=0x15,
+                                                                                 DataValue=S7PlusWStringValue(
+                                                                                     Value=RandString(8))),
+                                                            S7PlusAttributeField(IDNumber=0x012b,
+                                                                                 DataType=0x04,
+                                                                                 DataValue=S7PlusUDIntValue(Value=0)),
+                                                            S7PlusAttributeField(IDNumber=0x012c,
+                                                                                 DataType=0x12,
+                                                                                 DataValue=S7PlusRIDValue(
+                                                                                     Value=RandInt())),
+                                                            S7PlusAttributeField(IDNumber=0x012d,
+                                                                                 DataType=0x15,
+                                                                                 DataValue=S7PlusWStringValue(
+                                                                                     Value="")),
+                                                            S7PlusSubObjectField(RelationID=0xd3,
+                                                                                 ClassID=0x817f,
+                                                                                 Elements=[S7PlusAttributeField(
+                                                                                     IDNumber=0x00e9,
+                                                                                     DataType=0x15,
+                                                                                     DataValue=S7PlusWStringValue(
+                                                                                         Value="SubscriptionContainer"))
+                                                                                 ],
+                                                                                 )
+                                                            ]
         rsp2 = self.send_receive_s7plus_packet(packet2)
         try:
             if rsp2.haslayer(S7PlusCrateObjectResponse):
@@ -117,7 +118,8 @@ class S7PlusClient(Base):
                                     for item in sub_elment.DataValue.Items:
                                         if item.IDNumber == 0x013f:
                                             data = item.DataValue.Value
-                                            self._info['HW_Version'], self._info['Order_Code'], self._info['FW_Version'] = data.split(';')
+                                            self._info['HW_Version'], self._info['Order_Code'], self._info[
+                                                'FW_Version'] = data.split(';')
         except Exception as err:
             self.logger.error("Can't get order code and version from target")
         if self._server_session_version_data:

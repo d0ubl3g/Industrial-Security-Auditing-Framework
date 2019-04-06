@@ -1,7 +1,9 @@
+import xdrlib
+
+from scapy.supersocket import StreamSocket
+
 from Modules.Clients.BaseClient import Base
 from Protocols.WdbRpc2 import *
-from scapy.supersocket import StreamSocket
-import xdrlib
 
 
 class Wdb2Client(Base):
@@ -237,7 +239,6 @@ class Wdb2Client(Base):
             self.logger.info('Dumping memory at %s / %s' % (offset, address + length))
             self.mem_dump += self._read_memory(offset, temp_length)
         return self.mem_dump
-
 
 # if __name__ == '__main__':
 #     conf.verb = 0

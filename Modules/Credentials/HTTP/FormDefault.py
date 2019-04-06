@@ -135,7 +135,8 @@ class Exploit(Exploit):
 
         res = []
         action = None
-        user_name_list = ["username", "user", "user_name", "login", "username_login", "nameinput", "uname", "__auth_user", "txt_user", "txtusername"]
+        user_name_list = ["username", "user", "user_name", "login", "username_login", "nameinput",
+                          "uname", "__auth_user", "txt_user", "txtusername"]
         password_list = ["password", "pass", "password_login", "pwd", "passwd", "__auth_pass", "txt_pwd", "txtpwd"]
         found = False
 
@@ -196,10 +197,12 @@ class Exploit(Exploit):
                     if boolify(self.stop_on_success):
                         running.clear()
 
-                    print_success("Target: {}:{} {}: Authentication Succeed - Username: '{}' Password: '{}'".format(self.target, self.port, name, user, password), verbose=module_verbosity)
+                    print_success("Target: {}:{} {}: Authentication Succeed - Username: '{}' Password: '{}'"
+                                  .format(self.target, self.port, name, user, password), verbose=module_verbosity)
                     self.credentials.append((self.target, self.port, user, password))
                 else:
-                    print_error("Target: {}:{} {}: Authentication Failed - Username: '{}' Password: '{}'".format(self.target, self.port, name, user, password), verbose=module_verbosity)
+                    print_error("Target: {}:{} {}: Authentication Failed - Username: '{}' Password: '{}'"
+                                .format(self.target, self.port, name, user, password), verbose=module_verbosity)
             except StopIteration:
                 break
 

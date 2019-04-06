@@ -1,9 +1,9 @@
-from __future__ import print_function
 from __future__ import absolute_import
-import threading
-import queue
-from weakref import WeakKeyDictionary
+from __future__ import print_function
 
+import queue
+import threading
+from weakref import WeakKeyDictionary
 
 printer_queue = queue.Queue()
 thread_output_stream = WeakKeyDictionary()

@@ -1,17 +1,14 @@
-from scapy.packet import *
 from scapy.fields import *
-
+from scapy.packet import *
 
 CIP_TYPE = {
     0x0: "Request",
     0x1: "Response"
 }
 
-
 CIP_SERVICE = {
 
 }
-
 
 CIP_PATH_TYPE = {
     0x00: "Port Segment (0x00)",
@@ -22,7 +19,6 @@ CIP_PATH_TYPE = {
     0x05: "Constructed Data Type (0x05)",
     0x06: "Elementary Data Type (0x06)",
 }
-
 
 CIP_LOGICAL_TYPE = {
     0x00: "Class ID (0x00)",
@@ -35,7 +31,6 @@ CIP_LOGICAL_TYPE = {
     0x07: "Extended Logical (0x07)"
 }
 
-
 CIP_LOGICAL_FORMAT = {
     0x00: "8-bit Logical Segment (0x00)",
     0x01: "16-bit Logical Segment (0x01)",
@@ -43,28 +38,23 @@ CIP_LOGICAL_FORMAT = {
     0x03: "Reserved (0x03)",
 }
 
-
 CIP_EXTENDED_LINK_ADDRESS = {
     0x00: "False",
     0x01: "True"
 }
-
 
 CIP_PORTS = {
     0x00: "Reserved (0x00)",
     0x01: "Backplane (0x01)"
 }
 
-
 CIP_STATUS = {
     0x00: "Success (0x00)"
 }
 
-
 CIP_EXTENDED_DEVICE_STATUS = {
     0x00: ""
 }
-
 
 VENDOR_IDS = {
     0x0000: "Reserved(0x0000)",
@@ -1437,7 +1427,8 @@ class CIPConnectionManager(Packet):
         BitField("TickTime", 6, 4),
         ByteField("TimeoutTicks", 0x9a),
         FieldLenField("MessageRequestSize", None, fmt="<H", length_of="MessageRequest", adjust=lambda pkt, x: x),
-        CIPMessageRequestField("MessageRequest", [], guess_cip_message_class, length_from=lambda pkt: pkt.MessageRequestSize),
+        CIPMessageRequestField("MessageRequest", [], guess_cip_message_class,
+                               length_from=lambda pkt: pkt.MessageRequestSize),
         FieldLenField("RoutePathSize", None, fmt="B", length_of="RoutePath", adjust=lambda pkt, x: x / 2),
         XByteField("Reserved", 0x00),
         PacketLenField("RoutePath", CIPRoutePath(), CIPRoutePath, length_from=lambda pkt: pkt.RoutePathSize * 2)
@@ -1461,7 +1452,8 @@ class CIPHeader(Packet):
             lambda pkt: True if is_cip_response_packet(pkt) is True else False
         ),
         ConditionalField(
-            FieldLenField("AdditionalStatusSize", None, fmt="B", length_of="AdditionalStatus", adjust=lambda pkt, x: x / 2),
+            FieldLenField("AdditionalStatusSize", None, fmt="B",
+                          length_of="AdditionalStatus", adjust=lambda pkt, x: x / 2),
             lambda pkt: True if is_cip_response_packet(pkt) is True else False
         ),
         ConditionalField(
@@ -1476,4 +1468,3 @@ class CIPHeader(Packet):
             return CIPConnectionManager
         elif self.Type == 0x01 and self.Service == 0x01:
             return GetAttributesAll
-

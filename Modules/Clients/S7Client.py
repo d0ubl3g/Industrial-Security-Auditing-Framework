@@ -1,8 +1,10 @@
+import socket
+
+from scapy.supersocket import StreamSocket
+
 from Modules.Clients.BaseClient import Base
 from Protocols.Cotp import *
 from Protocols.S7Comm import *
-from scapy.supersocket import StreamSocket
-import socket
 
 VAR_NAME_TYPES = {
     'P': 0x80,  # I/O
@@ -32,7 +34,7 @@ class S7Client(Base):
         self._port = port
         self._slot = slot
         self._src_tsap = src_tsap
-        self._dst_tsap = '\x01' + struct.pack('B', rack * 0x20 + slot)
+        self._dst_tsap = '\x01' + str(struct.pack('B', rack * 0x20 + slot))
         self._pdur = 1
         self.protect_level = None
         self._connection = None

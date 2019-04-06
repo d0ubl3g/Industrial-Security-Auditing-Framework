@@ -1,12 +1,11 @@
 from __future__ import absolute_import
 
+import queue
 import threading
 import time
-import queue
 
 import Utils
 from Exceptions.ISAFExceptions import StopThreadPoolExecutor
-
 
 data_queue = queue.Queue()
 data_producing = threading.Event()

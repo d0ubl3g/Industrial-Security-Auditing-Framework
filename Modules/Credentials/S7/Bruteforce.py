@@ -1,12 +1,12 @@
 import threading
+
 from scapy.all import conf
 
-from Base.Exploits import Exploit, Option
 import Base.Validators as Validators
-from Utils import multi, print_error, print_success, print_status, print_table, boolify, LockedIterator
-from Modules.Clients.S7Client import S7Client
 import Wordlists
-
+from Base.Exploits import Exploit, Option
+from Modules.Clients.S7Client import S7Client
+from Utils import multi, print_error, print_success, print_status, print_table, boolify, LockedIterator
 
 
 class Exploit(Exploit):

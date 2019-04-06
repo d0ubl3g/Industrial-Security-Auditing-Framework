@@ -1,10 +1,11 @@
-from pysnmp.entity.rfc3413.oneliner import cmdgen
 import threading
 
-from Base.Exploits import Exploit, Option
+from pysnmp.entity.rfc3413.oneliner import cmdgen
+
 import Base.Validators as Validators
-from Utils import multi, print_error, print_success, print_status, print_table, boolify, LockedIterator
 import Wordlists
+from Base.Exploits import Exploit, Option
+from Utils import multi, print_error, print_success, print_status, print_table, boolify, LockedIterator
 
 
 class Exploit(Exploit):
@@ -13,14 +14,16 @@ class Exploit(Exploit):
     If valid community string is found, it is displayed to the user.
     """
     __info__ = {
+        'name': 'credentials/snmp/bruteforce',
         'name': 'SNMP Bruteforce',
         'description': 'Module performs bruteforce attack against SNMP service. '
                        'If valid community string is found, it is displayed to the user.',
         'authors': [
-            'Marcin Bury <marcin.bury[at]reverse-shell.com>',  # icssploit module
+            'Marcin Bury <marcin.bury[at]reverse-shell.com>',
+            'D0ubl3G <d0ubl3g[at]protonmail.com>',
         ],
         'references': [
-            '',
+            'https://github.com/dark-lbp/isf',
         ],
         'devices': [
             'Multi',
@@ -76,11 +79,13 @@ class Exploit(Exploit):
                 )
 
                 if errorIndication or errorStatus:
-                    print_error("Target: {}:{} {}: Invalid community string - String: '{}'".format(self.target, self.port, name, string), verbose=module_verbosity)
+                    print_error("Target: {}:{} {}: Invalid community string - String: '{}'"
+                                .format(self.target, self.port, name, string), verbose=module_verbosity)
                 else:
                     if boolify(self.stop_on_success):
                         running.clear()
-                    print_success("Target: {}:{} {}: Valid community string found - String: '{}'".format(self.target, self.port, name, string), verbose=module_verbosity)
+                    print_success("Target: {}:{} {}: Valid community string found - String: '{}'"
+                                  .format(self.target, self.port, name, string), verbose=module_verbosity)
                     self.strings.append((self.target, self.port, string))
 
             except StopIteration:

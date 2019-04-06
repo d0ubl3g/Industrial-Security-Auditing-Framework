@@ -1,13 +1,13 @@
+import itertools
+import threading
+
 import requests
 from bs4 import BeautifulSoup
-import threading
-import itertools
 
-from Base.Exploits import Exploit, Option
 import Base.Validators as Validators
-from Utils import multi, print_error, print_success, print_status, print_table, sanitize_url, LockedIterator
 import Wordlists
-
+from Base.Exploits import Exploit, Option
+from Utils import multi, print_error, print_success, print_status, print_table, sanitize_url, LockedIterator
 
 
 class Exploit(Exploit):
@@ -142,7 +142,8 @@ class Exploit(Exploit):
 
         res = []
         action = None
-        user_name_list = ["username", "user", "user_name", "login", "username_login", "nameinput", "uname", "__auth_user", "txt_user", "txtusername"]
+        user_name_list = ["username", "user", "user_name", "login", "username_login", "nameinput",
+                          "uname", "__auth_user", "txt_user", "txtusername"]
         password_list = ["password", "pass", "password_login", "pwd", "passwd", "__auth_pass", "txt_pwd", "txtpwd"]
         found = False
 
@@ -203,10 +204,12 @@ class Exploit(Exploit):
                     if Validators.boolify(self.stop_on_success):
                         running.clear()
 
-                    print_success("Target: {}:{} {}: Authentication Succeed - Username: '{}' Password: '{}'".format(self.target, self.port, name, user, password), verbose=module_verbosity)
+                    print_success("Target: {}:{} {}: Authentication Succeed - Username: '{}' Password: '{}'"
+                                  .format(self.target, self.port, name, user, password), verbose=module_verbosity)
                     self.credentials.append((self.target, self.port, user, password))
                 else:
-                    print_error(name, "Target: {}:{} {}: Authentication Failed - Username: '{}' Password: '{}'".format(self.target, self.port, name, user, password), verbose=module_verbosity)
+                    print_error(name, "Target: {}:{} {}: Authentication Failed - Username: '{}' Password: '{}'"
+                                .format(self.target, self.port, name, user, password), verbose=module_verbosity)
             except StopIteration:
                 break
 

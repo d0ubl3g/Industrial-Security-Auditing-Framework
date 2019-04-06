@@ -1,5 +1,5 @@
-from scapy.packet import *
 from scapy.fields import *
+from scapy.packet import *
 
 S7PLUS_OPTION_CODES = {
     0x31: "Request (0x31)",
@@ -35,7 +35,6 @@ S7PLUS_ID_NUMBERS = {
     0x000004e8: "ObjectQualifier (0x000004e8)",
 
 }
-
 
 S7PLUS_DATA_TYPE_FLAGS = [
     "Array",
@@ -166,7 +165,7 @@ class S7PlusUDIntEnumField(S7PlusUDIntField):
 
 class S7PlusElementField(PacketListField):
     def m2i(self, pkt, payload):
-            return self.cls(pkt, payload)
+        return self.cls(pkt, payload)
 
     def getfield(self, pkt, s):
         lst = []
@@ -623,6 +622,7 @@ class S7PlusCrateObjectResponse(Packet):
         PacketListField("ObjectIDs", [], S7PlusUDIntValue, count_from=lambda pkt: pkt.ObjectIDCount),
         S7PlusElementField("Elements", "", guess_s7_plus_element_class)
     ]
+
 
 # bind_layers(S7PlusCrateObjectRequest, Padding)
 

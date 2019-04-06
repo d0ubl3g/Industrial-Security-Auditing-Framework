@@ -1,7 +1,6 @@
-from scapy.packet import *
 from scapy.fields import *
 from scapy.layers.inet import TCP
-
+from scapy.packet import *
 
 modbus_function_codes = {
     0x01: "Read Coils Request",
@@ -29,7 +28,7 @@ class ModbusHeaderRequest(Packet):
         ShortField("length", None),
         ByteField("unit_id", 0x00),
         ByteEnumField("func_code", 0x03, modbus_function_codes)
-        ]
+    ]
 
     def post_build(self, p, pay):
         if self.length is None:
@@ -52,7 +51,7 @@ class ModbusHeaderResponse(Packet):
         ShortField("length", None),
         ByteField("unit_id", 0x00),
         ByteEnumField("func_code", 0x03, modbus_function_codes)
-        ]
+    ]
 
     def post_build(self, p, pay):
         if self.length is None:
@@ -78,7 +77,7 @@ class ReadCoilsRequest(Packet):
     fields_desc = [
         ShortField("ReferenceNumber", 0x0000),
         ShortField("BitCount", 0x0000)  # Bit count (1-2000)
-        ]
+    ]
 
 
 class ReadCoilsResponse(Packet):
@@ -93,7 +92,7 @@ class ReadDiscreteInputsRequest(Packet):
     fields_desc = [
         ShortField("ReferenceNumber", 0x0000),
         ShortField("BitCount", 0x0000)  # Bit count (1-2000)
-        ]
+    ]
 
 
 class ReadDiscreteInputsResponse(Packet):
@@ -107,7 +106,7 @@ class ReadHoldingRegistersRequest(Packet):
     fields_desc = [
         ShortField("ReferenceNumber", 0x0000),
         ShortField("WordCount", 0x0000)
-        ]
+    ]
 
 
 class ReadHoldingRegistersResponse(Packet):
@@ -115,7 +114,7 @@ class ReadHoldingRegistersResponse(Packet):
         FieldLenField("ByteCount", None, fmt="B", length_of="RegisterValue"),
         FieldListField("RegisterValue", None, ShortField("Data", 0x0),
                        length_from=lambda pkt: pkt.ByteCount)
-        ]
+    ]
 
 
 # PDU 0x04
@@ -123,7 +122,7 @@ class ReadInputRegistersRequest(Packet):
     fields_desc = [
         ShortField("ReferenceNumber", 0x0000),
         ShortField("WordCount", 0x0000)
-        ]
+    ]
 
 
 class ReadInputRegistersResponse(Packet):
@@ -131,22 +130,22 @@ class ReadInputRegistersResponse(Packet):
         FieldLenField("ByteCount", None, fmt="B", length_of="RegisterValue"),
         FieldListField("RegisterValue", None, ShortField("data", 0x0),
                        length_from=lambda pkt: pkt.ByteCount)
-        ]
+    ]
 
 
 # PDU 0x05
 class WriteSingleCoilRequest(Packet):
     fields_desc = [
         ShortField("ReferenceNumber", 0x0000),  # from 0x0000 to 0xFFFF
-        ShortField("Value", 0x0000)             # 0x0000 == Off, 0xFF00 == On
-        ]
+        ShortField("Value", 0x0000)  # 0x0000 == Off, 0xFF00 == On
+    ]
 
 
 class WriteSingleCoilResponse(Packet):  # The answer is the same as the request if successful
     fields_desc = [
         ShortField("ReferenceNumber", 0x0000),  # from 0x0000 to 0xFFFF
-        ShortField("Value", 0x0000)             # 0x0000 == Off, 0xFF00 == On
-        ]
+        ShortField("Value", 0x0000)  # 0x0000 == Off, 0xFF00 == On
+    ]
 
 
 # PDU 0x06
@@ -154,14 +153,14 @@ class WriteSingleRegisterRequest(Packet):
     fields_desc = [
         ShortField("ReferenceNumber", 0x0000),
         ShortField("Value", 0x0000)
-        ]
+    ]
 
 
 class WriteSingleRegisterResponse(Packet):
     fields_desc = [
         ShortField("ReferenceNumber", 0x0000),
         ShortField("Value", 0x0000)
-        ]
+    ]
 
 
 # PDU 0x07
@@ -179,7 +178,7 @@ class WriteMultipleCoilsRequest(Packet):
     fields_desc = [
         ShortField("ReferenceNumber", 0x0000),
         FieldLenField("BitCount", None, fmt="H", count_of="Values"),  # Bit count (1-800)
-        FieldLenField("ByteCount", None, fmt="B", length_of="Values", adjust=lambda pkt, x:x / 16),
+        FieldLenField("ByteCount", None, fmt="B", length_of="Values", adjust=lambda pkt, x: x / 16),
         FieldListField("Values", None, BitField("data", 0x0, size=1), count_from=lambda pkt: pkt.BitCount)
     ]
 
@@ -391,7 +390,6 @@ modbus_response_classes = {
     0x17: ReadWriteMultipleRegistersResponse,
     0x18: ReadFIFOQueueResponse
 }
-
 
 # TODO: this not work with StreamSocket
 bind_layers(TCP, ModbusHeaderRequest, dport=502)

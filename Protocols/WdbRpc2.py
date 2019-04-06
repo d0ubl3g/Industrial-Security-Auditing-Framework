@@ -1,8 +1,8 @@
 import random
-from scapy.packet import *
+
 from scapy.fields import *
 from scapy.layers.inet import UDP
-
+from scapy.packet import *
 
 RPC_Message_Type = {
     0x0: 'Call (0)',
@@ -13,7 +13,6 @@ RPC_Reply_State = {
     0x0: 'accepted (0)'
 }
 
-
 Credentials_Flavor_Type = {
     0x0: 'AUTH_NULL(0)'
 }
@@ -22,11 +21,11 @@ Verifer_Flavor_Type = {
     0x0: 'AUTH_NULL(0)'
 }
 
-Accept_State ={
+Accept_State = {
     0x0: 'RPC executed successfully(0)'
 }
 
-Wdb_Procedure_Type ={
+Wdb_Procedure_Type = {
     0x0a: 'Wdb Read Memory(0x0a)',
     0x7a: "Wdb Request Connect(0x7a)",
     0x7b: "Wdb Get Info(0x7b)"
@@ -36,9 +35,10 @@ Wdb_Procedure_Type ={
 class Credentials(Packet):
     name = "Credentials Packet"
     fields_desc = [
-            IntEnumField("Flavor", 1, Credentials_Flavor_Type),
-            IntField("Length", 0),
-        ]
+        IntEnumField("Flavor", 1, Credentials_Flavor_Type),
+        IntField("Length", 0),
+    ]
+
 
 bind_layers(Credentials, Padding)
 
@@ -46,9 +46,10 @@ bind_layers(Credentials, Padding)
 class Verifier(Packet):
     name = "Verifier Packet"
     fields_desc = [
-            IntEnumField("Flavor", 1, Verifer_Flavor_Type),
-            IntField("Length", 0),
-        ]
+        IntEnumField("Flavor", 1, Verifer_Flavor_Type),
+        IntField("Length", 0),
+    ]
+
 
 bind_layers(Verifier, Padding)
 

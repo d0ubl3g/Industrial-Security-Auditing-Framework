@@ -1,9 +1,11 @@
-import os
-import readline
 import atexit
+import os
+
+import readline
+
+import Utils
 from Exceptions.ISAFExceptions import ISAFException
 from Utils.Printer import printer_queue
-import Utils
 
 
 class BaseInterpreter(object):
@@ -144,4 +146,3 @@ class BaseInterpreter(object):
         :return: list of suitable commands
         """
         return self.commands()
-

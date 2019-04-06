@@ -5,3 +5,4 @@ pysnmp
 gnureadline
 python-nmap
 scapy
+paramiko

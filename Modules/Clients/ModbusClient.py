@@ -1,6 +1,7 @@
+from scapy.supersocket import StreamSocket
+
 from Modules.Clients.BaseClient import Base
 from Protocols.Modbus import *
-from scapy.supersocket import StreamSocket
 
 
 class ModbusClient(Base):
@@ -138,7 +139,8 @@ class ModbusClient(Base):
         :param count: Bit Count for read
         :return: InputStatus in list, if got some error return None.
         """
-        packet = ModbusHeaderRequest(func_code=0x02) / ReadDiscreteInputsRequest(ReferenceNumber=address, BitCount=count)
+        packet = ModbusHeaderRequest(func_code=0x02) / ReadDiscreteInputsRequest(ReferenceNumber=address,
+                                                                                 BitCount=count)
         rsp = self.send_receive_modbus_packet(packet)
         if rsp:
             inputStatus = rsp.InputStatus
@@ -247,7 +249,7 @@ class ModbusClient(Base):
         """
         data_list = []
         for i in range(0, len(data), 0x02):
-            data1 = struct.unpack("!H", data[i:i+2])[0]
+            data1 = struct.unpack("!H", data[i:i + 2])[0]
             data_list.append(data1)
         packet = ModbusHeaderRequest(func_code=0x15) / WriteFileRecordRequest()
         packet[WriteFileRecordRequest].Groups = WriteFileSubRequest(

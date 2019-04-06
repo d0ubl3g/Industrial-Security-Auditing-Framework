@@ -1,7 +1,7 @@
-import socket
-from urllib import parse
 import re
+import socket
 from distutils.util import strtobool
+from urllib import parse
 
 from Exceptions.ISAFExceptions import OptionValidationError
 
@@ -27,7 +27,8 @@ def choice(valid_values):
 
     def _enum(value):
         if value not in valid_values:
-            raise OptionValidationError("Selected '{}' value isn't correct. Possible values are: {}".format(value, valid_values))
+            raise OptionValidationError(
+                "Selected '{}' value isn't correct. Possible values are: {}".format(value, valid_values))
 
         return value
 
