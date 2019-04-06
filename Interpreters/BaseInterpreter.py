@@ -113,7 +113,6 @@ class BaseInterpreter(object):
                         complete_function = self.default_completer
             else:
                 complete_function = self.raw_command_completer
-
         self.completion_matches = complete_function(text, line, start_index, end_index)
 
         try:
@@ -133,7 +132,8 @@ class BaseInterpreter(object):
         """ Complete command w/o any argument """
         return filter(lambda entry: entry.startswith(text), self.suggested_commands())
 
-    def default_completer(self, *ignored):
+    @staticmethod
+    def default_completer(*ignored):
         return []
 
     def suggested_commands(self):

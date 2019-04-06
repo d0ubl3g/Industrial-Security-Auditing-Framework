@@ -179,7 +179,7 @@ class Exploit(Exploit):
                     res = tmp
 
         res = list(set(res))
-        return (action, '&'.join(res))
+        return action, '&'.join(res)
 
     def target_function(self, running, data):
         module_verbosity = Validators.boolify(self.verbosity)

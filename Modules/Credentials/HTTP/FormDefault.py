@@ -1,12 +1,12 @@
-import requests
-from bs4 import BeautifulSoup
 import threading
 
-from Base.Exploits import Exploit, Option
-import Base.Validators as Validators
-import Base.Threads as Threads
-from Utils import multi, print_error, print_success, print_status, print_table, sanitize_url, boolify
+import requests
+from bs4 import BeautifulSoup
+
 import Wordlists
+from Base.Exploits import Exploit, Option
+from Utils import multi, print_error, print_success, print_status, print_table, sanitize_url, boolify, LockedIterator
+
 
 class Exploit(Exploit):
     """
@@ -93,7 +93,7 @@ class Exploit(Exploit):
         else:
             defaults = [self.defaults]
 
-        collection = Threads.LockedIterator(defaults)
+        collection = LockedIterator(defaults)
         self.run_threads(self.threads, self.target_function, collection)
 
         if len(self.credentials):
@@ -172,7 +172,7 @@ class Exploit(Exploit):
                     res = tmp
 
         res = list(set(res))
-        return (action, '&'.join(res))
+        return action, '&'.join(res)
 
     def target_function(self, running, data):
         module_verbosity = boolify(self.verbosity)

@@ -3,8 +3,7 @@ from scapy.all import conf
 
 from Base.Exploits import Exploit, Option
 import Base.Validators as Validators
-import Base.Threads as Threads
-from Utils import multi, print_error, print_success, print_status, print_table, boolify
+from Utils import multi, print_error, print_success, print_status, print_table, boolify, LockedIterator
 from Modules.Clients.S7Client import S7Client
 import Wordlists
 
@@ -53,7 +52,7 @@ class Exploit(Exploit):
         else:
             s7_pass = [self.password]
 
-        collection = Threads.LockedIterator(s7_pass)
+        collection = LockedIterator(s7_pass)
         self.run_threads(self.threads, self.target_function, collection)
 
         if len(self.strings):

@@ -1,14 +1,14 @@
 # Industrial Security Auditing Framework
 
 
-             ▄█     ▄████████    ▄████████    ▄████████ 
-            ███    ███    ███   ███    ███   ███    ███ 
-            ███▌   ███    █▀    ███    ███   ███    █▀  
-            ███▌   ███          ███    ███  ▄███▄▄▄     
-            ███▌ ▀███████████ ▀███████████ ▀▀███▀▀▀     
-            ███           ███   ███    ███   ███        
-            ███     ▄█    ███   ███    ███   ███        
-            █▀    ▄████████▀    ███    █▀    ███
+                                                 ▄█     ▄████████    ▄████████    ▄████████ 
+                                                ███    ███    ███   ███    ███   ███    ███ 
+                                                ███▌   ███    █▀    ███    ███   ███    █▀  
+                                                ███▌   ███          ███    ███  ▄███▄▄▄     
+                                                ███▌ ▀███████████ ▀███████████ ▀▀███▀▀▀     
+                                                ███           ███   ███    ███   ███        
+                                                ███     ▄█    ███   ███    ███   ███        
+                                                █▀    ▄████████▀    ███    █▀    ███
 
 ISAF aims to be a framework that provides the necessary tools for the correct security audit of industrial environments.
 
@@ -30,10 +30,6 @@ For running ISAF in standard mode execute the following command:
 ```
 python3 ISAF.py
 ```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
 
 ## References
 

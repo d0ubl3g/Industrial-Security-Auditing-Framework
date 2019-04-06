@@ -3,8 +3,7 @@ import threading
 
 from Base.Exploits import Exploit, Option
 import Base.Validators as Validators
-import Base.Threads as Threads
-from Utils import multi, print_error, print_success, print_status, print_table, boolify
+from Utils import multi, print_error, print_success, print_status, print_table, boolify, LockedIterator
 import Wordlists
 
 
@@ -49,7 +48,7 @@ class Exploit(Exploit):
         else:
             snmp = [self.snmp]
 
-        collection = Threads.LockedIterator(snmp)
+        collection = LockedIterator(snmp)
         self.run_threads(self.threads, self.target_function, collection)
 
         if len(self.strings):

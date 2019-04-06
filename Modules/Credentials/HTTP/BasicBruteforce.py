@@ -13,6 +13,10 @@ class Exploit(Exploit):
     Module performs bruteforce attack against HTTP Basic Auth service.
     If valid credentials are found, they are displayed to the user.
     """
+
+    def check(self):
+        pass
+
     __info__ = {
         'name': 'credentials/http/basic_bruteforce',
         'display_name': 'HTTP Basic Bruteforce',
