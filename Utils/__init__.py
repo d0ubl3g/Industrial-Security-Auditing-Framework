@@ -13,6 +13,7 @@ import string
 import sys
 import threading
 import time
+from colorama import Fore
 from abc import ABCMeta, abstractmethod
 from distutils.util import strtobool
 from functools import wraps
@@ -81,12 +82,15 @@ def import_exploit(path):
         module = importlib.import_module(path)
         return getattr(module, 'Exploit')
     except (ImportError, AttributeError, KeyError) as err:
-        raise ISAFException(
-            "Error during loading '{}'\n\n"
-            "Error: {}\n\n"
-            "It should be valid path to the module. "
-            "Use <tab> key multiple times for completion.".format(dotsToPath(path), err)
-        )
+        try:
+            return getattr(module, 'Client')
+        except:
+            raise ISAFException(
+                "Error during loading '{}'\n\n"
+                "Error: {}\n\n"
+                "It should be valid path to the module. "
+                "Use <tab> key multiple times for completion.".format(dotsToPath(path), err)
+            )
 
 
 def importClient(path):
@@ -296,15 +300,15 @@ def __cprint(*args, **kwargs):
 
 
 def print_error(*args, **kwargs):
-    __cprint('\033[91m[-]\033[0m', *args, **kwargs)
+    __cprint(Fore.LIGHTRED_EX + '[-]' + Fore.RESET, *args, **kwargs)
 
 
 def print_status(*args, **kwargs):
-    __cprint('\033[94m[*]\033[0m', *args, **kwargs)
+    __cprint(Fore.LIGHTBLUE_EX + '[*]' + Fore.RESET, *args, **kwargs)
 
 
 def print_success(*args, **kwargs):
-    __cprint('\033[92m[+]\033[0m', *args, **kwargs)
+    __cprint(Fore.LIGHTGREEN_EX + '[+]' + Fore.RESET, *args, **kwargs)
 
 
 def print_info(*args, **kwargs):

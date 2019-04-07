@@ -6,6 +6,8 @@ from Modules.Clients.BaseClient import Base
 from Protocols.Cotp import *
 from Protocols.S7Comm import *
 
+from Base.Exploits import Option
+
 VAR_NAME_TYPES = {
     'P': 0x80,  # I/O
     'I': 0x81,  # Memory area of inputs
@@ -17,29 +19,36 @@ VAR_NAME_TYPES = {
 }
 
 
-class S7Client(Base):
-    def __init__(self, name, ip, port=102, src_tsap='\x01\x00', rack=0, slot=2, timeout=2):
-        """
+class Exploit(Base):
+    __info__ = {
+        'name': 'clients/s7',
+        'display_name': 'Modbus Client',
+        'description': '',
+        'authors': [
+            'D0ubl3G <d0ubl3g[at]protonmail.com>',
+        ],
+        'references': [
+            '',
+        ],
+        'devices': [
+            'Multi',
+        ],
+    }
 
-        :param name: Name of this targets
-        :param ip: S7 PLC ip
-        :param port: S7 PLC port (default: 102)
-        :param src_tsap: src_tsap
-        :param rack: cpu rack (default: 0)
-        :param slot: cpu slot (default: 2)
-        :param timeout: timeout of socket (default: 2)
-        """
-        super(S7Client, self).__init__(name=name)
-        self._ip = ip
-        self._port = port
-        self._slot = slot
-        self._src_tsap = src_tsap
-        self._dst_tsap = '\x01' + str(struct.pack('B', rack * 0x20 + slot))
+    target = Option('', 'Target IP address')
+    port = Option(102, 'Target port')
+    src_tsap = Option(str('\x01\x00'), 'Source tsap')
+    rack = Option(0, 'Rack')
+    slot = Option(2, 'Slot')
+    dst_tsap = Option(str('\x01') + str(struct.pack('B', rack.default * 0x20 + slot.default)), "Dest Tsap. Do not change.")
+    timeout = Option(2, 'Connection timeout')
+
+    def __init__(self):
+        super(Exploit, self).__init__(name='S7 Client')
         self._pdur = 1
         self.protect_level = None
         self._connection = None
         self._connected = False
-        self._timeout = timeout
         self._pdu_length = 480
         self.readable = False
         self.writeable = False
@@ -50,8 +59,8 @@ class S7Client(Base):
 
     def connect(self):
         sock = socket.socket()
-        sock.settimeout(self._timeout)
-        sock.connect((self._ip, self._port))
+        sock.settimeout(self.timeout)
+        sock.connect((self.target, self.port))
         self._connection = StreamSocket(sock, Raw)
         packet1 = TPKT() / COTPCR()
         packet1.Parameters = [COTPOption() for i in range(3)]
@@ -60,7 +69,7 @@ class S7Client(Base):
         packet1.Parameters[0].Parameter = "\x0a"
         packet1.Parameters[1].ParameterCode = "src-tsap"
         packet1.Parameters[2].ParameterCode = "dst-tsap"
-        packet1.Parameters[1].Parameter = self._src_tsap
+        packet1.Parameters[1].Parameter = self.src_tsap
         packet1.Parameters[2].Parameter = self._dst_tsap
         self.send_receive_packet(packet1)
         packet2 = TPKT() / COTPDT(EOT=1) / S7Header(ROSCTR="Job", Parameters=S7SetConParameter())
@@ -242,7 +251,7 @@ class S7Client(Base):
     def send_receive_packet(self, packet):
         if self._connection:
             try:
-                rsp = self._connection.sr1(packet, timeout=self._timeout)
+                rsp = self._connection.sr1(packet, timeout=self.timeout)
                 return rsp
 
             except Exception as err:
@@ -282,7 +291,7 @@ class S7Client(Base):
         if self._connection:
             packet = self._fix_pdur(packet)
             try:
-                rsp = self._connection.sr1(packet, timeout=self._timeout)
+                rsp = self._connection.sr1(packet, timeout=self.timeout)
                 if rsp:
                     rsp = TPKT(str(rsp))
                 return rsp

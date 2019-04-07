@@ -3,27 +3,41 @@ from scapy.supersocket import StreamSocket
 from Modules.Clients.BaseClient import Base
 from Protocols.Modbus import *
 
+from Base.Exploits import Option
 
-class ModbusClient(Base):
-    def __init__(self, name, ip, port=502, timeout=2):
-        """
 
-        :param name: Name of this targets
-        :param ip: Modbus Target ip
-        :param port: Modbus TCP port (default: 502)
-        :param timeout: timeout of socket (default: 2)
-        """
-        super(ModbusClient, self).__init__(name=name)
-        self._ip = ip
-        self._port = port
+class Exploit(Base):
+    __info__ = {
+        'name': 'clients/modbus',
+        'display_name': 'Modbus Client',
+        'description': '',
+        'authors': [
+            'D0ubl3G <d0ubl3g[at]protonmail.com>',
+        ],
+        'references': [
+            '',
+        ],
+        'devices': [
+            'Multi',
+        ],
+    }
+
+    target = Option('', 'Target IP address')
+    port = Option(502, 'Target port')
+    timeout = Option(2, 'Connection timeout')
+
+    def __init__(self):
+        super(Exploit, self).__init__(name='Modbus Client')
         self._connection = None
         self._connected = False
-        self._timeout = timeout
+
+    def run(self):
+        self.connect()
 
     def connect(self):
         sock = socket.socket()
-        sock.connect((self._ip, self._port))
-        sock.settimeout(self._timeout)
+        sock.connect((self.target, self.port))
+        sock.settimeout(self.timeout)
         self._connection = StreamSocket(sock, Raw)
 
     def send_packet(self, packet):
@@ -41,7 +55,7 @@ class ModbusClient(Base):
     def send_receive_packet(self, packet):
         if self._connection:
             try:
-                rsp = self._connection.sr1(packet, timeout=self._timeout)
+                rsp = self._connection.sr1(packet, timeout=self.timeout)
                 return rsp
 
             except Exception as err:
@@ -79,7 +93,7 @@ class ModbusClient(Base):
         func_code = packet.func_code
         if self._connection:
             try:
-                rsp = self._connection.sr1(packet, timeout=self._timeout)
+                rsp = self._connection.sr1(packet, timeout=self.timeout)
                 if rsp:
                     rsp = ModbusHeaderResponse(str(rsp))
                     if rsp.haslayer(modbus_response_classes[func_code]):

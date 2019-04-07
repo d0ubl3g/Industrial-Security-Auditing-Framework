@@ -4,29 +4,43 @@ from Modules.Clients.BaseClient import Base
 from Protocols.Cip import *
 from Protocols.Enip import *
 
+from Base.Exploits import Option
 
-class CIPClient(Base):
-    def __init__(self, name, ip, port=44818, timeout=2):
-        """
 
-        :param name: Name of this targets
-        :param ip: Target ip
-        :param port: CIP port (default: 44818)
-        :param timeout: timeout of socket (default: 2)
-        """
-        super(CIPClient, self).__init__(name=name)
-        self._ip = ip
-        self._port = port
-        self._timeout = timeout
+class Exploit(Base):
+    __info__ = {
+        'name': 'clients/cip',
+        'display_name': 'CIP Client',
+        'description': '',
+        'authors': [
+            'D0ubl3G <d0ubl3g[at]protonmail.com>',
+        ],
+        'references': [
+            '',
+        ],
+        'devices': [
+            'Multi',
+        ],
+    }
+
+    target = Option('', 'Target IP address')
+    port = Option(44818, 'Target port')
+    timeout = Option(2, 'Connection timeout')
+
+    def __init__(self):
+        super(Exploit, self).__init__('CipClient')
         self._connection = None
         self._target_info = {}
         self._session = 0x0
         self.target_info = {}
 
+    def run(self):
+        self.connect()
+
     def connect(self):
         sock = socket.socket()
-        sock.settimeout(self._timeout)
-        sock.connect((self._ip, self._port))
+        sock.settimeout(self.timeout)
+        sock.connect((self.target, self.port))
         self._connection = StreamSocket(sock, Raw)
         packet_1 = ENIPHeader(Command=0x65) / RegisterSession()
         rsp_1 = self.send_receive_cip_packet(packet_1)
@@ -63,7 +77,7 @@ class CIPClient(Base):
     def send_receive_packet(self, packet):
         if self._connection:
             try:
-                rsp = self._connection.sr1(packet, timeout=self._timeout)
+                rsp = self._connection.sr1(packet, timeout=self.timeout)
                 return rsp
 
             except Exception as err:
@@ -103,7 +117,7 @@ class CIPClient(Base):
             packet = self._fix_session(packet)
             # packet.show2()
             try:
-                rsp = self._connection.sr1(packet, timeout=self._timeout)
+                rsp = self._connection.sr1(packet, timeout=self.timeout)
                 if rsp:
                     rsp = ENIPHeader(str(rsp))
                 return rsp

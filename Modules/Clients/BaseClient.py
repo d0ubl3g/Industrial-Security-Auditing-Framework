@@ -1,7 +1,8 @@
 import logging
+from Base.Exploits import *
 
 
-class Base(object):
+class Base(Exploit):
     """
     Basic class to ease logging and description of objects.
     """
@@ -70,3 +71,4 @@ class Base(object):
         :return: object's name
         """
         return self.name
+
