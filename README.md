@@ -20,7 +20,7 @@ These instructions will get you a copy of the project up and running for develop
 
 Executing the following command would met all the requirements:
 ```
-pip install -r requirements.txt
+./setup.sh
 ```
 
 ### Usage
@@ -28,7 +28,7 @@ pip install -r requirements.txt
 For running ISAF in standard mode execute the following command:
 
 ```
-python3 ISAF.py
+./ISAF.py
 ```
 
 ## References
