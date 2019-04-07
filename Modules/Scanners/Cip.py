@@ -59,7 +59,7 @@ class Exploit(Exploit):
 
     def run(self):
         self.result = []
-        conf.verb = self.verbose
+        #conf.verb = self.verbose
         nm = port_scan(protocol='TCP', target=self.target, port=self.port)
         for host in nm.all_hosts():
             if nm[host]['tcp'][self.port]['state'] == "open":

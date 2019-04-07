@@ -5,7 +5,7 @@ from scapy.all import conf
 import Base.Validators as Validators
 import Wordlists
 from Base.Exploits import Exploit, Option
-from Modules.Clients.S7Client import S7Client
+from Modules.Clients.S7Client import Exploit as S7Client
 from Utils import multi, print_error, print_success, print_status, printTable, boolify, LockedIterator
 
 
@@ -67,7 +67,7 @@ class Exploit(Exploit):
         name = threading.current_thread().name
 
         print_status(name, 'thread is starting...', verbose=module_verbosity)
-        s7_client = S7Client(name="Siemens PLC", ip=self.target, rack=self.rack, slot=self.slot)
+        s7_client = S7Client()
         s7_client.connect()
         if not module_verbosity:
             s7_client.logger.setLevel(50)

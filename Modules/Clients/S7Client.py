@@ -57,6 +57,9 @@ class Exploit(Base):
         self._mmc_password = None
         self.is_running = False
 
+    def run(self):
+        self.connect()
+
     def connect(self):
         sock = socket.socket()
         sock.settimeout(self.timeout)
@@ -70,7 +73,7 @@ class Exploit(Base):
         packet1.Parameters[1].ParameterCode = "src-tsap"
         packet1.Parameters[2].ParameterCode = "dst-tsap"
         packet1.Parameters[1].Parameter = self.src_tsap
-        packet1.Parameters[2].Parameter = self._dst_tsap
+        packet1.Parameters[2].Parameter = self.dst_tsap
         self.send_receive_packet(packet1)
         packet2 = TPKT() / COTPDT(EOT=1) / S7Header(ROSCTR="Job", Parameters=S7SetConParameter())
         rsp2 = self.send_receive_s7_packet(packet2)

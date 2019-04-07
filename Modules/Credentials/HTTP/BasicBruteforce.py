@@ -57,7 +57,7 @@ class Exploit(Exploit):
             return
 
         if response.status_code != 401:
-            print_status("Target is not protected by Basic Auth")
+            print_status("Target is not protected by Basic Auth.")
             return
 
         if self.usernames.startswith('file://'):
@@ -81,7 +81,7 @@ class Exploit(Exploit):
             headers = ("Target", "Port", "Login", "Password")
             printTable(headers, *self.credentials)
         else:
-            print_error("Credentials not found")
+            print_error("Credentials not found.")
 
     def target_function(self, url, creds):
         name = threading.current_thread().name
