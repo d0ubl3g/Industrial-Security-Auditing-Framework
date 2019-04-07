@@ -4,7 +4,7 @@ import Base.Threads as Threads
 import Base.Validators as Validators
 import Wordlists
 from Base.Exploits import Exploit, Option
-from Utils import multi, print_error, print_success, print_status, print_table, http_request
+from Utils import multi, print_error, print_success, print_status, printTable, http_request
 
 
 class Exploit(Exploit):
@@ -68,7 +68,7 @@ class Exploit(Exploit):
         if self.credentials:
             print_success("Credentials found!")
             headers = ("Target", "Port", "Login", "Password")
-            print_table(headers, *self.credentials)
+            printTable(headers, *self.credentials)
         else:
             print_error("Credentials not found")
 

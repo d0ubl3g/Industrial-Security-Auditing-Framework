@@ -4,6 +4,8 @@ import sys
 import traceback
 from collections import Counter
 
+from colorama import Fore, Style
+
 import Utils
 from Base import Exploits
 from Exceptions.ISAFExceptions import ISAFException
@@ -58,8 +60,7 @@ class ISAFInterpreter(BaseInterpreter):
         self.main_modules_dirs = [module for module in os.listdir(Utils.MODULES_DIR) if not module.startswith("__")]
         self.__parse_prompt()
 
-        self.banner = """ 
-        \001\033[94m\002
+        self.banner = Fore.BLUE + """ 
              ▄█     ▄████████    ▄████████    ▄████████ 
             ███    ███    ███   ███    ███   ███    ███ 
             ███▌   ███    █▀    ███    ███   ███    █▀  
@@ -67,25 +68,33 @@ class ISAFInterpreter(BaseInterpreter):
             ███▌ ▀███████████ ▀███████████ ▀▀███▀▀▀     
             ███           ███   ███    ███   ███        
             ███     ▄█    ███   ███    ███   ███        
-            █▀    ▄████████▀    ███    █▀    ███\001\033[92m\002 v{version}      
-              \001\033[93m\002Industrial Security Auditing Framework
-                D0ubl3G <d0ubl3g[at]protonmail.com>
-\001\033[0m\002
-    \001\033[1m\002Modules\001\033[0m\002
-        Clients: \001\033[92m\002{clients_count}\001\033[0m\002         Exploits: \001\033[92m\002{exploits_count}\001\033[0m\002 
-        Scanners: \001\033[92m\002{scanners_count}\001\033[0m\002        Credentials: \001\033[92m\002{creds_count}\001\033[0m\002
+            █▀    ▄████████▀    ███    █▀    ███""" \
+                      + Fore.GREEN + " v{version} \n" \
+                      + Fore.LIGHTYELLOW_EX + """
+             Industrial Security Auditing Framework
+               D0ubl3G <d0ubl3g[at]protonmail.com>\n""" \
+                      + Fore.RESET + Style.BRIGHT + """
+            Modules""" + Style.NORMAL + """
+                Clients: """ + Fore.GREEN + """{clients_count}""" + Fore.RESET \
+                      + """         Exploits: """ + Fore.GREEN + """{exploits_count}""" + Fore.RESET + """ 
+                Scanners: """ + Fore.GREEN + """{scanners_count}""" + Fore.RESET \
+                      + """        Credentials: """ + Fore.GREEN + """{creds_count}""" + Fore.RESET \
+                      + Style.BRIGHT + """\n
+            Exploits""" + Style.NORMAL + """
+                PLC: """ + Fore.GREEN + """{plc_exploit_count}""" + Fore.RESET \
+                      + """          Switch: """ + Fore.GREEN + """{ics_switch_exploits_count}""" + Fore.RESET + """ 
+                Software: """ + Fore.GREEN + """{ics_software_exploits_count}""" + Fore.RESET
 
-    \001\033[1m\002Exploits\001\033[0m\002
-        PLC: {plc_exploit_count}          ICS Switch: {ics_switch_exploits_count}
-        Software: {ics_software_exploits_count}
-    """.format(version="0.0.1a",
-               clients_count=self.modules_count['Clients'],
-               exploits_count=self.modules_count['Exploits'] + self.modules_count['extra_exploits'],
-               scanners_count=self.modules_count['Scanners'] + self.modules_count['extra_scanners'],
-               creds_count=self.modules_count['Credentials'] + self.modules_count['extra_creds'],
-               plc_exploit_count=self.modules_count['plcs'],
-               ics_switch_exploits_count=self.modules_count['ics_switchs'],
-               ics_software_exploits_count=self.modules_count['ics_software']
+        self.banner = self.banner.format(version="0.0.1a", clients_count=self.modules_count['Clients'],
+                                         exploits_count=self.modules_count['Exploits'] + self.modules_count[
+                                             'extra_exploits'],
+                                         scanners_count=self.modules_count['Scanners'] + self.modules_count[
+                                             'extra_scanners'],
+                                         creds_count=self.modules_count['Credentials'] + self.modules_count[
+                                             'extra_creds'],
+                                         plc_exploit_count=self.modules_count['plcs'],
+                                         ics_switch_exploits_count=self.modules_count['ics_switchs'],
+                                         ics_software_exploits_count=self.modules_count['ics_software']
                )
 
     def __parse_prompt(self):
@@ -142,7 +151,7 @@ class ISAFInterpreter(BaseInterpreter):
         :param text: argument of 'use' command
         :return: list of tab completion hints
         """
-        text = Utils.pythonize_path(text)
+        text = Utils.pathToDots(text)
         all_possible_matches = filter(lambda x: x.startswith(text), self.modules)
         matches = set()
         for match in all_possible_matches:
@@ -150,7 +159,7 @@ class ISAFInterpreter(BaseInterpreter):
             if not tail:
                 sep = ""
             matches.add("".join((text, head, sep)))
-        return list(map(Utils.humanize_path, matches))  # humanize output, replace dots to forward slashes
+        return list(map(Utils.dotsToPath, matches))  # humanize output, replace dots to forward slashes
 
     def suggested_commands(self):
         """ Entry point for intelligent tab completion.
@@ -174,16 +183,16 @@ class ISAFInterpreter(BaseInterpreter):
 
     def command_use(self, module_path, *args, **kwargs):
         if module_path.startswith("extra_"):
-            module_path = Utils.pythonize_path(module_path)
+            module_path = Utils.pathToDots(module_path)
         else:
-            module_path = Utils.pythonize_path(module_path)
+            module_path = Utils.pathToDots(module_path)
             module_path = '.'.join(('Modules', module_path))
         try:
             self.current_module = Utils.import_exploit(module_path)()
         except ISAFException as err:
             Utils.print_error(err)
 
-    @Utils.stop_after(2)
+    @Utils.stopAfter(2)
     def complete_use(self, text, *args, **kwargs):
         if text:
             return self.available_modules_completion(text)
@@ -193,21 +202,21 @@ class ISAFInterpreter(BaseInterpreter):
             else:
                 return self.main_modules_dirs
 
-    @Utils.module_required
+    @Utils.moduleRequired
     def command_run(self, *args, **kwargs):
         Utils.print_status("Running module...")
         try:
             self.current_module.run()
         except KeyboardInterrupt:
             Utils.print_info()
-            Utils.print_error("Operation cancelled by user")
+            Utils.print_error("Operation cancelled by user.")
         except:
             Utils.print_error(traceback.format_exc(sys.exc_info()))
 
     def command_exploit(self, *args, **kwargs):
         self.command_run()
 
-    @Utils.module_required
+    @Utils.moduleRequired
     def command_set(self, *args, **kwargs):
         key, _, value = args[0].partition(' ')
         if key in self.current_module.options:
@@ -219,23 +228,23 @@ class ISAFInterpreter(BaseInterpreter):
             Utils.print_error("You can't set option '{}'.\n"
                               "Available options: {}".format(key, self.current_module.options))
 
-    @Utils.stop_after(2)
+    @Utils.stopAfter(2)
     def complete_set(self, text, *args, **kwargs):
         if text:
             return [' '.join((attr, "")) for attr in self.current_module.options if attr.startswith(text)]
         else:
             return self.current_module.options
 
-    @Utils.module_required
+    @Utils.moduleRequired
     def command_setg(self, *args, **kwargs):
         kwargs['glob'] = True
         self.command_set(*args, **kwargs)
 
-    @Utils.stop_after(2)
+    @Utils.stopAfter(2)
     def complete_setg(self, text, *args, **kwargs):
         return self.complete_set(text, *args, **kwargs)
 
-    @Utils.module_required
+    @Utils.moduleRequired
     def command_unsetg(self, *args, **kwargs):
         key, _, value = args[0].partition(' ')
         try:
@@ -246,14 +255,14 @@ class ISAFInterpreter(BaseInterpreter):
         else:
             Utils.print_success({key: value})
 
-    @Utils.stop_after(2)
+    @Utils.stopAfter(2)
     def complete_unsetg(self, text, *args, **kwargs):
         if text:
             return [' '.join((attr, "")) for attr in Exploits.GLOBAL_OPTS.keys() if attr.startswith(text)]
         else:
             return Exploits.GLOBAL_OPTS.keys()
 
-    @Utils.module_required
+    @Utils.moduleRequired
     def get_opts(self, *args):
         """ Generator returning module's Option attributes (option_name, option_value, option_description)
 
@@ -269,7 +278,7 @@ class ISAFInterpreter(BaseInterpreter):
             else:
                 yield opt_key, opt_value, opt_description
 
-    @Utils.module_required
+    @Utils.moduleRequired
     def _show_info(self, *args, **kwargs):
         Utils.pprint_dict_in_order(
             self.module_metadata,
@@ -277,27 +286,27 @@ class ISAFInterpreter(BaseInterpreter):
         )
         Utils.print_info()
 
-    @Utils.module_required
+    @Utils.moduleRequired
     def _show_options(self, *args, **kwargs):
         target_opts = ['target', 'port']
         module_opts = [opt for opt in self.current_module.options if opt not in target_opts]
-        headers = ("Name", "Current settings", "Description")
+        headers = ("Name", "Value", "Description")
 
-        Utils.print_info('\nTarget options:')
-        Utils.print_table(headers, *self.get_opts(*target_opts))
+        Utils.print_info('\n\001\033[1m\002Target:\001\033[0m\002')
+        Utils.printTable(headers, *self.get_opts(*target_opts))
 
         if module_opts:
-            Utils.print_info('\nModule options:')
-            Utils.print_table(headers, *self.get_opts(*module_opts))
+            Utils.print_info('\n\001\033[1m\002Module:\001\033[0m\002')
+            Utils.printTable(headers, *self.get_opts(*module_opts))
 
         Utils.print_info()
 
-    @Utils.module_required
+    @Utils.moduleRequired
     def _show_devices(self, *args, **kwargs):  # TODO: cover with tests
         try:
             devices = self.current_module._Exploit__info__['devices']
 
-            Utils.print_info("\nTarget devices:")
+            Utils.print_info("\n\n\001\033[1m\002Devices:\001\033[0m\002")
             i = 0
             for device in devices:
                 if isinstance(device, dict):
@@ -307,7 +316,7 @@ class ISAFInterpreter(BaseInterpreter):
                 i += 1
             Utils.print_info()
         except KeyError:
-            Utils.print_info("\nTarget devices are not defined")
+            Utils.print_info("\nTarget devices not defined.")
 
     def __show_modules(self, root=''):
         for module in [module for module in self.modules if module.startswith(root)]:
@@ -325,6 +334,9 @@ class ISAFInterpreter(BaseInterpreter):
     def _show_creds(self, *args, **kwargs):
         self.__show_modules('Credentials')
 
+    def _show_clients(self, *args, **kwargs):
+        self.__show_modules('Clients')
+
     def command_show(self, *args, **kwargs):
         sub_command = args[0]
         try:
@@ -334,14 +346,14 @@ class ISAFInterpreter(BaseInterpreter):
                               "What do you want to show?\n"
                               "Possible choices are: {}".format(sub_command, self.show_sub_commands))
 
-    @Utils.stop_after(2)
+    @Utils.stopAfter(2)
     def complete_show(self, text, *args, **kwargs):
         if text:
             return [command for command in self.show_sub_commands if command.startswith(text)]
         else:
             return self.show_sub_commands
 
-    @Utils.module_required
+    @Utils.moduleRequired
     def command_check(self, *args, **kwargs):
         try:
             result = self.current_module.check()
@@ -349,11 +361,11 @@ class ISAFInterpreter(BaseInterpreter):
             Utils.print_error(error)
         else:
             if result is True:
-                Utils.print_success("Target is vulnerable")
+                Utils.print_success("Target is vulnerable.")
             elif result is False:
-                Utils.print_error("Target is not vulnerable")
+                Utils.print_error("Target is not vulnerable.")
             else:
-                Utils.print_status("Target could not be verified")
+                Utils.print_status("Target could not be verified.")
 
     def command_help(self, *args, **kwargs):
         Utils.print_info(self.global_help)
@@ -373,7 +385,7 @@ class ISAFInterpreter(BaseInterpreter):
 
         for module in self.modules:
             if keyword.lower() in module.lower():
-                module = Utils.humanize_path(module)
+                module = Utils.dotsToPath(module)
                 Utils.print_info(
                     "{}\033[31m{}\033[0m{}".format(*module.partition(keyword))
                 )

@@ -122,20 +122,19 @@ class BaseInterpreter(object):
         except IndexError:
             return None
 
-    def commands(self, *ignored):
+    def commands(self):
         """ Returns full list of interpreter commands.
 
-        :param ignored:
         :return: full list of interpreter commands
         """
         return [command.rsplit("_").pop() for command in dir(self) if command.startswith("command_")]
 
-    def raw_command_completer(self, text, line, start_index, end_index):
+    def raw_command_completer(self, text):
         """ Complete command w/o any argument """
         return filter(lambda entry: entry.startswith(text), self.suggested_commands())
 
     @staticmethod
-    def default_completer(*ignored):
+    def default_completer():
         return []
 
     def suggested_commands(self):

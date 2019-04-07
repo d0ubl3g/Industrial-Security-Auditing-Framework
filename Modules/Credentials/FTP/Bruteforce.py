@@ -5,7 +5,7 @@ import threading
 
 import Wordlists
 from Base.Exploits import Exploit, Option
-from Utils import multi, print_error, print_success, print_status, print_table, LockedIterator, boolify
+from Utils import multi, print_error, print_success, print_status, printTable, LockedIterator, boolify
 
 
 class Exploit(Exploit):
@@ -79,7 +79,7 @@ class Exploit(Exploit):
         if len(self.credentials):
             print_success("Credentials found!")
             headers = ("Target", "Port", "Login", "Password")
-            print_table(headers, *self.credentials)
+            printTable(headers, *self.credentials)
         else:
             print_error("Credentials not found")
 

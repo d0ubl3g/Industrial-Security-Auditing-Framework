@@ -74,7 +74,7 @@ def index_extra_modules(modules_directory=MODULES_DIR):
 def import_exploit(path):
     """ Import exploit module
 
-    :param path: absolute path to exploit e.g. icssploit.modules.exploits.asus.pass_bypass
+    :param path: absolute path to exploit
     :return: exploit module or error
     """
     try:
@@ -85,15 +85,35 @@ def import_exploit(path):
             "Error during loading '{}'\n\n"
             "Error: {}\n\n"
             "It should be valid path to the module. "
-            "Use <tab> key multiple times for completion.".format(humanize_path(path), err)
+            "Use <tab> key multiple times for completion.".format(dotsToPath(path), err)
         )
 
 
-def iter_modules(modules_directory=MODULES_DIR):
-    """ Iterate over valid modules """
+def importClient(path):
+    """ Import exploit module
+
+    :param path: absolute path to exploit
+    :return: exploit module or error
+    """
+    try:
+        module = importlib.import_module(path)
+        return getattr(module, 'Client')
+    except (ImportError, AttributeError, KeyError) as err:
+        raise ISAFException(
+            "Error during loading '{}'\n\n"
+            "Error: {}\n\n"
+            "It should be valid path to the module. "
+            "Use <tab> key multiple times for completion.".format(dotsToPath(path), err)
+        )
+
+
+def iterateModules(modules_directory=MODULES_DIR):
+    """
+    Iterate over valid modules.
+    """
 
     modules = index_modules(modules_directory)
-    modules = map(lambda x: "".join(['icssploit.modules.', x]), modules)
+    modules = map(lambda x: "".join(['Modules.', x]), modules)
     for path in modules:
         try:
             yield import_exploit(path)
@@ -101,27 +121,31 @@ def iter_modules(modules_directory=MODULES_DIR):
             pass
 
 
-def pythonize_path(path):
-    """ Replace argument to valid python dotted notation.
+def pathToDots(path):
+    """
+    Replace argument to valid python dotted notation.
 
     ex. foo/bar/baz -> foo.bar.baz
+
+    :param path: directory-like
+    :return: dotted notation
     """
     return path.replace('/', '.')
 
 
-def humanize_path(path):
+def dotsToPath(path):
     """ Replace python dotted path to directory-like one.
 
     ex. foo.bar.baz -> foo/bar/baz
 
-    :param path: path to humanize
-    :return: humanized path
+    :param path: dotted notation
+    :return: directory-like
 
     """
     return path.replace('.', '/')
 
 
-def module_required(fn):
+def moduleRequired(fn):
     """ Checks if module is loaded.
 
     Decorator that checks if any module is activated
@@ -143,7 +167,7 @@ def module_required(fn):
     return wrapper
 
 
-def stop_after(space_number):
+def stopAfter(space_number):
     """ Decorator that determine when to stop tab-completion
 
     Decorator that tells command specific complete function
@@ -319,7 +343,7 @@ class NonStringIterable:
         return NotImplemented
 
 
-def print_table(headers, *args, **kwargs):
+def printTable(headers, *args, **kwargs):
     """ Print table.
 
     example:

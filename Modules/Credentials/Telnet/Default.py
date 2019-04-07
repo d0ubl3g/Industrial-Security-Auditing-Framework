@@ -3,7 +3,7 @@ import threading
 
 import Wordlists
 from Base.Exploits import Exploit, Option
-from Utils import multi, print_error, print_success, print_status, print_table, boolify, LockedIterator
+from Utils import multi, print_error, print_success, print_status, printTable, boolify, LockedIterator
 
 
 class Exploit(Exploit):
@@ -32,7 +32,7 @@ class Exploit(Exploit):
     port = Option(23, 'Target port')
 
     threads = Option(8, 'Numbers of threads')
-    defaults = Option(Wordlists.defaults, 'User:Pass or file with default credentials (file://)')
+    defaults = Option(Wordlists.telnet_defaults, 'User:Pass or file with default credentials (file://)')
     verbosity = Option('yes', 'Display authentication attempts')
     stop_on_success = Option('yes', 'Stop on first valid authentication attempt')
 
@@ -63,7 +63,7 @@ class Exploit(Exploit):
         if len(self.credentials):
             print_success("Credentials found!")
             headers = ("Target", "Port", "Login", "Password")
-            print_table(headers, *self.credentials)
+            printTable(headers, *self.credentials)
         else:
             print_error("Credentials not found")
 

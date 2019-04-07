@@ -6,3 +6,4 @@ gnureadline
 python-nmap
 scapy
 paramiko
+colorama

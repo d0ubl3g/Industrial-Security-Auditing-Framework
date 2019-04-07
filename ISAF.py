@@ -3,6 +3,7 @@
 import argparse
 import logging.handlers
 import os
+from colorama import init
 
 import Configuration
 from Interpreters.ISAFInterpreter import ISAFInterpreter
@@ -17,13 +18,14 @@ LOGGER.setLevel(int(Configuration.LOG_LEVEL))
 LOGGER.addHandler(log_handler)
 
 # ARGUMENT PARSE #
-parser = argparse.ArgumentParser(description='ISAF - Industrial Security Auditing Framework')
+parser = argparse.ArgumentParser(description='\001\033[1m\002\001\033[94m\002ISAF - Industrial Security Auditing Framework\001\033[0m\002')
 parser.add_argument('-e',
                     '--extra-package-path',
                     help='Add extra modules to ISAF. (Overwrites Configured One)')
 
 
 def ISAF(extra_package_path=Configuration.EXTRA_PACKAGE_PATH):
+    init()
     if not os.path.isdir(extra_package_path):
         extra_package_path = None
     isaf = ISAFInterpreter(extra_package_path)

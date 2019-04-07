@@ -6,7 +6,7 @@ import Base.Validators as Validators
 import Wordlists
 from Base.Exploits import Exploit, Option
 from Modules.Clients.S7Client import S7Client
-from Utils import multi, print_error, print_success, print_status, print_table, boolify, LockedIterator
+from Utils import multi, print_error, print_success, print_status, printTable, boolify, LockedIterator
 
 
 class Exploit(Exploit):
@@ -58,7 +58,7 @@ class Exploit(Exploit):
         if len(self.strings):
             print_success("Credentials found!")
             headers = ("Target", "Port", "password")
-            print_table(headers, *self.strings)
+            printTable(headers, *self.strings)
         else:
             print_error("Valid password not found")
 
