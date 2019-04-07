@@ -7,3 +7,4 @@ python-nmap
 scapy
 paramiko
 colorama
+pexpect

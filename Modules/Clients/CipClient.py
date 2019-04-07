@@ -27,8 +27,11 @@ class Exploit(Base):
     port = Option(44818, 'Target port')
     timeout = Option(2, 'Connection timeout')
 
-    def __init__(self):
-        super(Exploit, self).__init__('CipClient')
+    def __init__(self, name=""):
+        if name is not None:
+            super(Exploit, self).__init__(name)
+        else:
+            super(Exploit, self).__init__('CipClient')
         self._connection = None
         self._target_info = {}
         self._session = 0x0
