@@ -14,22 +14,21 @@ ISAF aims to be a framework that provides the necessary tools for the correct se
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running for development and testing purposes. 
+These instructions will get you a copy of the project up and running for development and testing purposes. For full documentation go to [Getting Started](https://gitlab.com/d0ubl3g/industrial-security-auditing-framework/wikis/Getting-Started) wiki.
 
-### Prerequisites
+### Setup
 
 Executing the following command would met all the requirements:
 ```
 ./setup.sh
 ```
+The full installation documentation is at [Installation](https://gitlab.com/d0ubl3g/industrial-security-auditing-framework/wikis/Installation) wiki.
 
 ### Usage
+#### See [Usage](https://gitlab.com/d0ubl3g/industrial-security-auditing-framework/wikis/Usage) wiki.
 
-For running ISAF in standard mode execute the following command:
-
-```
-./ISAF.py
-```
+## Documentation
+Documentation is hosted at [ISAF Wiki](https://gitlab.com/d0ubl3g/industrial-security-auditing-framework/wikis/home)
 
 ## References
 
