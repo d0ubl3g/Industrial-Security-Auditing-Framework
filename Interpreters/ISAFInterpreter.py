@@ -74,20 +74,23 @@ class ISAFInterpreter(BaseInterpreter):
              Industrial Security Auditing Framework
                D0ubl3G <d0ubl3g[at]protonmail.com>\n""" \
                       + Fore.RESET + Style.BRIGHT + """
-            Modules""" + Style.NORMAL + """
-                Clients: """ + Fore.GREEN + """{clients_count}""" + Fore.RESET \
-                      + """         Exploits: """ + Fore.GREEN + """{exploits_count}""" + Fore.RESET + """ 
-                Scanners: """ + Fore.GREEN + """{scanners_count}""" + Fore.RESET \
-                      + """        Credentials: """ + Fore.GREEN + """{creds_count}""" + Fore.RESET \
+        Modules""" + Style.NORMAL + """
+           Clients: """ + Fore.GREEN + """{clients_count}""" + Fore.RESET \
+                      + """      Exploits: """ + Fore.GREEN + """{exploits_count}""" + Fore.RESET \
+                      + """      Discovery: """ + Fore.GREEN + """{discovery_count}""" + Fore.RESET + """ 
+           Scanners: """ + Fore.GREEN + """{scanners_count}""" + Fore.RESET \
+                      + """     Credentials: """ + Fore.GREEN + """{creds_count}""" + Fore.RESET \
                       + Style.BRIGHT + """\n
-            Exploits""" + Style.NORMAL + """
-                PLC: """ + Fore.GREEN + """{plc_exploit_count}""" + Fore.RESET \
-                      + """          Switch: """ + Fore.GREEN + """{ics_switch_exploits_count}""" + Fore.RESET + """ 
-                Software: """ + Fore.GREEN + """{ics_software_exploits_count}""" + Fore.RESET
+        Exploits""" + Style.NORMAL + """
+           PLC: """ + Fore.GREEN + """{plc_exploit_count}""" + Fore.RESET \
+                      + """          Switch: """ + Fore.GREEN + """{ics_switch_exploits_count}""" + Fore.RESET \
+                      + """        Software: """ + Fore.GREEN + """{ics_software_exploits_count}""" + Fore.RESET
 
         self.banner = self.banner.format(version="0.0.1a", clients_count=self.modules_count['Clients'],
                                          exploits_count=self.modules_count['Exploits'] + self.modules_count[
                                              'extra_exploits'],
+                                         discovery_count=self.modules_count['Discovery'] + self.modules_count[
+                                             'extra_discovery'],
                                          scanners_count=self.modules_count['Scanners'] + self.modules_count[
                                              'extra_scanners'],
                                          creds_count=self.modules_count['Credentials'] + self.modules_count[
