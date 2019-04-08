@@ -1,7 +1,7 @@
 from Base.Exploits import Exploit, Option
 import Base.Validators as Validators
 from Utils import print_error, print_success, print_status, export_table, port_scan, printTable
-from Modules.Clients.ModbusClient import Exploit as CipClient
+from Modules.Clients.ModbusClient import Exploit as ModbusClient
 
 TABLE_HEADER = ["Product Name", "Device Type", "Vendor ", "Revision", "Serial Number", "Slot", "IP Address"]
 CIP_DEVICES = []
@@ -9,13 +9,12 @@ CIP_DEVICES = []
 
 class Exploit(Exploit):
     __info__ = {
-        'name': 'scanners/cip',
-        'display_name': 'CIP Device Scanner',
+        'name': 'scanners/modbus',
+        'display_name': 'Modbus Device Scanner',
         'authors': [
-            'wenzhe zhu <jtrkid[at]gmail.com>',
             'D0ubl3G <d0ubl3g[at]protonmail.com>',
         ],
-        'description': 'Scan all device which support Ethernet/IP CIP protocol.',
+        'description': 'Scan all device which support Modbus protocol.',
         'references': [
         ],
         'devices': [
@@ -25,7 +24,7 @@ class Exploit(Exploit):
 
     target = Option('', "String for hosts as nmap use it 'scanme.nmap.org'"
                                  " or '198.116.0-255.1-127' or '216.163.128.20/20'")
-    port = Option(44818, 'Ethernet/IP CIP port, default is 44818/TCP', validators=Validators.integer)
+    port = Option(502, 'Modbus port, default is 502/TCP', validators=Validators.integer)
     verbose = Option(0, 'Scapy verbose level, 0 to 2', validators=Validators.integer)
     max_slot = Option(5, 'Maximum PLC Slot number for scan, default is 5, set to 10 '
                                   'if you want scan up to slot 10', validators=Validators.integer)
@@ -40,7 +39,7 @@ class Exploit(Exploit):
         serial_number = ''
         slot = ''
         ip_address = host
-        target = CipClient(name='CIP_Scanner')
+        target = ModbusClient()
         target.connect()
         for slot_num in range(self.max_slot + 1):
                 print_status("Tring to scan %s with Slot%s" % (host, slot_num))
@@ -64,7 +63,7 @@ class Exploit(Exploit):
         for host in nm.all_hosts():
             if nm[host]['tcp'][self.port]['state'] == "open":
                 print_success("Host: %s, port:%s is open" % (host, self.port))
-                self.get_target_info(host=host, port=self.port)
+                #self.get_target_info(host=host, port=self.port)
         unique_device = [list(x) for x in set(tuple(x) for x in self.result)]
         unique_device = sorted(unique_device, key=lambda x: (x[5], x[6]))
 
