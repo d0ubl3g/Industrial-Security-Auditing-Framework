@@ -34,7 +34,7 @@ class Exploit(Exploit):
         ],
     }
 
-    target = Option('', 'Target IP address or file with target:port (file://)')
+    target = Option('192.168.1.1', 'Target IP address or file with target:port (file://)')
     port = Option(80, 'Target port')
 
     threads = Option(8, 'Numbers of threads')

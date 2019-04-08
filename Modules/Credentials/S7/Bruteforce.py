@@ -28,12 +28,12 @@ class Exploit(Exploit):
         ],
     }
 
-    target = Option('', 'Target address e.g. 192.168.1.1', validators=Validators.ipv4)
-    port = Option(102, 'Target Port', validators=Validators.integer)
+    target = Option('192.168.1.1', 'Target address.', validators=Validators.ipv4)
+    port = Option(102, 'Target port.', validators=Validators.integer)
     rack = Option(0, 'CPU rack number.', validators=Validators.integer)
     slot = Option(2, 'CPU slot number.', validators=Validators.integer)
     password = Option(Wordlists.passwords, 'password string or file with community strings (file://)')
-    threads = Option(3, 'Number of threads')
+    threads = Option(3, 'Number of threads.')
     verbose = Option(0, 'Verbose scapy output. 1: display, 0: hide', validators=Validators.choice([0, 1]))
     stop_on_success = Option('yes', 'Stop on first valid community string')
 

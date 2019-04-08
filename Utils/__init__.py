@@ -300,7 +300,7 @@ def __cprint(*args, **kwargs):
 
 
 def print_error(*args, **kwargs):
-    __cprint(Fore.LIGHTRED_EX + '[-]' + Fore.RESET, *args, **kwargs)
+    __cprint(Fore.LIGHTRED_EX + '[X]' + Fore.RESET, *args, **kwargs)
 
 
 def print_status(*args, **kwargs):
