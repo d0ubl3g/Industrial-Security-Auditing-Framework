@@ -84,7 +84,8 @@ class ISAFInterpreter(BaseInterpreter):
         Exploits""" + Style.NORMAL + """
            PLC: """ + Fore.GREEN + """{plc_exploit_count}""" + Fore.RESET \
                       + """          Switch: """ + Fore.GREEN + """{ics_switch_exploits_count}""" + Fore.RESET \
-                      + """        Software: """ + Fore.GREEN + """{ics_software_exploits_count}""" + Fore.RESET
+                      + """        Software: """ + Fore.GREEN + """{ics_software_exploits_count}""" + Fore.RESET \
+                      + """\n\n"""
 
         self.banner = self.banner.format(version="0.0.1a", clients_count=self.modules_count['Clients'],
                                          exploits_count=self.modules_count['Exploits'] + self.modules_count[

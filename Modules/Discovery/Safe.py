@@ -9,7 +9,7 @@ TABLE_HEADER = ["IPv4", "MAC", "Vendor"]
 class Exploit(Exploit):
     __info__ = {
         'name': 'discovery/safe',
-        'display_name': 'Save ARP Host Discovery',
+        'display_name': 'Safe ARP Host Discovery',
         'authors': [
             'D0ubl3G <d0ubl3g[at]protonmail.com>',
         ],
@@ -42,7 +42,6 @@ class Exploit(Exploit):
                     if 'vendor' in str(e):
                         vendor = 'Unknown'
                 finally:
-                    print_success(ipv4 + " - " + mac + " - " + vendor + " found!")
                     self.result.append([ipv4, mac, vendor])
                     ipv4 = ""
                     mac = ""
@@ -51,7 +50,7 @@ class Exploit(Exploit):
             unique_device = sorted(unique_device, key=lambda x: (x[0], x[1]))
             if len(self.result) > 0:
                 print_success("Found %s devices." % len(self.result))
-                printTable(TABLE_HEADER, *unique_device, **{'max_column_length': 40})
+                printTable(TABLE_HEADER, *unique_device, **{'max_column_length': 50})
                 print('\r')
                 self.result = []
             else:
