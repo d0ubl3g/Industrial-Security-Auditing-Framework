@@ -3,7 +3,7 @@ import os
 
 import pexpect
 
-from Test import TestCase
+from Test.TestCase import isafTestCase as TestCase
 
 
 class TestCompleter(TestCase):
@@ -27,7 +27,7 @@ class TestCompleter(TestCase):
         self.isf.expect_exact(value, timeout=1)
 
     def set_module(self):
-        self.isf.send("use creds/ftp_bruteforce\r\n")
+        self.isf.send("use Credentials/FTP/Bruteforce\r\n")
         self.assertPrompt(self.module_prompt('FTP Bruteforce'))
 
     def test_raw_commands_no_module(self):
@@ -50,13 +50,13 @@ class TestCompleter(TestCase):
         self.isf.send("use cr\t\t")
         self.assertPrompt(
             self.raw_prompt,
-            'use creds/'
+            'use Credentials/'
         )
 
     def test_complete_use_creds_2(self):
-        self.isf.send("use creds/\t\t")
+        self.isf.send("use Credentials/\t\t")
         self.assertPrompt(
-            'creds/http_basic_default'
+            'Credentials/http_basic_default'
         )
 
     def test_complete_use_exploits(self):

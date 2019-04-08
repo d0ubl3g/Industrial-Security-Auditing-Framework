@@ -15,17 +15,17 @@ from Utils.Printer import PrinterThread
 
 class ISAFInterpreter(BaseInterpreter):
     history_file = os.path.expanduser("~/.isaf_history")
-    global_help = """
-    ISAF General Commands:
-    help                        Print this help menu.
-    use <module>                Select a module for usage.
-    exec <shell command> <args> Execute a command in a shell.
-    search <term>               Search for appropriate module.
-    exit                        Exit ISAF.
+    global_help = Style.BRIGHT + """
+    ISAF Commands:""" + Style.NORMAL + """
+    help                                Print this help menu.
+    use <module>                        Select a module for usage.
+    exec <shell command> <args>         Execute a command in a shell.
+    search <term>                       Search for appropriate module.
+    exit                                Exit ISAF.
     """
 
-    module_help = """
-    Modules Commands:
+    module_help = Style.BRIGHT + """
+    Modules Commands:""" + Style.NORMAL + """
     run                                 Run the selected module.
     back                                De-Select the current module.
     set <option> <value>                Set an option for the selected module.
@@ -43,7 +43,7 @@ class ISAFInterpreter(BaseInterpreter):
         self.raw_prompt_template = None
         self.module_prompt_template = None
         self.prompt_hostname = 'ISAF'
-        self.show_sub_commands = ('info', 'options', 'devices', 'all', 'Credentials', 'Exploits', 'Scanners')
+        self.show_sub_commands = ('info', 'options', 'devices', 'all', 'Credentials', 'Exploits', 'Scanners', 'Discovery')
         self.global_commands = sorted(['use ', 'exec ', 'help', 'exit', 'show ', 'search '])
         self.module_commands = ['run', 'back', 'set ', 'unset ', 'gset ', 'gunset ', 'check']
         self.module_commands.extend(self.global_commands)
@@ -241,16 +241,16 @@ class ISAFInterpreter(BaseInterpreter):
             return self.current_module.options
 
     @Utils.moduleRequired
-    def command_setg(self, *args, **kwargs):
+    def command_gset(self, *args, **kwargs):
         kwargs['glob'] = True
         self.command_set(*args, **kwargs)
 
     @Utils.stopAfter(2)
-    def complete_setg(self, text, *args, **kwargs):
+    def complete_gset(self, text, *args, **kwargs):
         return self.complete_set(text, *args, **kwargs)
 
     @Utils.moduleRequired
-    def command_unsetg(self, *args, **kwargs):
+    def command_gunset(self, *args, **kwargs):
         key, _, value = args[0].partition(' ')
         try:
             del Exploits.GLOBAL_OPTS[key]
@@ -261,7 +261,7 @@ class ISAFInterpreter(BaseInterpreter):
             Utils.print_success({key: value})
 
     @Utils.stopAfter(2)
-    def complete_unsetg(self, text, *args, **kwargs):
+    def complete_gunset(self, text, *args, **kwargs):
         if text:
             return [' '.join((attr, "")) for attr in Exploits.GLOBAL_OPTS.keys() if attr.startswith(text)]
         else:
@@ -287,7 +287,7 @@ class ISAFInterpreter(BaseInterpreter):
     def _show_info(self, *args, **kwargs):
         Utils.pprint_dict_in_order(
             self.module_metadata,
-            ("display_name", "description", "devices", "authors", "references"),
+            ("display_name", "name", "description", "devices", "authors", "references"),
         )
         Utils.print_info()
 
@@ -297,11 +297,11 @@ class ISAFInterpreter(BaseInterpreter):
         module_opts = [opt for opt in self.current_module.options if opt not in target_opts]
         headers = ("Name", "Value", "Description")
 
-        Utils.print_info('\n\001\033[1m\002Target:\001\033[0m\002')
+        Utils.print_info(Style.BRIGHT + "\nTarget:" + Style.NORMAL)
         Utils.printTable(headers, *self.get_opts(*target_opts))
 
         if module_opts:
-            Utils.print_info('\n\001\033[1m\002Module:\001\033[0m\002')
+            Utils.print_info(Style.BRIGHT + "\nModule:" + Style.NORMAL)
             Utils.printTable(headers, *self.get_opts(*module_opts))
 
         Utils.print_info()
@@ -311,7 +311,7 @@ class ISAFInterpreter(BaseInterpreter):
         try:
             devices = self.current_module._Exploit__info__['devices']
 
-            Utils.print_info("\n\n\001\033[1m\002Devices:\001\033[0m\002")
+            Utils.print_info(Style.BRIGHT + "\nDevices:" + Style.NORMAL)
             i = 0
             for device in devices:
                 if isinstance(device, dict):
@@ -338,6 +338,9 @@ class ISAFInterpreter(BaseInterpreter):
 
     def _show_creds(self, *args, **kwargs):
         self.__show_modules('Credentials')
+
+    def _show_discovery(self, *args, **kwargs):
+        self.__show_modules('Discovery')
 
     def _show_clients(self, *args, **kwargs):
         self.__show_modules('Clients')
@@ -375,7 +378,7 @@ class ISAFInterpreter(BaseInterpreter):
     def command_help(self, *args, **kwargs):
         Utils.print_info(self.global_help)
         if self.current_module:
-            Utils.print_info("\n", self.module_help)
+            Utils.print_info(self.module_help)
 
     @staticmethod
     def command_exec(*args, **kwargs):

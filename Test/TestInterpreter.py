@@ -3,8 +3,8 @@ import os
 import unittest.mock as mock
 
 from Base.Exploits import Exploit, Option, GLOBAL_OPTS
-import Interpreters.ISAFInterpreter as ISAFInterpreter
-from Test import TestCase
+from Interpreters.ISAFInterpreter import ISAFInterpreter as ISAFInterpreter
+from Test.TestCase import isafTestCase as TestCase
 
 
 class TestExploitFoo(Exploit):
@@ -67,7 +67,7 @@ class InterpreterTest(TestCase):
             [mock.call({'rhost': new_rhost_value}), mock.call({'port': new_port_value})]
         )
 
-    @mock.patch('icssploit.utils.print_error')
+    @mock.patch('Utils.print_error')
     def test_command_set_unknown_option(self, mock_print_error):
         unknown_option = "unknown"
         del self.interpreter.current_module.unknown
@@ -81,7 +81,7 @@ class InterpreterTest(TestCase):
             [mock.call("You can't set option '{}'.\nAvailable options: {}".format(unknown_option, known_options))]
         )
 
-    @mock.patch('icssploit.utils.print_success')
+    @mock.patch('Utils.print_success')
     def test_command_set_global(self, mock_print_success):
         rhost, new_rhost_value = 'rhost_value', "new_rhost_value"
         port, new_port_value = 'port_value', "new_port_value"
@@ -104,7 +104,7 @@ class InterpreterTest(TestCase):
             [mock.call({'rhost': new_rhost_value}), mock.call({'port': new_port_value})]
         )
 
-    @mock.patch('icssploit.utils.print_success')
+    @mock.patch('Utils.print_success')
     def test_command_setg(self, mock_print_success):
         target, new_target_value = 'target_value', "new_target_value"
         self.interpreter.current_module.options = ['target', 'port']
@@ -117,14 +117,14 @@ class InterpreterTest(TestCase):
         self.assertEqual(self.interpreter.current_module.target, new_target_value)
         mock_print_success.assert_called_once_with({'target': '{}'.format(new_target_value)})
 
-    @mock.patch('icssploit.utils.print_success')
+    @mock.patch('Utils.print_success')
     def test_command_unsetg(self, mock_print_success):
         GLOBAL_OPTS['foo'] = 'bar'
         self.interpreter.command_unsetg('foo')
         self.assertNotIn('foo', GLOBAL_OPTS.keys())
         mock_print_success.assert_called_once_with({'foo': ''})
 
-    @mock.patch('icssploit.utils.print_error')
+    @mock.patch('Utils.print_error')
     def test_command_unsetg_unknown_option(self, mock_print_error):
         unknown_option = "unknown"
         GLOBAL_OPTS['foo'] = 'bar'
@@ -133,14 +133,14 @@ class InterpreterTest(TestCase):
         mock_print_error.assert_called_once_with("You can't unset global option '{}'.\n"
                                                  "Available global options: ['foo']".format(unknown_option))
 
-    @mock.patch('icssploit.utils.print_status')
+    @mock.patch('Utils.print_status')
     def test_command_run(self, mock_print_status):
         with mock.patch.object(self.interpreter.current_module, 'run') as mock_run:
             self.interpreter.command_run()
             mock_run.assert_called_once_with()
             mock_print_status.assert_called_once_with('Running module...')
 
-    @mock.patch('icssploit.utils.print_success')
+    @mock.patch('Utils.print_success')
     def test_command_check_target_vulnerable(self, mock_print_success):
         with mock.patch.object(self.interpreter.current_module, 'check') as mock_check:
             mock_check.return_value = True
@@ -148,7 +148,7 @@ class InterpreterTest(TestCase):
             mock_check.assert_called_once_with()
             mock_print_success.assert_called_once_with('Target is vulnerable')
 
-    @mock.patch('icssploit.utils.print_error')
+    @mock.patch('Utils.print_error')
     def test_command_check_target_not_vulnerable(self, print_error):
         with mock.patch.object(self.interpreter.current_module, 'check') as mock_check:
             mock_check.return_value = False
@@ -156,7 +156,7 @@ class InterpreterTest(TestCase):
             mock_check.assert_called_once_with()
             print_error.assert_called_once_with('Target is not vulnerable')
 
-    @mock.patch('icssploit.utils.print_status')
+    @mock.patch('Utils.print_status')
     def test_command_check_target_could_not_be_verified_1(self, print_status):
         with mock.patch.object(self.interpreter.current_module, 'check') as mock_check:
             mock_check.return_value = "something"
@@ -164,7 +164,7 @@ class InterpreterTest(TestCase):
             mock_check.assert_called_once_with()
             print_status.assert_called_once_with('Target could not be verified')
 
-    @mock.patch('icssploit.utils.print_status')
+    @mock.patch('Utils.print_status')
     def test_command_check_target_could_not_be_verified_2(self, print_status):
         with mock.patch.object(self.interpreter.current_module, 'check') as mock_check:
             mock_check.return_value = None
@@ -172,7 +172,7 @@ class InterpreterTest(TestCase):
             mock_check.assert_called_once_with()
             print_status.assert_called_once_with('Target could not be verified')
 
-    @mock.patch('icssploit.utils.print_error')
+    @mock.patch('Utils.print_error')
     def test_command_check_not_supported_by_module(self, print_error):
         with mock.patch.object(self.interpreter.current_module, 'check') as mock_check:
             exception = NotImplementedError("Not available")
@@ -183,8 +183,8 @@ class InterpreterTest(TestCase):
 
     @mock.patch('sys.exc_info')
     @mock.patch('traceback.format_exc')
-    @mock.patch('icssploit.utils.print_error')
-    @mock.patch('icssploit.utils.print_status')
+    @mock.patch('Utils.print_error')
+    @mock.patch('Utils.print_status')
     def test_command_run_exception_during_exploit_execution(self, mock_print_status, mock_print_error, mock_format_exc, mock_exc_info):
         with mock.patch.object(self.interpreter.current_module, 'run') as mock_run:
             mock_run.side_effect = RuntimeError
@@ -252,14 +252,14 @@ class InterpreterTest(TestCase):
     def test_suggested_commands_with_loaded_module_and_no_global_value_set(self):
         self.assertEqual(
             list(self.interpreter.suggested_commands()),
-            ['back', 'check', 'exec ', 'exit', 'help', 'run', 'search ', 'set ', 'setg ', 'show ', 'use ']  # Extra space at the end because of following param
+            ['back', 'check', 'exec ', 'exit', 'help', 'run', 'search ', 'set ', 'gset ', 'show ', 'use ']  # Extra space at the end because of following param
         )
 
     def test_suggested_commands_with_loaded_module_and_global_value_set(self):
         GLOBAL_OPTS['key'] = 'value'
         self.assertEqual(
             list(self.interpreter.suggested_commands()),
-            ['back', 'check', 'exec ', 'exit', 'help', 'run', 'search ', 'set ', 'setg ', 'show ', 'unsetg ', 'use ']  # Extra space at the end because of following param
+            ['back', 'check', 'exec ', 'exit', 'help', 'run', 'search ', 'set ', 'gset ', 'show ', 'gunset ', 'use ']  # Extra space at the end because of following param
         )
 
     def test_suggested_commands_without_loaded_module(self):
@@ -276,7 +276,7 @@ class InterpreterTest(TestCase):
         * Known Exploit
         * Known module
         """
-        module_path = "exploits/foo/bar"
+        module_path = "Exploits/foo/bar"
         self.interpreter.current_module = None
         self.interpreter.modules = [module_path, 'doo/pa/foo/bar']
         exploit_class = mock.MagicMock(name="password_disclosure_module")
@@ -285,7 +285,7 @@ class InterpreterTest(TestCase):
 
         self.interpreter.command_use(module_path)
 
-        mocked_import_module.assert_called_once_with('icssploit.modules.exploits.foo.bar')
+        mocked_import_module.assert_called_once_with('Modules.Exploits.foo.bar')
         self.assertEqual(self.interpreter.current_module, exploit_class())
 
     @mock.patch('importlib.import_module')
@@ -295,7 +295,7 @@ class InterpreterTest(TestCase):
         * Known Exploit
         * Known module
         """
-        module_path = "creds/foo/bar/baz"
+        module_path = "Credentials/foo/bar/baz"
         self.interpreter.current_module = None
         self.interpreter.modules = [module_path, 'doo/pa/foo/bar']
         exploit_class = mock.MagicMock(name="password_disclosure_module")
@@ -304,11 +304,11 @@ class InterpreterTest(TestCase):
 
         self.interpreter.command_use(module_path)
 
-        mocked_import_module.assert_called_once_with('icssploit.modules.creds.foo.bar.baz')
+        mocked_import_module.assert_called_once_with('Modules.Credentials.foo.bar.baz')
         self.assertEqual(self.interpreter.current_module, exploit_class())
 
     @mock.patch('importlib.import_module')
-    @mock.patch('icssploit.utils.print_error')
+    @mock.patch('Utils.print_error')
     def test_command_use_unknown_module(self, mocked_print_error, mocked_import_module):
         """ Testing command_use()
 
@@ -316,29 +316,29 @@ class InterpreterTest(TestCase):
         """
         self.interpreter.current_module = None
         self.interpreter.modules = ['doo/pa/foo/bar']
-        module_path = "creds/foo/bar/baz"
+        module_path = "Credentials/foo/bar/baz"
         mocked_import_module.side_effect = ImportError("Not working")
 
         self.interpreter.command_use(module_path)
 
-        mocked_import_module.assert_called_once_with('icssploit.modules.creds.foo.bar.baz')
+        mocked_import_module.assert_called_once_with('Modules.Credentials.foo.bar.baz')
 
         mocked_print_error.assert_called_once_with(
-            "Error during loading 'icssploit/modules/creds/foo/bar/baz'\n\n"
+            "Error during loading 'Modules/Credentials/foo/bar/baz'\n\n"
             "Error: Not working\n\n"
             "It should be valid path to the module. Use <tab> key multiple times for completion."
         )
         self.assertEqual(self.interpreter.current_module, None)
 
     @mock.patch('importlib.import_module')
-    @mock.patch('icssploit.utils.print_error')
+    @mock.patch('Utils.print_error')
     def test_command_use_unknown_extension(self, mocked_print_error, mocked_import_module):
         """ Testing command_use()
 
         * Unknown Exploit
         * Known module
         """
-        module_path = "exploits/foo/bar"
+        module_path = "Exploits/foo/bar"
         self.interpreter.current_module = None
         self.interpreter.modules = [module_path, 'doo/pa/foo/bar']
         mocked_import_module.return_value = mocked_module = mock.MagicMock(name='module')
@@ -346,16 +346,16 @@ class InterpreterTest(TestCase):
 
         self.interpreter.command_use(module_path)
 
-        mocked_import_module.assert_called_once_with('icssploit.modules.exploits.foo.bar')
+        mocked_import_module.assert_called_once_with('Modules.Exploits.foo.bar')
         mocked_print_error.assert_called_once_with(
-            "Error during loading 'icssploit/modules/exploits/foo/bar'\n\n"
+            "Error during loading 'Modules/Exploits/foo/bar'\n\n"
             "Error: Exploit\n\n"
             "It should be valid path to the module. Use <tab> key multiple times for completion."
         )
 
         self.assertEqual(self.interpreter.current_module, None)
 
-    @mock.patch('icssploit.utils.print_info')
+    @mock.patch('Utils.print_info')
     def test_show_info(self, mock_print):
         metadata = {
             'devices': 'target_desc',
@@ -386,7 +386,7 @@ class InterpreterTest(TestCase):
             ]
         )
 
-    @mock.patch('icssploit.utils.print_info')
+    @mock.patch('Utils.print_info')
     def test_command_show_info_module_with_no_metadata(self, mock_print):
         metadata = {}
         description = "Elaborate description fo the module"
@@ -399,7 +399,7 @@ class InterpreterTest(TestCase):
             [mock.call()]
         )
 
-    @mock.patch('icssploit.utils.print_info')
+    @mock.patch('Utils.print_info')
     def test_show_options(self, mock_print):
         exploit_attributes = {
             'target': 'target_desc',
@@ -440,7 +440,7 @@ class InterpreterTest(TestCase):
             ]
         )
 
-    @mock.patch('icssploit.utils.print_info')
+    @mock.patch('Utils.print_info')
     def test_command_show_options_when_there_is_no_module_opts(self, mock_print):
         exploit_attributes = {
             'target': 'target_desc',
@@ -472,86 +472,86 @@ class InterpreterTest(TestCase):
             self.interpreter.command_show("options")
             mock_show_options.assert_called_once_with("options")
 
-    @mock.patch('icssploit.utils.print_error')
+    @mock.patch('Utils.print_error')
     def test_command_show_unknown_sub_command(self, mock_print_error):
         self.interpreter.command_show('unknown_sub_command')
         mock_print_error.assert_called_once_with("Unknown 'show' sub-command 'unknown_sub_command'. "
                                                  "What do you want to show?\n"
                                                  "Possible choices are: {}".format(self.interpreter.show_sub_commands))
 
-    @mock.patch('icssploit.utils.print_info')
+    @mock.patch('Utils.print_info')
     def test_show_all(self, mock_print):
         self.interpreter.modules = [
-            'exploits.foo',
-            'exploits.bar',
-            'scanners.foo',
-            'scanners.bar',
-            'creds.foo',
-            'creds.bar',
+            'Exploits.foo',
+            'Exploits.bar',
+            'Scanners.foo',
+            'Scanners.bar',
+            'Credentials.foo',
+            'Credentials.bar',
         ]
 
         self.interpreter._show_all()
         self.assertEqual(
             mock_print.mock_calls,
             [
-                mock.call('exploits/foo'),
-                mock.call('exploits/bar'),
-                mock.call('scanners/foo'),
-                mock.call("scanners/bar"),
-                mock.call("creds/foo"),
-                mock.call("creds/bar"),
+                mock.call('Exploits/foo'),
+                mock.call('Exploits/bar'),
+                mock.call('Scanners/foo'),
+                mock.call("Scanners/bar"),
+                mock.call("Credentials/foo"),
+                mock.call("Credentials/bar"),
             ]
         )
 
-    @mock.patch('icssploit.utils.print_info')
-    def test_show_scanners(self, mock_print):
+    @mock.patch('Utils.print_info')
+    def test_show_Scanners(self, mock_print):
         self.interpreter.modules = [
-            'exploits.foo',
-            'exploits.bar',
-            'scanners.foo',
-            'scanners.bar',
-            'creds.foo',
-            'creds.bar',
+            'Exploits.foo',
+            'Exploits.bar',
+            'Scanners.foo',
+            'Scanners.bar',
+            'Credentials.foo',
+            'Credentials.bar',
         ]
 
-        self.interpreter._show_scanners()
+        self.interpreter._show_Scanners()
         self.assertEqual(
             mock_print.mock_calls,
-            [mock.call("scanners/foo"), mock.call("scanners/bar")]
+            [mock.call("Scanners/foo"), mock.call("Scanners/bar")]
         )
 
     @mock.patch('Utils.print_info')
-    def test_show_exploits(self, mock_print):
+    def test_show_Exploits(self, mock_print):
         self.interpreter.modules = [
-            'exploits.foo',
-            'exploits.bar',
-            'scanners.foo',
-            'scanners.bar',
-            'creds.foo',
-            'creds.bar',
+            'Exploits.foo',
+            'Exploits.bar',
+            'Scanners.foo',
+            'Scanners.bar',
+            'Credentials.foo',
+            'Credentials.bar',
         ]
 
-        self.interpreter._show_exploits()
+        self.interpreter._show_Exploits()
         self.assertEqual(
             mock_print.mock_calls,
-            [mock.call("exploits/foo"), mock.call("exploits/bar")]
+            [mock.call("Exploits/foo"), mock.call("Exploits/bar")]
         )
 
     @mock.patch('Utils.print_info')
-    def test_show_creds(self, mock_print):
+    def test_show_Credentials(self, mock_print):
         self.interpreter.modules = [
-            'exploits.foo',
-            'exploits.bar',
-            'scanners.foo',
-            'scanners.bar',
-            'creds.foo',
-            'creds.bar',
+            'Exploits.foo',
+            'Exploits.bar',
+            'Scanners.foo',
+            'Scanners.bar',
+            'Credentials.foo',
+            'Credentials.bar',
         ]
 
-        self.interpreter._show_creds()
+        self.interpreter._show_Credentials()
         self.assertEqual(
             mock_print.mock_calls,
-            [mock.call("creds/foo"), mock.call("creds/bar")]
+            [mock.call("Credentials/foo"), mock.call("Credentials/bar")]
         )
 
     def test_if_command_run_has_module_required_decorator(self):
@@ -620,44 +620,44 @@ class InterpreterTest(TestCase):
     @mock.patch('Utils.print_info')
     def test_command_search_01(self, mock_print):
         self.interpreter.modules = [
-            'exploits.asus.foo',
-            'exploits.asus.bar',
-            'exploits.linksys.baz',
-            'exploits.cisco.foo',
+            'Exploits.asus.foo',
+            'Exploits.asus.bar',
+            'Exploits.linksys.baz',
+            'Exploits.cisco.foo',
         ]
         self.interpreter.command_search("asus")
         self.assertEqual(
             mock_print.mock_calls,
             [
-                mock.call('exploits/\x1b[31masus\x1b[0m/foo'),
-                mock.call('exploits/\x1b[31masus\x1b[0m/bar'),
+                mock.call('Exploits/\x1b[31masus\x1b[0m/foo'),
+                mock.call('Exploits/\x1b[31masus\x1b[0m/bar'),
             ]
         )
 
     @mock.patch('Utils.print_info')
     def test_command_search_02(self, mock_print):
         self.interpreter.modules = [
-            'exploits.asus.foo',
-            'exploits.asus.bar',
-            'exploits.linksys.baz',
-            'exploits.cisco.foo',
+            'Exploits.asus.foo',
+            'Exploits.asus.bar',
+            'Exploits.linksys.baz',
+            'Exploits.cisco.foo',
         ]
         self.interpreter.command_search("foo")
         self.assertEqual(
             mock_print.mock_calls,
             [
-                mock.call('exploits/asus/\x1b[31mfoo\x1b[0m'),
-                mock.call('exploits/cisco/\x1b[31mfoo\x1b[0m')
+                mock.call('Exploits/asus/\x1b[31mfoo\x1b[0m'),
+                mock.call('Exploits/cisco/\x1b[31mfoo\x1b[0m')
             ]
         )
 
     @mock.patch('Utils.print_error')
     def test_command_search_03(self, print_error):
         self.interpreter.modules = [
-            'exploits.asus.foo',
-            'exploits.asus.bar',
-            'exploits.linksys.baz',
-            'exploits.cisco.foo',
+            'Exploits.asus.foo',
+            'Exploits.asus.bar',
+            'Exploits.linksys.baz',
+            'Exploits.cisco.foo',
         ]
         self.interpreter.command_search("")
         self.assertEqual(
