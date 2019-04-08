@@ -39,7 +39,7 @@ For running ISAF in standard mode execute the following command:
 
 ## Authors
 
-* **D0ubl3G** - *d0ubl3g[at]protonmail.com*
+* **D0ubl3G**: d0ubl3g[at]protonmail.com | [@D0ubl3G](https://t.me/d0ubl3g) (Telegram)
 
 See also the list of [contributors]() who participated in this project.
 
