@@ -17,6 +17,7 @@ from colorama import Fore
 from abc import ABCMeta, abstractmethod
 from distutils.util import strtobool
 from functools import wraps
+from colorama import Fore, Style
 
 import nmap
 import requests
@@ -389,7 +390,7 @@ def printTable(headers, *args, **kwargs):
         else:
             current_line_fill = max(column) + extra_fill
         fill.append(current_line_fill)
-        headers_line = "".join((headers_line, "{header:<{fill}}".format(header=header, fill=current_line_fill)))
+        headers_line = "".join((headers_line, Style.BRIGHT + "{header:<{fill}}".format(header=header, fill=current_line_fill) + Style.NORMAL))
         headers_separator_line = "".join((
             headers_separator_line,
             '{:<{}}'.format(header_separator * len(header), current_line_fill)
