@@ -1,12 +1,12 @@
+import logging
 from scapy.supersocket import StreamSocket
 
-from Modules.Clients.Unstable.BaseClient import Base
 from Protocols.Modbus import *
+from Base.Clients import Option, Client
+from Utils import print_error, print_success
 
-from Base.Exploits import Option
 
-
-class Exploit(Base):
+class Client(Client):
     __info__ = {
         'name': 'clients/modbus',
         'display_name': 'Modbus Client',
@@ -22,29 +22,27 @@ class Exploit(Base):
         ],
     }
 
-    target = Option('', 'Target IP address')
-    port = Option(502, 'Target port')
-    timeout = Option(2, 'Connection timeout')
+    target = Option('', 'Target IP address.')
+    port = Option(502, 'Target port.')
+    timeout = Option(2, 'Connection timeout.')
 
     def __init__(self):
-        super(Exploit, self).__init__(name='Modbus Client')
+        super(Client, self).__init__()
         self._connection = None
         self._connected = False
 
     def run(self):
-        self.connect()
-
-    def connect(self):
-        sock = socket.socket()
-        sock.connect((self.target, self.port))
-        sock.settimeout(self.timeout)
-        self._connection = StreamSocket(sock, Raw)
+        self.connect(self.target, self.port)
 
     def connect(self, target, port):
-        sock = socket.socket()
-        sock.connect((target, port))
-        sock.settimeout(self.timeout)
-        self._connection = StreamSocket(sock, Raw)
+        try:
+            sock = socket.socket()
+            sock.connect((target, port))
+            sock.settimeout(self.timeout)
+            self._connection = StreamSocket(sock, Raw)
+        except ConnectionRefusedError as e:
+            print_error("Conection was refused.")
+
 
     def send_packet(self, packet):
         if self._connection:
@@ -52,11 +50,11 @@ class Exploit(Base):
                 self._connection.send(packet)
 
             except Exception as err:
-                self.logger.error(err)
+                print_error(err)
                 return None
 
         else:
-            self.logger.error("Please create connect before send packet!")
+            print_error("Please create connect before send packet!")
 
     def send_receive_packet(self, packet):
         if self._connection:
@@ -65,10 +63,10 @@ class Exploit(Base):
                 return rsp
 
             except Exception as err:
-                self.logger.error(err)
+                print_error(err)
                 return None
         else:
-            self.logger.error("Please create connect before send packet!")
+            print_error("Please create connect before send packet!")
 
     def receive_packet(self):
         if self._connection:
@@ -77,11 +75,11 @@ class Exploit(Base):
                 return rsp
 
             except Exception as err:
-                self.logger.error(err)
+                print_error(err)
                 return None
 
         else:
-            self.logger.error("Please create connect before receive packet!")
+            print_error("Please create connect before receive packet!")
 
     def send_modbus_packet(self, packet):
         if self._connection:
@@ -89,11 +87,11 @@ class Exploit(Base):
                 self._connection.send(packet)
 
             except Exception as err:
-                self.logger.error(err)
+                print_error(err)
                 return None
 
         else:
-            self.logger.error("Please create connect before send packet!")
+            print_error("Please create connect before send packet!")
 
     def send_receive_modbus_packet(self, packet):
         func_code = packet.func_code
@@ -105,15 +103,15 @@ class Exploit(Base):
                     if rsp.haslayer(modbus_response_classes[func_code]):
                         return rsp
                     elif rsp.haslayer(GenericError):
-                        self.logger.error("Got error with error code:%s" % rsp.exceptCode)
+                        print_error("Got error with error code:%s" % rsp.exceptCode)
                 return None
 
             except Exception as err:
-                self.logger.error(err)
+                print_error(err)
                 return None
 
         else:
-            self.logger.error("Please create connect before send packet!")
+            print_error("Please create connect before send packet!")
 
     def receive_modbus_packet(self):
         if self._connection:
@@ -124,10 +122,10 @@ class Exploit(Base):
                 return rsp
 
             except Exception as err:
-                self.logger.error(err)
+                print_error(err)
                 return None
         else:
-            self.logger.error("Please create connect before receive packet!")
+            print_error("Please create connect before receive packet!")
 
     @staticmethod
     def bytes_to_bit_array(coils_bytes):

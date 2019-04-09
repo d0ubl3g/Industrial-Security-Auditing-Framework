@@ -8,6 +8,7 @@ from colorama import Fore, Style
 
 import Utils
 from Base import Exploits
+from Base import Clients
 from Exceptions.ISAFExceptions import ISAFException
 from Interpreters.BaseInterpreter import BaseInterpreter
 from Utils.Printer import PrinterThread
@@ -45,7 +46,7 @@ class ISAFInterpreter(BaseInterpreter):
         self.prompt_hostname = 'ISAF'
         self.show_sub_commands = ('info', 'options', 'devices', 'all', 'Credentials', 'Exploits', 'Scanners', 'Discovery')
         self.global_commands = sorted(['use ', 'exec ', 'help', 'exit', 'show ', 'search '])
-        self.module_commands = ['run', 'back', 'set ', 'unset ', 'gset ', 'gunset ', 'check']
+        self.module_commands = ['run', 'back', 'set ', 'unset ', 'gset ', 'gunset ', 'check', 'connect']
         self.module_commands.extend(self.global_commands)
         self.module_commands.sort()
         self.extra_modules_dir = None
@@ -173,7 +174,7 @@ class ISAFInterpreter(BaseInterpreter):
 
         :return: list of most accurate command suggestions
         """
-        if self.current_module and Exploits.GLOBAL_OPTS:
+        if (self.current_module and Exploits.GLOBAL_OPTS) or (self.current_module and Clients.GLOBAL_OPTS):
             return sorted(itertools.chain(self.module_commands, ('gunset ',)))
         elif self.current_module:
             custom_commands = [command.rsplit("_").pop() for command in dir(self.current_module)
@@ -228,6 +229,7 @@ class ISAFInterpreter(BaseInterpreter):
             setattr(self.current_module, key, value)
             if kwargs.get("glob", False):
                 Exploits.GLOBAL_OPTS[key] = value
+                Clients.GLOBAL_OPTS[key] = value
             Utils.print_success({key: value})
         else:
             Utils.print_error("You can't set option '{}'.\n"
@@ -254,6 +256,7 @@ class ISAFInterpreter(BaseInterpreter):
         key, _, value = args[0].partition(' ')
         try:
             del Exploits.GLOBAL_OPTS[key]
+            del Clients.GLOBAL_OPTS[key]
         except KeyError:
             Utils.print_error("You can't unset global option '{}'.\n"
                               "Available global options: {}".format(key, Exploits.GLOBAL_OPTS.keys()))
