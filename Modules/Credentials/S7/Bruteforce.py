@@ -5,7 +5,7 @@ from scapy.all import conf
 import Base.Validators as Validators
 import Wordlists
 from Base.Exploits import Exploit, Option
-from Modules.Clients.S7Client import Exploit as S7Client
+from Modules.Clients.Unstable.S7Client import Exploit as S7Client
 from Utils import multi, print_error, print_success, print_status, printTable, boolify, LockedIterator
 
 

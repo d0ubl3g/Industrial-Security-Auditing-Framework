@@ -1,8 +1,6 @@
-import socket
-
 from scapy.supersocket import StreamSocket
 
-from Modules.Clients.BaseClient import Base
+from Modules.Clients.Unstable.BaseClient import Base
 from Protocols.Cotp import *
 from Protocols.S7Comm import *
 

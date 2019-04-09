@@ -1,6 +1,6 @@
 from scapy.supersocket import StreamSocket
 
-from Modules.Clients.BaseClient import Base
+from Modules.Clients.Unstable.BaseClient import Base
 from Protocols.Modbus import *
 
 from Base.Exploits import Option
@@ -37,6 +37,12 @@ class Exploit(Base):
     def connect(self):
         sock = socket.socket()
         sock.connect((self.target, self.port))
+        sock.settimeout(self.timeout)
+        self._connection = StreamSocket(sock, Raw)
+
+    def connect(self, target, port):
+        sock = socket.socket()
+        sock.connect((target, port))
         sock.settimeout(self.timeout)
         self._connection = StreamSocket(sock, Raw)
 

@@ -1,7 +1,7 @@
 from Base.Exploits import Exploit, Option
 import Base.Validators as Validators
 from Utils import print_error, print_success, print_status, export_table, port_scan, printTable
-from Modules.Clients.ModbusClient import Exploit as ModbusClient
+from Modules.Clients.Unstable.ModbusClient import Exploit as ModbusClient
 
 TABLE_HEADER = ["Product Name", "Device Type", "Vendor ", "Revision", "Serial Number", "Slot", "IP Address"]
 CIP_DEVICES = []
@@ -40,7 +40,7 @@ class Exploit(Exploit):
         slot = ''
         ip_address = host
         target = ModbusClient()
-        target.connect()
+        target.connect(host, port)
         for slot_num in range(self.max_slot + 1):
                 print_status("Tring to scan %s with Slot%s" % (host, slot_num))
                 try:
@@ -63,7 +63,7 @@ class Exploit(Exploit):
         for host in nm.all_hosts():
             if nm[host]['tcp'][self.port]['state'] == "open":
                 print_success("Host: %s, port:%s is open" % (host, self.port))
-                #self.get_target_info(host=host, port=self.port)
+                self.get_target_info(host=host, port=self.port)
         unique_device = [list(x) for x in set(tuple(x) for x in self.result)]
         unique_device = sorted(unique_device, key=lambda x: (x[5], x[6]))
 

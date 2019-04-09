@@ -1,9 +1,7 @@
-import socket
-
 from scapy.supersocket import StreamSocket
 from scapy.volatile import RandString
 
-from Modules.Clients.BaseClient import Base
+from Modules.Clients.Unstable.BaseClient import Base
 from Protocols.Cotp import *
 from Protocols.S7CommPlus import *
 

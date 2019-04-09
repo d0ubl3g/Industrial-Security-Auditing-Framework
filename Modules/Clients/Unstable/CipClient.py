@@ -1,6 +1,6 @@
 from scapy.supersocket import StreamSocket
 
-from Modules.Clients.BaseClient import Base
+from Modules.Clients.Unstable.BaseClient import Base
 from Protocols.Cip import *
 from Protocols.Enip import *
 

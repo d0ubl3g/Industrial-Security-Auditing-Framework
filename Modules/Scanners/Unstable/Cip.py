@@ -1,7 +1,7 @@
 from Base.Exploits import Exploit, Option
 import Base.Validators as Validators
 from Utils import print_error, print_success, print_status, export_table, port_scan, printTable
-from Modules.Clients.ModbusClient import Exploit as CipClient
+from Modules.Clients.Unstable.ModbusClient import Exploit as CipClient
 
 TABLE_HEADER = ["Product Name", "Device Type", "Vendor ", "Revision", "Serial Number", "Slot", "IP Address"]
 CIP_DEVICES = []
