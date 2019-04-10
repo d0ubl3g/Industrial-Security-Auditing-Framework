@@ -116,4 +116,3 @@ class Client(object, metaclass=ClientOptionsAggregator):
 
     def __str__(self):
         return self.__module__.split('.', 2).pop().replace('.', os.sep)
-

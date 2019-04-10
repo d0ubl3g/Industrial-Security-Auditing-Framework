@@ -7,8 +7,8 @@ from collections import Counter
 from colorama import Fore, Style
 
 import Utils
-from Base import Exploits
 from Base import Clients
+from Base import Exploits
 from Exceptions.ISAFExceptions import ISAFException
 from Interpreters.BaseInterpreter import BaseInterpreter
 from Utils.Printer import PrinterThread
@@ -20,8 +20,10 @@ class ISAFInterpreter(BaseInterpreter):
     ISAF Commands:""" + Style.NORMAL + """
     help                                Print this help menu.
     use <module>                        Select a module for usage.
-    exec <shell command> <args>         Execute a command in a shell.
+    exec <shell command> <args>         Execute a system command.
     search <term>                       Search for appropriate module.
+    show all                            Show all available modules.
+    update                              Update ISAF.
     exit                                Exit ISAF.
     """
 
@@ -44,7 +46,8 @@ class ISAFInterpreter(BaseInterpreter):
         self.raw_prompt_template = None
         self.module_prompt_template = None
         self.prompt_hostname = 'ISAF'
-        self.show_sub_commands = ('info', 'options', 'devices', 'all', 'Credentials', 'Exploits', 'Scanners', 'Discovery')
+        self.show_sub_commands = ('info', 'options', 'devices', 'all', 'Credentials', 'Exploits', 'Scanners',
+                                  'Discovery')
         self.global_commands = sorted(['use ', 'exec ', 'help', 'exit', 'show ', 'search '])
         self.module_commands = ['run', 'back', 'set ', 'unset ', 'gset ', 'gunset ', 'check', 'connect']
         self.module_commands.extend(self.global_commands)
@@ -74,7 +77,7 @@ class ISAFInterpreter(BaseInterpreter):
                       + Fore.LIGHTYELLOW_EX + """
              Industrial Security Auditing Framework
                D0ubl3G <d0ubl3g[at]protonmail.com>\n""" \
-        + Fore.RED + """
+                      + Fore.RED + """
                            -> WARNING <-
                ISAF IS IN EARLY DEVELOPMENT PHASE.
             SHOULD NOT USE IN PRODUCTION ENVIRONMENTS.\n""" \
@@ -104,7 +107,7 @@ class ISAFInterpreter(BaseInterpreter):
                                          plc_exploit_count=self.modules_count['plcs'],
                                          ics_switch_exploits_count=self.modules_count['ics_switchs'],
                                          ics_software_exploits_count=self.modules_count['ics_software']
-               )
+                                         )
 
     def __parse_prompt(self):
         raw_prompt_default_template = Style.BRIGHT + Fore.BLUE + "{host}" + Fore.RESET + " > " + Style.NORMAL
@@ -224,6 +227,9 @@ class ISAFInterpreter(BaseInterpreter):
             Utils.print_error(traceback.format_exc(sys.exc_info()))
 
     def command_exploit(self, *args, **kwargs):
+        self.command_run()
+
+    def command_connect(self, *args, **kwargs):
         self.command_run()
 
     @Utils.moduleRequired
