@@ -45,3 +45,6 @@ See also the list of [contributors]() who participated in this project.
 ## License
 
 This project is licensed under the GPLv3 License - see the [LICENSE](LICENSE) file for details
+
+## Disclaimer
+##### FRAMEWORK IS IN EARLY DEVELOPMENT PHASE. DO NOT USE IN PRODUCTION ENVIRONMENTS, MAY PRODUCE DISRUPTIONS IN OPERATIONS.
