@@ -78,10 +78,13 @@ diagnosticsFunctions = {
 }
 
 errorCodeBase = 0x80
+TYPE_REQUEST = " Request"
+TYPE_RESPONSE = " Response"
+TYPE_ERROR = " Error"
 
 
-def getDictValue(arr, value):
-    for key, val in arr.items():
+def getFunctionValue(value):
+    for key, val in functionCodes.items():
         if val is value:
             return key
         elif key == value:
@@ -89,186 +92,266 @@ def getDictValue(arr, value):
 
 
 class ReadCoilsRequest(Packet):
-    name = getDictValue(functionCodes, 0x01) + " Request"
-    fields_desc = [XByteField("functionCode", getDictValue(functionCodes, "Read Coils")),
+    name = getFunctionValue(0x01) + TYPE_REQUEST
+    fields_desc = [XByteField("functionCode", getFunctionValue("Read Coils")),
                    XShortField("startingAddress", 0x0000),  # 0x0000 to 0xFFFF
                    XShortField("coilsQty", 0x0001)]  # 0x0001 to 0x07D0
 
 
 class ReadCoilsResponse(Packet):
-    name = getDictValue(functionCodes, 0x01) + " Response"
-    fields_desc = [XByteField("functionCode", getDictValue(functionCodes, "Read Coils")),
+    name = getFunctionValue(0x01) + TYPE_RESPONSE
+    fields_desc = [XByteField("functionCode", getFunctionValue("Read Coils")),
                    BitFieldLenField("byteCount", None, 8, count_of="coilStatus"),
                    FieldListField("coilStatus", [0x00], ByteField("", 0x00),
-                                  count_from=lambda packet: packet.byteCount)]
+                                  count_from=lambda p: p.byteCount)]
 
 
 class ReadCoilsError(Packet):
-    name = getDictValue(functionCodes, 0x01) + " Error"
-    fields_desc = [XByteField("functionCode", getDictValue(functionCodes, "Read Coils") + errorCodeBase),
+    name = getFunctionValue(0x01) + TYPE_ERROR
+    fields_desc = [XByteField("functionCode", getFunctionValue("Read Coils") + errorCodeBase),
                    ByteEnumField("exceptionCode", 1, exceptionCodes)]
 
 
 class ReadDiscreteInputsRequest(Packet):
-    name = getDictValue(functionCodes, 0x02) + " Request"
-    fields_desc = [XByteField("functionCode", getDictValue(functionCodes, "Read Discrete Inputs")),
+    name = getFunctionValue(0x02) + TYPE_REQUEST
+    fields_desc = [XByteField("functionCode", getFunctionValue("Read Discrete Inputs")),
                    XShortField("startingAddress", 0x0000),  # 0x0000 to 0xFFFF
                    XShortField("inputQty", 0x0001)]  # 0x0001 to 0x07D0
 
 
 class ReadDiscreteInputsResponse(Packet):
-    name = getDictValue(functionCodes, 0x02) + " Response"
-    fields_desc = [XByteField("functionCode", getDictValue(functionCodes, "Read Discrete Inputs")),
+    name = getFunctionValue(0x02) + TYPE_RESPONSE
+    fields_desc = [XByteField("functionCode", getFunctionValue("Read Discrete Inputs")),
                    BitFieldLenField("byteCount", None, 8, count_of="inputStatus"),
                    FieldListField("inputStatus", [0x00], ByteField("", 0x00),
-                                  count_from=lambda packet: packet.byteCount)]
+                                  count_from=lambda p: p.byteCount)]
 
 
 class ReadDiscreteInputsError(Packet):
-    name = getDictValue(functionCodes, 0x02) + " Error"
-    fields_desc = [XByteField("functionCode", getDictValue(functionCodes, "Read Discrete Inputs") + errorCodeBase),
+    name = getFunctionValue(0x02) + TYPE_ERROR
+    fields_desc = [XByteField("functionCode", getFunctionValue("Read Discrete Inputs") + errorCodeBase),
                    ByteEnumField("exceptionCode", 1, exceptionCodes)]
 
 
 class ReadHoldingRegistersRequest(Packet):
-    name = getDictValue(functionCodes, 0x03) + " Request"
-    fields_desc = [XByteField("functionCode", getDictValue(functionCodes, "Read Holding Registers")),
+    name = getFunctionValue(0x03) + TYPE_REQUEST
+    fields_desc = [XByteField("functionCode", getFunctionValue("Read Holding Registers")),
                    XShortField("startingAddress", 0x0000),  # 0x0000 to 0xFFFF
                    XShortField("holdingRegisterQty", 0x0001)]  # 0x0001 to 0x007D
 
 
 class ReadHoldingRegistersResponse(Packet):
-    name = getDictValue(functionCodes, 0x03) + " Response"
-    fields_desc = [XByteField("functionCode", getDictValue(functionCodes, "Read Holding Registers")),
+    name = getFunctionValue(0x03) + TYPE_RESPONSE
+    fields_desc = [XByteField("functionCode", getFunctionValue("Read Holding Registers")),
                    BitFieldLenField("byteCount", None, 8, count_of="registerValue", adjust=lambda packet, x: x * 2),
                    FieldListField("registerValue", [0x0000], ShortField("", 0x0000),
-                                  count_from=lambda packet: packet.byteCount)]
+                                  count_from=lambda p: p.byteCount)]
 
 
 class ReadHoldingRegistersError(Packet):
-    name = getDictValue(functionCodes, 0x03) + " Error"
-    fields_desc = [XByteField("functionCode", getDictValue(functionCodes, "Read Holding Registers") + errorCodeBase),
+    name = getFunctionValue(0x03) + TYPE_ERROR
+    fields_desc = [XByteField("functionCode", getFunctionValue("Read Holding Registers") + errorCodeBase),
                    ByteEnumField("exceptionCode", 1, exceptionCodes)]
 
 
 class ReadInputRegistersRequest(Packet):
-    name = getDictValue(functionCodes, 0x04) + " Request"
-    fields_desc = [XByteField("functionCode", getDictValue(functionCodes, "Read Input Registers")),
+    name = getFunctionValue(0x04) + TYPE_REQUEST
+    fields_desc = [XByteField("functionCode", getFunctionValue("Read Input Registers")),
                    XShortField("startingAddress", 0x0000),  # 0x0000 to 0xFFFF
-                   XShortField("inputRegisterQty", 0x0001)]  # 0x0001 to 0x007D
+                   XShortField("inputTYPE_REQUESTRegisterQty", 0x0001)]  # 0x0001 to 0x007D
 
 
 class ReadInputRegistersResponse(Packet):
-    name = getDictValue(functionCodes, 0x04) + " Response"
-    fields_desc = [XByteField("functionCode", getDictValue(functionCodes, "Read Input Registers")),
+    name = getFunctionValue(0x04) + TYPE_RESPONSE
+    fields_desc = [XByteField("functionCode", getFunctionValue("Read Input Registers")),
                    BitFieldLenField("byteCount", None, 8, count_of="inputRegisters", adjust=lambda packet, x: x * 2),
                    FieldListField("inputRegisters", [0x0000], ShortField("", 0x0000),
-                                  count_from=lambda packet: packet.byteCount)]
+                                  count_from=lambda p: p.byteCount)]
 
 
 class ReadInputRegistersError(Packet):
-    name = getDictValue(functionCodes, 0x04) + " Error"
-    fields_desc = [XByteField("functionCode", getDictValue(functionCodes, "Read Input Registers") + errorCodeBase),
+    name = getFunctionValue(0x04) + TYPE_ERROR
+    fields_desc = [XByteField("functionCode", getFunctionValue("Read Input Registers") + errorCodeBase),
                    ByteEnumField("exceptionCode", 1, exceptionCodes)]
 
 
 class WriteSingleCoilRequest(Packet):
-    name = getDictValue(functionCodes, 0x05) + " Request"
-    fields_desc = [XByteField("functionCode", getDictValue(functionCodes, "Write Single Coil")),
+    name = getFunctionValue(0x05) + TYPE_REQUEST
+    fields_desc = [XByteField("functionCode", getFunctionValue("Write Single Coil")),
                    XShortField("outputAddress", 0x0000),  # 0x0000 to 0xFFFF
                    XShortField("outputValue", 0x0000)]  # 0x0000 or 0xFF00
 
 
 class WriteSingleCoilResponse(Packet):
-    name = getDictValue(functionCodes, 0x05) + " Response"
-    fields_desc = [XByteField("functionCode", getDictValue(functionCodes, "Write Single Coil")),
+    name = getFunctionValue(0x05) + TYPE_RESPONSE
+    fields_desc = [XByteField("functionCode", getFunctionValue("Write Single Coil")),
                    XShortField("outputAddress", 0x0000),  # 0x0000 to 0xFFFF
                    XShortField("outputValue", 0x0000)]  # 0x0000 or 0xFF00
 
 
 class WriteSingleCoilError(Packet):
-    name = getDictValue(functionCodes, 0x05) + " Error"
-    fields_desc = [XByteField("functionCode", getDictValue(functionCodes, "Write Single Coil") + errorCodeBase),
+    name = getFunctionValue(0x05) + TYPE_ERROR
+    fields_desc = [XByteField("functionCode", getFunctionValue("Write Single Coil") + errorCodeBase),
                    ByteEnumField("exceptionCode", 1, exceptionCodes)]
 
 
 class WriteSingleRegisterRequest(Packet):
-    name = getDictValue(functionCodes, 0x06) + " Request"
-    fields_desc = [XByteField("functionCode", getDictValue(functionCodes, "Write Single Register")),
+    name = getFunctionValue(0x06) + TYPE_REQUEST
+    fields_desc = [XByteField("functionCode", getFunctionValue("Write Single Register")),
                    XShortField("registerAddress", 0x0000),  # 0x0000 to 0xFFFF
                    XShortField("registerValue", 0x0000)]  # 0x0000 to 0xFFFF
 
 
 class WriteSingleRegisterResponse(Packet):
-    name = getDictValue(functionCodes, 0x06) + " Response"
-    fields_desc = [XByteField("functionCode", getDictValue(functionCodes, "Write Single Register")),
+    name = getFunctionValue(0x06) + TYPE_RESPONSE
+    fields_desc = [XByteField("functionCode", getFunctionValue("Write Single Register")),
                    XShortField("registerAddress", 0x0000),  # 0x0000 to 0xFFFF
                    XShortField("registerValue", 0x0000)]  # 0x0000 to 0xFFFF
 
 
 class WriteSingleRegisterError(Packet):
-    name = getDictValue(functionCodes, 0x06) + " Error"
-    fields_desc = [XByteField("functionCode", getDictValue(functionCodes, "Write Single Register") + errorCodeBase),
+    name = getFunctionValue(0x06) + TYPE_ERROR
+    fields_desc = [XByteField("functionCode", getFunctionValue("Write Single Register") + errorCodeBase),
                    ByteEnumField("exceptionCode", 1, exceptionCodes)]
 
 
 class ReadExceptionStatusRequestSL(Packet):
-    name = getDictValue(functionCodes, 0x07) + " Request"
-    fields_desc = [XByteField("functionCode", getDictValue(functionCodes, "Read Exception Status (Serial Line Only)"))]
+    name = getFunctionValue(0x07) + TYPE_REQUEST
+    fields_desc = [XByteField("functionCode", getFunctionValue("Read Exception Status (Serial Line Only)"))]
 
 
 class ReadExceptionStatusResponseSL(Packet):
-    name = getDictValue(functionCodes, 0x07) + " Response"
-    fields_desc = [XByteField("functionCode", getDictValue(functionCodes, "Read Exception Status (Serial Line Only)")),
+    name = getFunctionValue(0x07) + TYPE_RESPONSE
+    fields_desc = [XByteField("functionCode", getFunctionValue("Read Exception Status (Serial Line Only)")),
                    XByteField("outputData", 0x00)]  # 0x00 to 0xFF
 
 
 class ReadExceptionStatusErrorSL(Packet):
-    name = getDictValue(functionCodes, 0x07) + " Error"
+    name = getFunctionValue(0x07) + TYPE_ERROR
     fields_desc = [XByteField("functionCode",
-                              getDictValue(functionCodes, "Read Exception Status (Serial Line Only)") + errorCodeBase),
+                              getFunctionValue("Read Exception Status (Serial Line Only)") + errorCodeBase),
                    ByteEnumField("exceptionCode", 1, exceptionCodes)]
 
 
 # TODO: Serial Line Diagnostics Packets
 '''
 class DiagnosticsRequestSL(Packet):
-    name = getDictValue(functionCodes, 0x08) + " Request"
-    fields_desc = [XByteField("functionCode", getDictValue(functionCodes, "Diagnostics (Serial Line Only)")),
+    name = getDictValue(0x08) + TYPE_REQUEST
+    fields_desc = [XByteField("functionCode", getDictValue("Diagnostics (Serial Line Only)")),
                    XShortField("subFunctionCode", 0x00),
                    XShortField("data",)]
 '''
 
 
 class GetCommEventCounterRequestSL(Packet):
-    name = getDictValue(functionCodes, 0x0B) + " Request"
-    fields_desc = [XByteField("functionCode", getDictValue(functionCodes, "Get Comm Event Counter (Serial Line Only)"))]
+    name = getFunctionValue(0x0B) + TYPE_REQUEST
+    fields_desc = [XByteField("functionCode", getFunctionValue("Get Comm Event Counter (Serial Line Only)"))]
 
 
 class GetCommEventCounterResponseSL(Packet):
-    name = getDictValue(functionCodes, 0x0B) + " Response"
-    fields_desc = [XByteField("functionCode", getDictValue(functionCodes, "Get Comm Event Counter (Serial Line Only)")),
+    name = getFunctionValue(0x0B) + TYPE_RESPONSE
+    fields_desc = [XByteField("functionCode", getFunctionValue("Get Comm Event Counter (Serial Line Only)")),
                    XShortField("status", 0x0000),  # 0x0000 to 0xFFFF
                    XShortField("eventCount", 0x0000)]  # 0x0000 to 0xFFFF
 
 
 class GetCommEventCounterErrorSL(Packet):
-    name = getDictValue(functionCodes, 0x0B) + " Error"
+    name = getFunctionValue(0x0B) + TYPE_ERROR
     fields_desc = [XByteField("functionCode",
-                              getDictValue(functionCodes, "Read Exception Status (Serial Line Only)") + errorCodeBase),
+                              getFunctionValue("Get Comm Event Counter (Serial Line Only)") + errorCodeBase),
                    ByteEnumField("exceptionCode", 1, exceptionCodes)]
 
 
 class GetCommEventLogRequestSL(Packet):
-    name = getDictValue(functionCodes, 0x0C) + " Request"
-    fields_desc = [XByteField("functionCode", getDictValue(functionCodes, "Get Comm Event Log (Serial Line Only)"))]
+    name = getFunctionValue(0x0C) + TYPE_REQUEST
+    fields_desc = [XByteField("functionCode", getFunctionValue("Get Comm Event Log (Serial Line Only)"))]
 
 
 class GetCommEventLogResponseSL(Packet):
-    name = getDictValue(functionCodes, 0x0C) + " Response"
-    fields_desc = [XByteField("functionCode", getDictValue(functionCodes, "Get Comm Event Log (Serial Line Only)")),
+    name = getFunctionValue(0x0C) + TYPE_RESPONSE
+    fields_desc = [XByteField("functionCode", getFunctionValue("Get Comm Event Log (Serial Line Only)")),
                    BitFieldLenField("byteCount", None, 8, count_of="events"),
                    XShortField("status", 0x0000),  # 0x0000 to 0xFFFF
                    XShortField("eventCount", 0x0000),  # 0x0000 to 0xFFFF
                    XShortField("messageCount", 0x0000),  # 0x0000 to 0xFFFF
-                   FieldListField("events", [0x00], XByteField("", 0x00), count_from=lambda packet: packet.byteCount)]
+                   FieldListField("events", [0x00], XByteField("", 0x00), count_from=lambda p: p.byteCount)]
+
+
+class GetCommEventLogErrorSL(Packet):
+    name = getFunctionValue(0x0C) + TYPE_ERROR
+    fields_desc = [XByteField("functionCode",
+                              getFunctionValue("Get Comm Event Log (Serial Line Only)") + errorCodeBase),
+                   ByteEnumField("exceptionCode", 1, exceptionCodes)]
+
+
+class WriteMultipleCoilsRequest(Packet):
+    name = getFunctionValue(0x0F) + TYPE_REQUEST
+    fields_desc = [XByteField("functionCode", getFunctionValue("Write Multiple Coils")),
+                   XShortField("startingAddress", 0x0000),  # 0x0000 to 0xFFFF
+                   XShortField("outputQty", 0x0001),  # 0x0001 to 0x07B0
+                   BitFieldLenField("byteCount", None, 8, count_of="outputsValue"),
+                   FieldListField("outputsValue", [0x00], XByteField("", 0x00), count_from=lambda p: p.byteCount)]
+
+
+class WriteMultipleCoilsResponse(Packet):
+    name = getFunctionValue(0x0F) + TYPE_RESPONSE
+    fields_desc = [XByteField("functionCode", getFunctionValue("Write Multiple Coils")),
+                   XShortField("startingAddress", 0x0000),  # 0x0000 to 0xFFFF
+                   XShortField("outputQty", 0x0001)]  # 0x0001 to 0x07B0
+
+
+class WriteMultipleCoilsError(Packet):
+    name = getFunctionValue(0x0F) + TYPE_ERROR
+    fields_desc = [XByteField("functionCode", getFunctionValue("Write Multiple Coils") + errorCodeBase),
+                   ByteEnumField("exceptionCode", 1, exceptionCodes)]
+
+
+class WriteMultipleRegistersRequest(Packet):
+    name = getFunctionValue(0x10) + TYPE_REQUEST
+    fields_desc = [XByteField("functionCode", getFunctionValue("Write Multiple Registers")),
+                   XShortField("startingAddress", 0x0000),  # 0x0000 to 0xFFFF
+                   BitFieldLenField("registerQty", None, 16, count_of="registersValue",),  # 0x0001 to 0x007B
+                   BitFieldLenField("byteCount", None, 8, count_of="registersValue", adjust=lambda p, x: x * 2),
+                   FieldListField("registersValue", [0x0000], XShortField("", 0x00), count_from=lambda p: p.byteCount)]
+
+
+class WriteMultipleRegistersResponse(Packet):
+    name = getFunctionValue(0x10) + TYPE_RESPONSE
+    fields_desc = [XByteField("functionCode", getFunctionValue("Write Multiple Registers")),
+                   XShortField("startingAddress", 0x0000),  # 0x0000 to 0xFFFF
+                   XShortField("registersQty", 0x0001)]  # 0x0001 to 0x007B
+
+
+class WriteMultipleRegistersError(Packet):
+    name = getFunctionValue(0x10) + TYPE_ERROR
+    fields_desc = [XByteField("functionCode", getFunctionValue("Write Multiple Registers") + errorCodeBase),
+                   ByteEnumField("exceptionCode", 1, exceptionCodes)]
+
+
+class ReportServerIDRequestSL(Packet):
+    name = getFunctionValue(0x11) + TYPE_REQUEST
+    fields_desc = [XByteField("functionCode", getFunctionValue("Report Server ID (Serial Line Only)"))]
+
+
+class ReportServerIDResponseSL(Packet):
+    name = getFunctionValue(0x11) + TYPE_RESPONSE
+    fields_desc = [XByteField("functionCode", getFunctionValue("Report Server ID (Serial Line Only)")),
+                   BitFieldLenField("byteCount", None, 8, length_of="serverID"),
+                   ConditionalField(StrLenField("serverID", "", length_from=lambda p: p.byteCount),
+                                    lambda p: p.byteCount > 0),
+                   ConditionalField(XByteField("runIndicatorStatus", 0x00), lambda p: p.byteCount > 0)]
+    
+
+class ReportServerIDErrorSL(Packet):
+    name = getFunctionValue(0x11) + TYPE_ERROR
+    fields_desc = [XByteField("functionCode", getFunctionValue("Report Server ID (Serial Line Only)") + errorCodeBase),
+                   ByteEnumField("exceptionCode", 1, exceptionCodes)]
+
+
+class ReadFileSubRequest(Packet):
+    name = getFunctionValue(0x14) + " Sub Request"
+    fields_desc = [ByteField("referenceType", 0x06),
+                   ShortField("fileNumber", 0x0001),  # 0x0001 to 0xFFFF
+                   ShortField("recordNumber", 0x0000),  # 0x0000 to 0x270F
+                   ShortField("recordLength", 0x0001)]
+
