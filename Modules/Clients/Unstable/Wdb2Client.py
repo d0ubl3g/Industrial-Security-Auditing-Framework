@@ -3,7 +3,7 @@ import xdrlib
 from scapy.supersocket import StreamSocket
 
 from Modules.Clients.Unstable.BaseClient import Base
-from Protocols.WdbRpc2 import *
+from Protocols.Unstable.WdbRpc2 import *
 
 
 class Wdb2Client(Base):

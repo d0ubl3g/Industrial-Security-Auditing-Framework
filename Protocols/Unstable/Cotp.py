@@ -2,8 +2,8 @@ from scapy.fields import *
 from scapy.layers.inet import TCP
 from scapy.packet import *
 
-from Protocols.S7Comm import S7Header
-from Protocols.S7CommPlus import S7PlusHeader
+from Protocols.Unstable.S7Comm import S7Header
+from Protocols.Unstable.S7CommPlus import S7PlusHeader
 
 COTP_PARAMETER_CODE = {0xc0: "tpdu-size", 0xc1: "src-tsap", 0xc2: "dst-tsap"}
 

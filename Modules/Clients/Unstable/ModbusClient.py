@@ -1,7 +1,6 @@
-import logging
 from scapy.supersocket import StreamSocket
 
-from Protocols.Modbus import *
+from Protocols.Unstable.Modbus import *
 from Base.Clients import Option, Client
 from Utils import print_error, print_success
 
@@ -32,7 +31,8 @@ class Client(Client):
         self._connected = False
 
     def run(self):
-        self.connect(self.target, self.port)
+        if self.connect(self.target, self.port):
+            print_success("Connected to " + self.target + ":" + str(self.port) + " successfully.")
 
     def connect(self, target, port):
         try:
@@ -40,9 +40,10 @@ class Client(Client):
             sock.connect((target, port))
             sock.settimeout(self.timeout)
             self._connection = StreamSocket(sock, Raw)
+            return True
         except ConnectionRefusedError as e:
             print_error("Conection was refused.")
-
+            return False
 
     def send_packet(self, packet):
         if self._connection:

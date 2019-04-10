@@ -1,8 +1,8 @@
 from scapy.supersocket import StreamSocket
 
 from Modules.Clients.Unstable.BaseClient import Base
-from Protocols.Cotp import *
-from Protocols.S7Comm import *
+from Protocols.Unstable.Cotp import *
+from Protocols.Unstable.S7Comm import *
 
 from Base.Exploits import Option
 

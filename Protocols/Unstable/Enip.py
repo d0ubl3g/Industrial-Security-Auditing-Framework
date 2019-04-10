@@ -2,7 +2,7 @@ from scapy.fields import *
 from scapy.layers.inet import TCP, UDP
 from scapy.packet import *
 
-from Protocols.Cip import CIPHeader
+from Protocols.Unstable.Cip import CIPHeader
 
 ENIP_COMMANDS = {
     0x0000: "NOP",

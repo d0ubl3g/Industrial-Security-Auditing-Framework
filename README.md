@@ -38,7 +38,7 @@ Documentation is hosted at [ISAF Wiki](https://gitlab.com/d0ubl3g/industrial-sec
 
 ## Authors
 
-* **D0ubl3G**: d0ubl3g[at]protonmail.com | [@D0ubl3G](https://t.me/d0ubl3g) (Telegram)
+* **D0ubl3G**: d0ubl3g[at]protonmail.com | [@D0ubl3G](https://t.me/d0ubl3g) (Telegram) | [@d0u6l3g](https://twitter.com/d0u6l3g) (Twitter)
 
 See also the list of [contributors]() who participated in this project.
 

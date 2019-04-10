@@ -727,3 +727,11 @@ def export_table(file_path, header, data, quote_char=';'):
         output_file.write(data_line)
     output_file.close()
     print_success("Table is export to %s" % file_path)
+
+
+def getDictValue(arr, value):
+    for key, val in arr.items():
+        if val is value:
+            return key
+        elif key == value:
+            return val

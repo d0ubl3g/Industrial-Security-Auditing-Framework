@@ -2,8 +2,8 @@ from scapy.supersocket import StreamSocket
 from scapy.volatile import RandString
 
 from Modules.Clients.Unstable.BaseClient import Base
-from Protocols.Cotp import *
-from Protocols.S7CommPlus import *
+from Protocols.Unstable.Cotp import *
+from Protocols.Unstable.S7CommPlus import *
 
 OBJECT_QUALIFIER_ITEMS = [S7PlusItemValue(IDNumber=0x4e9, DataType=0x12,
                                           DataValue=S7PlusRIDValue(Value=0x0)),
