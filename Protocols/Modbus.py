@@ -102,7 +102,7 @@ class ReadCoilsResponse(Packet):
     name = getFunctionValue(0x01) + TYPE_RESPONSE
     fields_desc = [XByteField("functionCode", getFunctionValue("Read Coils")),
                    BitFieldLenField("byteCount", None, 8, count_of="coilStatus"),
-                   FieldListField("coilStatus", [0x00], ByteField("", 0x00),
+                   FieldListField("coilStatus", [0x00], XByteField("", 0x00),
                                   count_from=lambda p: p.byteCount)]
 
 
@@ -123,7 +123,7 @@ class ReadDiscreteInputsResponse(Packet):
     name = getFunctionValue(0x02) + TYPE_RESPONSE
     fields_desc = [XByteField("functionCode", getFunctionValue("Read Discrete Inputs")),
                    BitFieldLenField("byteCount", None, 8, count_of="inputStatus"),
-                   FieldListField("inputStatus", [0x00], ByteField("", 0x00),
+                   FieldListField("inputStatus", [0x00], XByteField("", 0x00),
                                   count_from=lambda p: p.byteCount)]
 
 
@@ -144,7 +144,7 @@ class ReadHoldingRegistersResponse(Packet):
     name = getFunctionValue(0x03) + TYPE_RESPONSE
     fields_desc = [XByteField("functionCode", getFunctionValue("Read Holding Registers")),
                    BitFieldLenField("byteCount", None, 8, count_of="registerValue", adjust=lambda packet, x: x * 2),
-                   FieldListField("registerValue", [0x0000], ShortField("", 0x0000),
+                   FieldListField("registerValue", [0x0000], XShortField("", 0x0000),
                                   count_from=lambda p: p.byteCount)]
 
 
@@ -165,7 +165,7 @@ class ReadInputRegistersResponse(Packet):
     name = getFunctionValue(0x04) + TYPE_RESPONSE
     fields_desc = [XByteField("functionCode", getFunctionValue("Read Input Registers")),
                    BitFieldLenField("byteCount", None, 8, count_of="inputRegisters", adjust=lambda packet, x: x * 2),
-                   FieldListField("inputRegisters", [0x0000], ShortField("", 0x0000),
+                   FieldListField("inputRegisters", [0x0000], XShortField("", 0x0000),
                                   count_from=lambda p: p.byteCount)]
 
 
@@ -348,10 +348,54 @@ class ReportServerIDErrorSL(Packet):
                    ByteEnumField("exceptionCode", 1, exceptionCodes)]
 
 
-class ReadFileSubRequest(Packet):
+class ReadFileRecordSubRequest(Packet):
     name = getFunctionValue(0x14) + " Sub Request"
-    fields_desc = [ByteField("referenceType", 0x06),
-                   ShortField("fileNumber", 0x0001),  # 0x0001 to 0xFFFF
-                   ShortField("recordNumber", 0x0000),  # 0x0000 to 0x270F
-                   ShortField("recordLength", 0x0001)]
+    fields_desc = [XByteField("referenceType", 0x06),
+                   XShortField("fileNumber", 0x0001),  # 0x0001 to 0xFFFF
+                   XShortField("recordNumber", 0x0000),  # 0x0000 to 0x270F
+                   XShortField("recordLength", 0x0001)]
 
+
+class ReadFileRecordRequest(Packet):
+    name = getFunctionValue(0x14) + TYPE_REQUEST
+    fields_desc = [XByteField("functionCode", getFunctionValue("Read File Record")),
+                   XByteField("byteCount", None)]  # 0x07 to 0xF5
+    # TODO: POST BUILD
+    
+
+class ReadFileRecordSubResponse(Packet):
+    name = getFunctionValue(0x14) + " Sub Response"
+    fields_desc = [BitFieldLenField("fileRespLength", None, 8, count_of="recordData", adjust=lambda p, x: (x * 2) + 1),
+                   XByteField("referenceType", 0x06),
+                   FieldListField("recordData", [0x0000], XShortField("", 0x0000), 
+                                  count_from=lambda p: (p.fileRespLength - 1) // 2)]
+
+
+class ReadFileRecordResponse(Packet):
+    name = getFunctionValue(0x14) + TYPE_RESPONSE
+    fields_desc = [XByteField("functionCode", getFunctionValue("Read File Record")),
+                   XByteField("dataLength", None)]  # 0x07 to 0xF5
+    # TODO: POST BUILD
+
+
+class ReadFileRecordError(Packet):
+    name = getFunctionValue(0x14) + TYPE_ERROR
+    fields_desc = [XByteField("functionCode", getFunctionValue("Read File Record") + errorCodeBase),
+                   ByteEnumField("exceptionCode", 1, exceptionCodes)]
+
+
+class WriteFileRecordSubRequest(Packet):
+    name = getFunctionValue(0x15) + " Sub Request"
+    fields_desc = [XByteField("referenceType", 0x06),
+                   XShortField("fileNumber", 0x0001),  # 0x0001 to 0xFFFF
+                   XShortField("recordNumber", 0x0000),  # 0x0000 to 0x270F
+                   BitFieldLenField("recordLength", None, 16, length_of="recordData", adjust=lambda p, x: x // 2),
+                   FieldListField("recordData", [0x0000], XShortField("", 0x0000),
+                                  length_from=lambda p: p.recordLength * 2)]
+
+
+class WriteFileRecordRequest(Packet):
+    name = getFunctionValue(0x15) + TYPE_REQUEST
+    fields_desc = [XByteField("functionCode", getFunctionValue("Write File Record")),
+                   XByteField("dataLength", None)]  # 0x09 to 0xFB
+    # TODO: POST BUILD
