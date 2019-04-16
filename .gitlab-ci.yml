@@ -1,7 +1,7 @@
 test:
   script:
   - apt-get update -qy
-  - apt-get install -y python3.7-dev python3-pip
+  - apt-get install -y python3-dev python3-pip
   - python3 -m pip install -r requirements.txt
   - python3 ISAF.py
 
