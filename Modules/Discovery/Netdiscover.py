@@ -9,14 +9,14 @@ TABLE_HEADER = ["IPv4", "MAC", "Packet Qty", "Length", "Vendor"]
 
 class Exploit(Exploit):
     __info__ = {
-        'name': 'discovery/passive',
+        'name': 'discovery/netdiscover',
         'display_name': 'Passive ARP Host Discovery',
         'authors': [
             'D0ubl3G <d0ubl3g[at]protonmail.com>',
         ],
-        'description': 'Passive host discovery using ARP Scan.',
+        'description': 'Passive host discovery using Netdiscover.',
         'references': [
-            '',
+            'https://github.com/alexxy/netdiscover',
         ],
         'devices': [
             'Multi'
@@ -24,20 +24,27 @@ class Exploit(Exploit):
     }
 
     result = []
-    target = Option('', "Target IP range ex 192.168.0.0/24 /16 /8. "
-                                      "Empty for auto mode.",
-                    validators=Validators.ipv4)
+    target = Option('', "Target IP range ex 192.168.0.0/24 /16 /8. Empty for auto mode.", validators=Validators.ipv4)
     iface = Option('eth0', "Interface for ARP packet capture.")
+    mode = Option('passive', 'Discover mode: active (send packets) or passive (listen only).')
     timeout = Option(15, 'Capture timeout in seconds.')
 
     def run(self):
         try:
             try:
                 if self.target is "":
-                    p = subprocess.Popen(['netdiscover', '-i', self.iface, '-p', '-P', '-N'], stdout=subprocess.PIPE)
+                    if self.mode is 'active':
+                        p = subprocess.Popen(['netdiscover', '-i', self.iface, '-P', '-N'], stdout=subprocess.PIPE)
+                    else:
+                        p = subprocess.Popen(['netdiscover', '-i', self.iface, '-p', '-P', '-N'],
+                                             stdout=subprocess.PIPE)
                 else:
-                    p = subprocess.Popen(['netdiscover', '-i', self.iface, '-r', self.target, '-p', '-P', '-N'],
-                                         stdout=subprocess.PIPE)
+                    if self.mode is 'active':
+                        p = subprocess.Popen(['netdiscover', '-i', self.iface, '-r', self.target, '-P', '-N'],
+                                             stdout=subprocess.PIPE)
+                    else:
+                        p = subprocess.Popen(['netdiscover', '-i', self.iface, '-r', self.target, '-p', '-P', '-N'],
+                                             stdout=subprocess.PIPE)
                 output, error = p.communicate(timeout=self.timeout)
             except:
                 p.kill()

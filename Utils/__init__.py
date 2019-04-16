@@ -366,7 +366,7 @@ def printTable(headers, *args, **kwargs):
     """
     extra_fill = kwargs.get("extra_fill", 5)
     header_separator = kwargs.get("header_separator", '-')
-    max_column_length = kwargs.get("max_column_length", 60)
+    max_column_length = kwargs.get("max_column_length", 80)
 
     if not all(map(lambda x: len(x) == len(headers), args)):
         print_error("Headers and table rows tuples should be the same length.")

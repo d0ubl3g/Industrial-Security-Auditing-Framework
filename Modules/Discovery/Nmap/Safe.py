@@ -25,11 +25,14 @@ class Exploit(Exploit):
     result = []
     target = Option('192.168.1.0/24', "String for hosts as nmap use it 'scanme.nmap.org'"
                                       " or '198.116.0-255.1-127' or '216.163.128.20/20'", validators=Validators.ipv4)
+    speed = Option(2, "Nmap Scan Speed [1-5]. Low values are recommended. High values could be disrupting.",
+                   validators=Validators.integer)
 
     def run(self):
         try:
+            arguments = "-T{s} -n -PR -sn "
             nm = nmap.PortScanner()
-            nm.scan(hosts=self.target, arguments='-T3 -n -PR -sn ')
+            nm.scan(hosts=self.target, arguments=arguments.format(s=self.speed))
             for host in nm.all_hosts():
                 try:
                     ipv4 = nm[host]['addresses']['ipv4']

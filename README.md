@@ -18,7 +18,7 @@ These instructions will get you a copy of the project up and running for develop
 
 ### Setup
 
-Executing the following command would met all the requirements:
+Executing the following command would met all the requirements. **Python 3.7+ is Required**:
 ```
 ./setup.sh
 ```
@@ -40,7 +40,7 @@ Documentation is hosted at [ISAF Wiki](https://gitlab.com/d0ubl3g/industrial-sec
 
 * **D0ubl3G**: d0ubl3g[at]protonmail.com | [@D0ubl3G](https://t.me/d0ubl3g) (Telegram) | [@d0u6l3g](https://twitter.com/d0u6l3g) (Twitter)
 
-See also the list of [contributors]() who participated in this project.
+See also the list of [contributors](https://gitlab.com/d0ubl3g/industrial-security-auditing-framework/graphs/master) who participated in this project.
 
 ## License
 
