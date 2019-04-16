@@ -1,0 +1,26 @@
+test:
+  script:
+  - apt-get update -qy
+  - apt-get install -y python-dev python-pip modbus-cli netdiscover
+  - pip install -r requirements.txt
+  - python ISAF.py test
+
+staging:
+  type: deploy
+  script:
+  - apt-get update -qy
+  - apt-get install -y ruby-dev
+  - gem install dpl
+  - dpl --provider=heroku --app=isaf-industrial-security --api-key=$HEROKU_STAGING_API_KEY
+  only:
+  - master
+
+production:
+  type: deploy
+  script:
+  - apt-get update -qy
+  - apt-get install -y ruby-dev
+  - gem install dpl
+  - dpl --provider=heroku --app=isaf-industrial-security --api-key=$HEROKU_PRODUCTION_API_KEY
+  only:
+  - tags
