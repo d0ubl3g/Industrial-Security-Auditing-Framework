@@ -29,7 +29,7 @@ class Exploit(Exploit):
     def run(self):
         try:
             nm = nmap.PortScanner()
-            nm.scan(hosts=self.target, arguments='-n -PR -sn ')
+            nm.scan(hosts=self.target, arguments='-T3 -n -PR -sn ')
             for host in nm.all_hosts():
                 try:
                     ipv4 = nm[host]['addresses']['ipv4']
