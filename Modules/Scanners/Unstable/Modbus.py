@@ -23,11 +23,11 @@ class Exploit(Exploit):
     }
 
     target = Option('', "String for hosts as nmap use it 'scanme.nmap.org'"
-                                 " or '198.116.0-255.1-127' or '216.163.128.20/20'")
+                        " or '198.116.0-255.1-127' or '216.163.128.20/20'")
     port = Option(502, 'Modbus port, default is 502/TCP', validators=Validators.integer)
     verbose = Option(0, 'Scapy verbose level, 0 to 2', validators=Validators.integer)
     max_slot = Option(5, 'Maximum PLC Slot number for scan, default is 5, set to 10 '
-                                  'if you want scan up to slot 10', validators=Validators.integer)
+                         'if you want scan up to slot 10', validators=Validators.integer)
     output_file = Option('', "output file path")
     result = []
 
@@ -42,23 +42,23 @@ class Exploit(Exploit):
         target = ModbusClient()
         target.connect(host, port)
         for slot_num in range(self.max_slot + 1):
-                print_status("Tring to scan %s with Slot%s" % (host, slot_num))
-                try:
-                    product_name, device_type, vendor, revision, serial_number = \
+            print_status("Tring to scan %s with Slot%s" % (host, slot_num))
+            try:
+                product_name, device_type, vendor, revision, serial_number = \
                     target.get_target_info(port_segment=slot_num)
-                    print(product_name, device_type, vendor, revision, serial_number)
-                    slot = slot_num
-                    ip_address = host
-                    if serial_number != '':
-                        self.result.append([product_name, device_type, vendor, revision, serial_number,
-                                            str(slot), ip_address])
-                except Exception as err:
-                    print_error(err)
-                    return False
+                print(product_name, device_type, vendor, revision, serial_number)
+                slot = slot_num
+                ip_address = host
+                if serial_number != '':
+                    self.result.append([product_name, device_type, vendor, revision, serial_number,
+                                        str(slot), ip_address])
+            except Exception as err:
+                print_error(err)
+                return False
 
     def run(self):
         self.result = []
-        #conf.verb = self.verbose
+        # conf.verb = self.verbose
         nm = port_scan(protocol='TCP', target=self.target, port=self.port)
         for host in nm.all_hosts():
             if nm[host]['tcp'][self.port]['state'] == "open":

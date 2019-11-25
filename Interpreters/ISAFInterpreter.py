@@ -39,7 +39,7 @@ class ISAFInterpreter(BaseInterpreter):
     check                               Check if a given target is vulnerable to a selected module's exploit.
     """
 
-    def __init__(self, extra_package_path=None):
+    def __init__(self, version_label, extra_package_path=None):
         super(ISAFInterpreter, self).__init__()
         PrinterThread().start()
         self.current_module = None
@@ -95,7 +95,7 @@ class ISAFInterpreter(BaseInterpreter):
                       + """        Software: """ + Fore.GREEN + """{ics_software_exploits_count}""" + Fore.RESET \
                       + """\n\n"""
 
-        self.banner = self.banner.format(version="0.0.1a", clients_count=self.modules_count['Clients'],
+        self.banner = self.banner.format(version=version_label, clients_count=self.modules_count['Clients'],
                                          exploits_count=self.modules_count['Exploits'] + self.modules_count[
                                              'extra_exploits'],
                                          discovery_count=self.modules_count['Discovery'] + self.modules_count[

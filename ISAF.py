@@ -3,6 +3,7 @@
 import argparse
 import logging.handlers
 import os
+import subprocess
 from colorama import init, Fore, Style
 
 import Configuration
@@ -26,11 +27,14 @@ parser.add_argument('-e',
                     '--extra-package-path',
                     help='Add extra modules to ISAF. (Overwrites Configured One)')
 
+# GET VERSION LABEL #
+version_label = str(subprocess.check_output(["git", "describe"]).strip(), "utf-8").split("-")[0]
+
 
 def ISAF(extra_package_path=Configuration.EXTRA_PACKAGE_PATH):
     if not os.path.isdir(extra_package_path):
         extra_package_path = None
-    isaf = ISAFInterpreter(extra_package_path)
+    isaf = ISAFInterpreter(version_label, extra_package_path)
     isaf.start()
 
 
