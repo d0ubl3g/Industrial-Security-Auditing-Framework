@@ -115,7 +115,7 @@ class BaseInterpreter(object):
                         complete_function = self.default_completer
             else:
                 complete_function = self.raw_command_completer
-        self.completion_matches = complete_function(text, line, start_index, end_index)
+            self.completion_matches = complete_function(text, line, start_index, end_index)
 
         try:
             return self.completion_matches[state]

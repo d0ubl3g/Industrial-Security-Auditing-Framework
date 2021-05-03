@@ -32,14 +32,14 @@ class Exploit(Exploit):
     def run(self):
         try:
             try:
-                if self.target is "":
-                    if self.mode is 'active':
+                if self.target == "":
+                    if self.mode == 'active':
                         p = subprocess.Popen(['netdiscover', '-i', self.iface, '-P', '-N'], stdout=subprocess.PIPE)
                     else:
                         p = subprocess.Popen(['netdiscover', '-i', self.iface, '-p', '-P', '-N'],
                                              stdout=subprocess.PIPE)
                 else:
-                    if self.mode is 'active':
+                    if self.mode == 'active':
                         p = subprocess.Popen(['netdiscover', '-i', self.iface, '-r', self.target, '-P', '-N'],
                                              stdout=subprocess.PIPE)
                     else:
@@ -51,7 +51,7 @@ class Exploit(Exploit):
                 output, error = p.communicate()
 
             for x in output.decode().split('\n'):
-                if x is not "":
+                if x != "":
                     if len(x.split()) >= 5:
                         self.result.append([x.split()[0],x.split()[1],x.split()[2], x.split()[3], " ".join(x.split()[4:])])
                     else:

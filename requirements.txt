@@ -1,10 +1,11 @@
-urllib3
-requests
-beautifulsoup4
+urllib3~=1.26.4
+requests~=2.25.1
+beautifulsoup4~=4.9.0
 pysnmp
 gnureadline
 python-nmap
 scapy
-paramiko
-colorama
+paramiko~=2.7.1
+colorama~=0.4.3
 pexpect
+bs4~=0.0.1
