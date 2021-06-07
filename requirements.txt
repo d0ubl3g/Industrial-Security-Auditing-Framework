@@ -6,6 +6,6 @@ gnureadline
 python-nmap
 scapy
 paramiko~=2.7.2
-colorama~=0.4.3
+colorama~=0.4.4
 pexpect
 bs4~=0.0.1
