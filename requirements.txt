@@ -1,6 +1,6 @@
 urllib3~=1.26.4
 requests~=2.25.1
-beautifulsoup4~=4.9.0
+beautifulsoup4~=4.9.3
 pysnmp
 gnureadline
 python-nmap
