@@ -1,4 +1,4 @@
-urllib3~=1.26.5
+urllib3~=1.26.7
 requests~=2.26.0
 beautifulsoup4~=4.9.3
 pysnmp
