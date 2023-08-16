@@ -1,5 +1,5 @@
 urllib3~=1.26.9
-requests~=2.28.2
+requests~=2.31.0
 beautifulsoup4~=4.11.1
 pysnmp
 gnureadline
